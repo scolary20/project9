@@ -103,9 +103,20 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
+        View header = inflater.inflate(R.layout.left_nav_header,
+                null);
+        View footer = inflater.inflate(R.layout.list_nav_footer,null);
+        mDrawerListView.addHeaderView(header);
+        mDrawerListView.addFooterView(footer);
         ArrayList<ObjectDrawerItem> drawerItem = new ArrayList<>();
 
         //ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[2];
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));
         drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
         drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
         drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));

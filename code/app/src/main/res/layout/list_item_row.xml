@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/activatedBackgroundIndicator"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-    android:padding="10dp" >
+    android:padding="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
 
 
     <ImageView
@@ -22,7 +23,8 @@
         android:layout_toRightOf="@+id/imageViewIcon"
         android:paddingRight="10dp"
         android:text="Folder name here."
+
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="#ffffff" />
+        android:textColor= "#000"/>
 
 </RelativeLayout>
