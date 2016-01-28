@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/username_field"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/date"
         android:paddingLeft="10dp"
@@ -33,13 +33,14 @@
         android:paddingBottom="5dp"
         android:background="@drawable/blue_background"
         android:textColor="#fff"
-        android:text="Yasmeen Ndu ngadu akhal"
+        android:gravity="center"
+        android:text="Yasmeen Ndu  "
          />
 
     <ImageView
         android:id="@+id/profile_picture"
         android:layout_width="150dp"
-        android:layout_height="175dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/rounded_profile"
         android:scaleType="fitXY"
@@ -53,6 +54,7 @@
         android:layout_below="@+id/profile_picture"
         android:layout_width="wrap_content"
         android:padding="10dp"
+        android:textStyle="italic"
         android:layout_height="wrap_content"
         android:text="@string/watch_message" />
 
