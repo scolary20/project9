@@ -9,8 +9,9 @@
 
     <ImageView
         android:id="@+id/imageViewIcon"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:paddingRight="10dp" />
@@ -19,12 +20,45 @@
         android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/imageViewIcon"
         android:paddingRight="10dp"
         android:text="Folder name here."
-
+        android:paddingBottom="10dp"
+        android:layout_below="@+id/imageViewIcon"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:textColor= "#000"/>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_marginRight="10dip"
+        android:layout_below="@+id/textViewName"
+        style="?android:attr/progressBarStyleHorizontal"/>
+
+    <TextView
+        android:id="@+id/now_air"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/progressBar"
+        android:text="now airing"
+        android:textSize="15dp"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor= "#fff"/>
+
+    <TextView
+        android:id="@+id/time_progress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/now_air"
+        android:layout_below="@+id/progressBar"
+        android:text="39:55"
+        android:gravity="right"
+        android:layout_marginLeft="10dip"
+        android:layout_marginBottom="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="15dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor= "#fff"/>
 </RelativeLayout>

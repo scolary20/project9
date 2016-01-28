@@ -111,15 +111,15 @@ public class NavigationDrawerFragment extends Fragment {
         ArrayList<ObjectDrawerItem> drawerItem = new ArrayList<>();
 
         //ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[2];
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.empire, "Empire"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.game, "Game of thrones"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.real, "Real husband of hollywood"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.desperate, "Desperate housewives"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.away, "how to get away with murder"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.modern, "modern family"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.breaking, "breaking bad"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.bang, "big bang theory"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.mary, "being mary jane"));
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row,drawerItem);
         mDrawerListView.setAdapter(adapter);
