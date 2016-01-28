@@ -19,8 +19,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -97,7 +102,21 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+
+        ArrayList<ObjectDrawerItem> drawerItem = new ArrayList<>();
+
+        //ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[2];
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Create"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Read"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.ic_launcher, "Help"));
+
+        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row,drawerItem);
+        mDrawerListView.setAdapter(adapter);
+
+
+
+
+       /* mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -105,7 +124,8 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section1),
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
-                }));
+                }));*/
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
