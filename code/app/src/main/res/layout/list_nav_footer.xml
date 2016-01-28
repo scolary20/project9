@@ -18,6 +18,7 @@
         android:drawableLeft="@drawable/ic_launcher"
         android:drawablePadding="5dp"
         android:paddingTop="10dp"
+        android:paddingBottom="5dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:gravity="center_horizontal|center_vertical"
         android:text="Settings"
@@ -30,6 +31,7 @@
         android:drawableLeft="@drawable/ic_launcher"
         android:gravity="center_horizontal|center_vertical"
         android:drawablePadding="5dp"
+        android:paddingBottom="5dp"
         android:text="Help"
         android:id="@+id/textView3" />
 
@@ -40,14 +42,16 @@
         android:drawableLeft="@drawable/ic_launcher"
         android:gravity="center_horizontal|center_vertical"
         android:drawablePadding="5dp"
+        android:paddingBottom="5dp"
         android:text="Settings"
         android:id="@+id/Report" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center_horizontal|center_vertical"
         android:text="scolabs 2016"
+        android:paddingBottom="5dp"
         android:id="@+id/textView" />
 </LinearLayout>
