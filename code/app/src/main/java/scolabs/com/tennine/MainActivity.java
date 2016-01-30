@@ -1,6 +1,8 @@
 package scolabs.com.tennine;
 
 import android.app.Activity;
+import android.app.ListFragment;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import scolabs.com.tennine.ui.ShowList;
+
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -33,7 +37,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -60,6 +64,10 @@ public class MainActivity extends ActionBarActivity
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
+                Fragment f = new ShowList();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, f).addToBackStack("Show List")
+                        .commit();
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);

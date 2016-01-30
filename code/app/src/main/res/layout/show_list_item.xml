@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="5dp"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/show_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_background"
+        android:gravity="center"
+        android:alpha="2"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#fff" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/show_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="left"
+            android:background="@color/white"
+            android:gravity="left"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/empire" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_toEndOf="@+id/show_image"
+            android:layout_toRightOf="@+id/show_image"
+            android:orientation="vertical"
+            android:background="@drawable/blue_background2"
+            android:id="@+id/linearLayout">
+
+            <TextView
+                android:id="@+id/num_watching"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:paddingLeft="2dip"
+                android:paddingRight="2dip"
+                android:alpha="0.8"
+                android:text="711 908"
+                android:textColor="#156260"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                />
+
+            <TextView
+                android:id="@+id/watching_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:paddingLeft="2dip"
+                android:paddingRight="2dip"
+                android:textStyle="italic"
+                android:alpha="0.7"
+                android:text="currently watching"
+                android:paddingBottom="5dp"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="@color/background_floating_material_dark" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/background_floating_material_dark" />
+
+            <TextView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:text="43 826 084"
+                android:alpha="0.8"
+                android:paddingLeft="2dip"
+                android:paddingRight="2dip"
+                android:paddingTop="10dip"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#156260" />
+
+            <TextView
+                android:id="@+id/comments_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:textStyle="italic"
+                android:text="comments"
+                android:alpha="0.7"
+                android:paddingLeft="2dip"
+                android:paddingRight="2dip"
+                android:paddingBottom="5dip"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="@color/background_floating_material_dark" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/background_floating_material_dark" />
+
+            <Chronometer
+                android:layout_width="106dp"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/chronometer"
+                android:textSize="25dp"
+                android:gravity="center"
+                android:alpha="0.95"
+                android:layout_gravity="center"
+                android:layout_below="@+id/linearLayout"
+                android:layout_toRightOf="@+id/show_image"
+                android:layout_alignRight="@+id/linearLayout"
+                android:layout_alignEnd="@+id/linearLayout" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/background_floating_material_dark" />
+
+            <TextView
+                android:id="@+id/rating_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="left"
+                android:textStyle="italic"
+                android:paddingTop="5dip"
+                android:drawablePadding="5dip"
+                android:alpha="0.7"
+                android:text="rating trend"
+                android:paddingBottom="5dip"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="@color/background_floating_material_dark" />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/broadcaster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Airing Network: "
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/darkblue" />
+
+        <TextView
+            android:id="@+id/network_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.4"
+            android:gravity="left"
+            android:paddingRight="5dip"
+            android:text="HBO International"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#000" />
+    </LinearLayout>
+
+</LinearLayout>
