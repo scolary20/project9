@@ -19,7 +19,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:scaleType="fitXY"
-            android:src="@drawable/profile_pic"
+            android:src="@drawable/riri"
             android:id="@+id/imageView"
             android:background="@drawable/rounded_profile"
             android:layout_margin="5dip"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="je suis en colère avec tous les regards...ils me fou la fouille à mourir..."
-            android:id="@+id/textView7"
+            android:id="@+id/content"
             android:background="@drawable/contour"
             android:paddingLeft="15dip"
             android:paddingTop="5dip"
@@ -57,7 +57,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="45 785 pins"
             android:layout_weight="5"
-            android:id="@+id/textView8" />
+            android:id="@+id/pins" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
             android:gravity="right"
             android:paddingRight="5dip"
             android:layout_weight="5"
-            android:id="@+id/textView9"
+            android:id="@+id/comment_date"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
 

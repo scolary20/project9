@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import scolabs.com.tennine.model.Global;
 import scolabs.com.tennine.ui.CommentList;
 
 
@@ -27,7 +29,7 @@ public class CommentActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_ui);
 
-        if (mediaControls == null) {
+       if (mediaControls == null) {
             mediaControls = new MediaController(CommentActivity.this);
         }
 
@@ -64,7 +66,15 @@ public class CommentActivity extends ActionBarActivity {
                 }
             }
         });
-
+                new Thread(new Runnable(){
+                    @Override
+                    public void run()
+                    {
+                        Global.lsView = (ListView)findViewById(R.id.listView2);
+                        Intent myIntent = new Intent(getApplicationContext(),CommentList.class);
+                        startActivity(myIntent);
+                    }
+                }).start();
     }
 
     @Override
