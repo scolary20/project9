@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <VideoView
+        android:layout_width="fill_parent"
+        android:layout_height="200dip"
+        android:layout_margin="1dip"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/videoView" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="@drawable/blue_background2"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
+        android:weightSum="9">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="12 578 views"
+            android:paddingLeft="5dip"
+            android:textStyle="italic"
+            android:layout_weight="3"
+            android:gravity="left"
+            android:id="@+id/textView4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="45 120 comments"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:layout_weight="3"
+            android:id="@+id/textView5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="01/30/2015"
+            android:textStyle="italic"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:layout_weight="3"
+            android:paddingRight="5dip"
+            android:id="@+id/textView6" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/listView2"
+        tools:listitem="@layout/comment_item"
+        android:layout_gravity="center_horizontal" />
+
+
+</LinearLayout>

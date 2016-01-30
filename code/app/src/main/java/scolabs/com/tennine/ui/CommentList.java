@@ -1,13 +1,11 @@
 package scolabs.com.tennine.ui;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,29 +16,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-/**
- * Created by scolary on 1/29/2016.
- */
 
 import scolabs.com.tennine.CommentActivity;
 import scolabs.com.tennine.R;
 import scolabs.com.tennine.model.Show;
 
-public class ShowList extends Fragment {
+/**
+ * Created by scolary on 1/30/2016.
+ */
+public class CommentList extends FragmentActivity
+{
     private ArrayList<Show> showList;
     ShowAdapter showAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View v = inflater.inflate(R.layout.shows_ui, null);
-
         loadShows();
-        ListView list = (ListView) v.findViewById(R.id.listView);
+        ListView list = (ListView) findViewById(R.id.listView);
         showAdapter = new ShowAdapter();
         list.setAdapter(showAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -48,16 +41,9 @@ public class ShowList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
                                     long arg3) {
-                if(pos == 1)
-                {
-                    Intent myIntent = new Intent(getActivity(),CommentActivity.class);
-                    startActivityForResult(myIntent,1);
-                }
+
             }
         });
-
-        return v;
-
     }
 
     private void loadShows() {
@@ -118,7 +104,7 @@ public class ShowList extends Fragment {
         @Override
         public View getView(int pos, View v, ViewGroup arg2) {
             if (v == null)
-                v = LayoutInflater.from(getActivity()).inflate(
+                v = LayoutInflater.from(getApplicationContext()).inflate(
                         R.layout.show_list_item, null);
 
             Show c = getItem(pos);
