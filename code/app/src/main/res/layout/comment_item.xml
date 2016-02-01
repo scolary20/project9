@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:id="@+id/comment_item"
-    android:layout_marginBottom="5dip"
+
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -55,20 +55,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="45 785 pins"
+            android:text="45 785 ups"
+            android:drawableLeft="@drawable/up_mark"
+            android:drawablePadding="5dp"
             android:layout_weight="5"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:textColor="#999999"
             android:id="@+id/pins" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="saturday, jan 19, 2015 07:14"
-            android:gravity="right"
+            android:text="458 downs"
             android:paddingRight="5dip"
-            android:layout_weight="5"
+            android:paddingLeft="5dip"
+            android:drawableLeft="@drawable/down_mark"
+            android:layout_weight="4"
+            android:drawablePadding="5dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="#999999"
+            android:id="@+id/dislike" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="07:14 AM"
+            android:gravity="right"
+            android:layout_marginRight="5dip"
+            android:layout_weight="1"
+            android:textColor="#999999"
             android:id="@+id/comment_date"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
-
 </LinearLayout>

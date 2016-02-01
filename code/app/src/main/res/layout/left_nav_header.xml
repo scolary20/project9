@@ -10,7 +10,7 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/header_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -27,7 +27,7 @@
         android:id="@+id/username_field"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/date"
+        android:layout_below="@+id/header_date"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingBottom="5dp"

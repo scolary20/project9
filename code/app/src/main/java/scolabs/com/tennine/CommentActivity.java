@@ -11,7 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.TextView;
 import android.widget.VideoView;
+
+import java.text.DateFormat;
+import java.util.Date;
 
 import scolabs.com.tennine.model.Global;
 import scolabs.com.tennine.ui.CommentList;
@@ -28,6 +32,10 @@ public class CommentActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_ui);
+
+        TextView date = (TextView)findViewById(R.id.show_date);
+        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        date.setText(df.format(new Date()));
 
        if (mediaControls == null) {
             mediaControls = new MediaController(CommentActivity.this);

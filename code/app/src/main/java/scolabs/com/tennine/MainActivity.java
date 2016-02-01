@@ -20,6 +20,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import scolabs.com.tennine.ui.ShowList;
 
 
@@ -49,6 +52,10 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        TextView header_date = (TextView)findViewById(R.id.header_date);
+        DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
+        header_date.setText(df.format(new Date()));
     }
 
     @Override

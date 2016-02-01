@@ -12,8 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import scolabs.com.tennine.R;
 import scolabs.com.tennine.model.Comment;
@@ -109,13 +113,14 @@ public class CommentList extends Activity
             lbl.setText(c.getContent());
 
             lbl = (TextView) v.findViewById(R.id.pins);
-            lbl.setText(c.getPings()+" pins");
+            if(c.getPings()> 1)
+                lbl.setText(c.getPings()+" ups");
+            else
+                lbl.setText(c.getPings()+" up");
 
             lbl = (TextView) v.findViewById(R.id.comment_date);
-            lbl.setText(c.getDate().toString());
-
-
-
+            DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+            lbl.setText(dateFormat.format(c.getDate()));
             return v;
         }
     }
