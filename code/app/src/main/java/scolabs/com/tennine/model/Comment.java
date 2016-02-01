@@ -7,13 +7,12 @@ import java.util.Date;
  */
 public class Comment
 {
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    private final int WORDS_LIMIT = 144;
+    private String content;
+    private String commentator;
+    private Date date;
+    private long ups_mark;
+    private long down_mark;
 
     public Comment()
     {
@@ -24,7 +23,31 @@ public class Comment
         this.content = content;
         this.commentator = commentator;
         this.date = date;
+        ups_mark = 452342L;
+    }
 
+    public long getUps_mark() {
+        return ups_mark;
+    }
+
+    public void setUps_mark(long ups_mark) {
+        this.ups_mark = ups_mark;
+    }
+
+    public long getDown_mark() {
+        return down_mark;
+    }
+
+    public void setDown_mark(long down_mark) {
+        this.down_mark = down_mark;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getDate() {
@@ -47,21 +70,6 @@ public class Comment
     public int getWORDS_LIMIT() {
         return WORDS_LIMIT;
     }
-
-    private String content;
-    private String commentator;
-    private Date date;
-    private final int WORDS_LIMIT = 144;
-
-    public long getPings() {
-        return pings;
-    }
-
-    public void setPings(long pings) {
-        this.pings = pings;
-    }
-
-    private long pings;
 
 
 }

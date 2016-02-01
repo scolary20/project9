@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -112,11 +113,19 @@ public class CommentList extends Activity
             TextView lbl = (TextView) v.findViewById(R.id.content);
             lbl.setText(c.getContent());
 
-            lbl = (TextView) v.findViewById(R.id.pins);
-            if(c.getPings()> 1)
-                lbl.setText(c.getPings()+" ups");
+            NumberFormat nfm = NumberFormat.getInstance();
+
+            lbl = (TextView) v.findViewById(R.id.up_mark);
+            if(c.getUps_mark()> 1)
+                lbl.setText(nfm.format(c.getUps_mark())+" ups");
             else
-                lbl.setText(c.getPings()+" up");
+                lbl.setText(nfm.format(c.getUps_mark())+" up");
+
+            lbl = (TextView)v.findViewById(R.id.down_mark);
+            if(c.getDown_mark()>1)
+                lbl.setText(nfm.format(c.getDown_mark())+" downs");
+            else
+                lbl.setText(nfm.format(c.getDown_mark())+" down");
 
             lbl = (TextView) v.findViewById(R.id.comment_date);
             DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
