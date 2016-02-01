@@ -20,13 +20,14 @@
             android:layout_height="50dp"
             android:scaleType="fitXY"
             android:src="@drawable/riri"
-            android:id="@+id/imageView"
+            android:id="@+id/commet_pp"
             android:background="@drawable/rounded_profile"
-            android:layout_margin="5dip"
-            android:layout_weight="4" />
+            android:layout_margin="5dip"/>
+
+
 
         <TextView
-            android:layout_width="284dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="je suis en colère avec tous les regards...ils me fou la fouille à mourir..."
@@ -39,13 +40,14 @@
             android:alpha="0.9"
             android:layout_marginTop="5dip"
             android:layout_gravity="right"
-            android:layout_weight="5.38" />
+            android:layout_weight="10" />
         </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:weightSum="10"
+        android:id="@+id/rating_linear"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
         android:layout_marginBottom="5dip"

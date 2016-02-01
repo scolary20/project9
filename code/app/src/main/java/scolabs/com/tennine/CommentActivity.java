@@ -1,14 +1,28 @@
 package scolabs.com.tennine;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.DragEvent;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -16,6 +30,7 @@ import android.widget.VideoView;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.jar.Attributes;
 
 import scolabs.com.tennine.model.Global;
 import scolabs.com.tennine.ui.CommentList;
@@ -43,18 +58,24 @@ public class CommentActivity extends ActionBarActivity {
 
         //initialize the videoView
         myVideoView = (VideoView)findViewById(R.id.videoView);
+        myVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.setVolume(0f,0f);
+            }
+        });
 
         //create a progess bar while the video is loading
         progressDialog = new ProgressDialog(CommentActivity.this);
         //set a title for the progress bar
-        progressDialog.setTitle("Progress bar");
+        progressDialog.setTitle("Getting Content from server...");
         progressDialog.setMessage("Loading...");
         progressDialog.setCancelable(false);
         progressDialog.show();
 
         try{
             myVideoView.setMediaController(mediaControls);
-            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName()+"/"+R.raw.who));
+            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName()+"/"+R.raw.empire_trailer));
         }catch(Exception e){
             Log.e("Error", e.getMessage());
             e.printStackTrace();
@@ -66,12 +87,14 @@ public class CommentActivity extends ActionBarActivity {
             public void onPrepared(MediaPlayer mp) {
                 progressDialog.dismiss();
                 myVideoView.seekTo(position);
+                mp.setVolume(0f,0f);
                 if(position == 0)
                     myVideoView.start();
                 else
                 {
                     myVideoView.pause();
                 }
+
             }
         });
                 new Thread(new Runnable(){
@@ -119,6 +142,14 @@ public class CommentActivity extends ActionBarActivity {
             return true;
         }
 
+        if(id==R.id.mute)
+        {
+            if(myVideoView.getVisibility()== View.GONE)
+                myVideoView.setVisibility(myVideoView.VISIBLE);
+            else
+                myVideoView.setVisibility(myVideoView.GONE);
+        }
         return super.onOptionsItemSelected(item);
     }
+
 }
