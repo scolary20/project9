@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
@@ -97,15 +98,20 @@ public class CommentActivity extends ActionBarActivity {
 
             }
         });
-                new Thread(new Runnable(){
-                    @Override
-                    public void run()
-                    {
-                        Global.lsView = (ListView)findViewById(R.id.listView2);
-                        Intent myIntent = new Intent(getApplicationContext(),CommentList.class);
-                        startActivity(myIntent);
-                    }
-                }).start();
+
+        int screen_orientation = this.getResources().getConfiguration().orientation;
+        if(screen_orientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            new Thread(new Runnable(){
+                @Override
+                public void run()
+                {
+                    Global.lsView = (ListView)findViewById(R.id.listView2);
+                    Intent myIntent = new Intent(CommentActivity.this,CommentList.class);
+                    startActivity(myIntent);
+                }
+            }).start();
+        }
     }
 
     @Override
@@ -120,6 +126,8 @@ public class CommentActivity extends ActionBarActivity {
         super.onSaveInstanceState(savedInstanceState);
         position = savedInstanceState.getInt("Position");
         myVideoView.seekTo(position);
+        myVideoView.refreshDrawableState();
+        myVideoView.start();
     }
 
 
@@ -141,8 +149,7 @@ public class CommentActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
-        if(id==R.id.mute)
+        if(id==R.id.expand)
         {
             if(myVideoView.getVisibility()== View.GONE)
                 myVideoView.setVisibility(myVideoView.VISIBLE);
@@ -151,5 +158,4 @@ public class CommentActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

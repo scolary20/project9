@@ -6,10 +6,10 @@
         android:orderInCategory="100" app:showAsAction="never" />
 
     <item
-        android:title="mute video"
-        android:id="@+id/mute"
+        android:title="Hide Player"
+        android:id="@+id/expand"
         android:icon="@drawable/expand"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        app:showAsAction="always|withText"/>
 
 </menu>

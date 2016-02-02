@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import scolabs.com.tennine.DrawerItemCustomAdapter;
 import scolabs.com.tennine.R;
 import scolabs.com.tennine.model.Comment;
 import scolabs.com.tennine.model.Global;
@@ -46,12 +47,14 @@ public class CommentList extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        finish();
         commentList();
         ListView list = Global.lsView;//(ListView) findViewById(R.id.listView2);
-        commentAdapter = new CommentAdapter();
+        commentAdapter = new CommentAdapter(this, R.layout.comment_item,commentList);
         list.setAdapter(commentAdapter);
-        final Animation bounce = AnimationUtils.loadAnimation(CommentList.this,R.anim.bounce_marks);
 
+        final Animation bounce = AnimationUtils.loadAnimation(CommentList.this,R.anim.bounce_marks);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -117,12 +120,10 @@ public class CommentList extends Activity
                             ViewGroup.LayoutParams params = profile_pic.getLayoutParams();
                             params.height = initial_height * 2;
                             params.width =initial_width * 2;
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(initial_width*2, initial_height*2);
-                            layoutParams.gravity=Gravity.CENTER;
-                            profile_pic.setLayoutParams(layoutParams);
+                            //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(initial_width*2, initial_height*2);
+                            //layoutParams.gravity=Gravity.CENTER;
+                            profile_pic.setLayoutParams(params);
                         }
-                        profile_pic.refreshDrawableState();
-
                     }
                 });
             }
@@ -130,7 +131,6 @@ public class CommentList extends Activity
         });
 
     }
-
     private void commentList() {
         commentList = new ArrayList<>();
         commentList.add(new Comment("this is a nice show I like it", "scolary", new Date()));
@@ -141,80 +141,5 @@ public class CommentList extends Activity
         commentList.add(new Comment("it's not easy...I am talking about", "Tsent", new Date()));
         commentList.add(new Comment("Jesus navas, whzt a name", "Nyota", new Date()));
         commentList.add(new Comment("the sooner you get the","Reward Ent", new Date()));
-    }
-
-    /**
-     * The Class CutsomAdapter is the adapter class fo"cts ListView. The
-     * currently implementation of this adapter simply display static dummy
-     * contents. You need to write the code for displaying actual contents.
-     */
-    private class CommentAdapter extends BaseAdapter {
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see android.widget.Adapter#getCount()
-         */
-        @Override
-        public int getCount() {
-            return commentList.size();
-        }
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see android.widget.Adapter#getItem(int)
-         */
-        @Override
-        public Comment getItem(int arg0) {
-            return commentList.get(arg0);
-        }
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see android.widget.Adapter#getItemId(int)
-         */
-        @Override
-        public long getItemId(int arg0) {
-            return arg0;
-        }
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see android.widget.Adapter#getView(int, android.view.View,
-         * android.view.ViewGroup)
-         */
-        @Override
-        public View getView(int pos, View v, ViewGroup arg2) {
-            if (v == null)
-                v = LayoutInflater.from(getApplicationContext()).inflate(
-                        R.layout.comment_item, null);
-
-            NumberFormat nfm = NumberFormat.getInstance();
-
-            Comment c = getItem(pos);
-            TextView lbl = (TextView) v.findViewById(R.id.content);
-            lbl.setText(c.getContent());
-
-
-            lbl = (TextView) v.findViewById(R.id.up_mark);
-            if(c.getUps_mark()> 1)
-                lbl.setText(nfm.format(c.getUps_mark())+" ups");
-            else
-                lbl.setText(nfm.format(c.getUps_mark())+" up");
-
-            lbl = (TextView)v.findViewById(R.id.down_mark);
-            if(c.getDown_mark()>1)
-                lbl.setText(nfm.format(c.getDown_mark())+" downs");
-            else
-                lbl.setText(nfm.format(c.getDown_mark())+" down");
-
-            lbl = (TextView) v.findViewById(R.id.comment_date);
-            DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-            lbl.setText(dateFormat.format(c.getDate()));
-            return v;
-        }
     }
 }

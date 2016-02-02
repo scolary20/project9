@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -14,7 +13,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import scolabs.com.tennine.ObjectDrawerItem;
+
 import scolabs.com.tennine.R;
 import scolabs.com.tennine.model.Comment;
 
@@ -44,13 +43,10 @@ public class CommentAdapter extends ArrayAdapter
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         listItem = inflater.inflate(layoutResourceId, parent, false);
 
-        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.imageViewIcon);
-        TextView textViewName = (TextView) listItem.findViewById(R.id.textViewName);
         Comment c = data.get(position);
 
         TextView lbl = (TextView) listItem.findViewById(R.id.content);
         lbl.setText(c.getContent());
-
 
         lbl = (TextView) listItem.findViewById(R.id.up_mark);
         if(c.getUps_mark()> 1)
