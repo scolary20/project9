@@ -1,5 +1,6 @@
 package scolabs.com.tennine.model;
 
+import android.content.Context;
 import android.widget.ListView;
 
 /**
@@ -7,4 +8,6 @@ import android.widget.ListView;
  */
 public class Global {
     static public ListView lsView;
+    static public Context commentActivity;
+    static public Context commentListContext;
 }

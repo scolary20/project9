@@ -13,6 +13,7 @@ public class Comment
     private Date date;
     private long ups_mark;
     private long down_mark;
+    
 
     public Comment()
     {

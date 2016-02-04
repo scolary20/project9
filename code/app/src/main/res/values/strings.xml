@@ -10,7 +10,6 @@
     <string name="action_example">Example action</string>
     <string name="watch_message">currently watching 100 shows</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_comment">CommentActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_comment">Live Comments</string>
 
 </resources>

@@ -1,29 +1,20 @@
 package scolabs.com.tennine;
 
-import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.DragEvent;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
+import android.view.Window;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -31,7 +22,6 @@ import android.widget.VideoView;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.jar.Attributes;
 
 import scolabs.com.tennine.model.Global;
 import scolabs.com.tennine.ui.CommentList;
@@ -49,20 +39,27 @@ public class CommentActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_ui);
 
-        TextView date = (TextView)findViewById(R.id.show_date);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setLogo(R.drawable.live_comment);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        TextView date = (TextView) findViewById(R.id.show_date);
         DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
         date.setText(df.format(new Date()));
+        Global.commentActivity = this;
 
-       if (mediaControls == null) {
+        if (mediaControls == null) {
             mediaControls = new MediaController(CommentActivity.this);
         }
 
         //initialize the videoView
-        myVideoView = (VideoView)findViewById(R.id.videoView);
+        myVideoView = (VideoView) findViewById(R.id.videoView);
         myVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mp.setVolume(0f,0f);
+                mp.setVolume(0f, 0f);
             }
         });
 
@@ -74,40 +71,36 @@ public class CommentActivity extends ActionBarActivity {
         progressDialog.setCancelable(false);
         progressDialog.show();
 
-        try{
+        try {
             myVideoView.setMediaController(mediaControls);
-            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName()+"/"+R.raw.empire_trailer));
-        }catch(Exception e){
+            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.empire_trailer));
+        } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();
         }
 
         myVideoView.requestFocus();
-        myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
+        myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 progressDialog.dismiss();
                 myVideoView.seekTo(position);
-                mp.setVolume(0f,0f);
-                if(position == 0)
+                mp.setVolume(0f, 0f);
+                if (position == 0)
                     myVideoView.start();
-                else
-                {
+                else {
                     myVideoView.pause();
                 }
-
             }
         });
 
         int screen_orientation = this.getResources().getConfiguration().orientation;
-        if(screen_orientation == Configuration.ORIENTATION_PORTRAIT)
-        {
-            new Thread(new Runnable(){
+        if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
+            new Thread(new Runnable() {
                 @Override
-                public void run()
-                {
-                    Global.lsView = (ListView)findViewById(R.id.listView2);
-                    Intent myIntent = new Intent(CommentActivity.this,CommentList.class);
+                public void run() {
+                    Global.lsView = (ListView) findViewById(R.id.listView2);
+                    Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
                     startActivity(myIntent);
                 }
             }).start();
@@ -115,19 +108,20 @@ public class CommentActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putInt("Position", myVideoView.getCurrentPosition());
         myVideoView.pause();
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState){
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         position = savedInstanceState.getInt("Position");
         myVideoView.seekTo(position);
-        myVideoView.refreshDrawableState();
         myVideoView.start();
+        myVideoView.refreshDrawableState();
+
     }
 
 
@@ -149,9 +143,8 @@ public class CommentActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id==R.id.expand)
-        {
-            if(myVideoView.getVisibility()== View.GONE)
+        if (id == R.id.expand) {
+            if (myVideoView.getVisibility() == View.GONE)
                 myVideoView.setVisibility(myVideoView.VISIBLE);
             else
                 myVideoView.setVisibility(myVideoView.GONE);
