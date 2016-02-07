@@ -11,5 +11,11 @@
     <string name="watch_message">currently watching 100 shows</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_comment">Live Comments</string>
+    <string name="login_top_message">        10P/9c The epic app for live tv show comments...Use the app when watching the show, invite friends to join you, share your thoughts.
+        Based on your comments and the number of viewers the sho will be instantly ranked... You can watch more than one show at the same time
+        and be able to comment...Your comments affect also the raking of the show. "Share that feeling when watching that scene... You will be surprised
+        to know how many people feel the same thing".</string>
+    <string name="title_activity_login">Login</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

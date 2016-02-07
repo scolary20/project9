@@ -1,8 +1,6 @@
-package scolabs.com.tennine;
+package scolabs.com.tenine;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
@@ -14,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -23,8 +20,8 @@ import android.widget.VideoView;
 import java.text.DateFormat;
 import java.util.Date;
 
-import scolabs.com.tennine.model.Global;
-import scolabs.com.tennine.ui.CommentList;
+import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.ui.CommentList;
 
 
 public class CommentActivity extends ActionBarActivity {

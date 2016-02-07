@@ -1,4 +1,4 @@
-package scolabs.com.tennine;
+package scolabs.com.tenine;
 
 /**
  * Created by scolary on 1/27/2016.

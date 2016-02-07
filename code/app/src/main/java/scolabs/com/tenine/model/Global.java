@@ -1,4 +1,4 @@
-package scolabs.com.tennine.model;
+package scolabs.com.tenine.model;
 
 import android.content.Context;
 import android.widget.ListView;

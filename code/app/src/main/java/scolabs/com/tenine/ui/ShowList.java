@@ -1,33 +1,23 @@
-package scolabs.com.tennine.ui;
+package scolabs.com.tenine.ui;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Chronometer;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by scolary on 1/29/2016.
  */
 
-import scolabs.com.tennine.CommentActivity;
-import scolabs.com.tennine.R;
-import scolabs.com.tennine.model.Show;
+import scolabs.com.tenine.R;
+import scolabs.com.tenine.model.Show;
 
 public class ShowList extends Fragment {
     private ArrayList<Show> showList;
@@ -37,9 +27,9 @@ public class ShowList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View v = inflater.inflate(R.layout.shows_ui, null);
+        View v = inflater.inflate(R.layout.login_layout, null);
 
-        loadShows();
+        /*loadShows();
         ListView list = (ListView) v.findViewById(R.id.listView);
         showAdapter = new ShowAdapter();
         list.setAdapter(showAdapter);
@@ -54,7 +44,7 @@ public class ShowList extends Fragment {
                     startActivityForResult(myIntent,1);
                 }
             }
-        });
+        });*/
 
         return v;
 

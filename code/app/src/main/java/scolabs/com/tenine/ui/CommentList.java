@@ -1,44 +1,16 @@
-package scolabs.com.tennine.ui;
+package scolabs.com.tenine.ui;
 
-import android.app.ActionBar;
 import android.app.Activity;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.DragEvent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-import scolabs.com.tennine.DrawerItemCustomAdapter;
-import scolabs.com.tennine.R;
-import scolabs.com.tennine.model.Comment;
-import scolabs.com.tennine.model.Global;
-import scolabs.com.tennine.model.Show;
+import scolabs.com.tenine.R;
+import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.model.Global;
 
 /**
  * Created by scolary on 1/30/2016.

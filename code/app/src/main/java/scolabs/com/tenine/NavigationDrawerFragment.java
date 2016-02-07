@@ -1,4 +1,4 @@
-package scolabs.com.tennine;
+package scolabs.com.tenine;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -18,11 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;

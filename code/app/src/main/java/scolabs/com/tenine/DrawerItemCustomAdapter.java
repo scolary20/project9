@@ -1,4 +1,4 @@
-package scolabs.com.tennine;
+package scolabs.com.tenine;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,29 +1,21 @@
-package scolabs.com.tennine.ui;
+package scolabs.com.tenine.ui;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -31,10 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
-import scolabs.com.tennine.CommentActivity;
-import scolabs.com.tennine.R;
-import scolabs.com.tennine.model.Comment;
-import scolabs.com.tennine.model.Global;
+import scolabs.com.tenine.R;
+import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.model.Global;
 
 /**
  * Created by scolary on 2/2/2016.

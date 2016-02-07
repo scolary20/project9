@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="scolabs.com.tennine" >
+    package="scolabs.com.tenine" >
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="tenine.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="scolabs.com.tenine.model.User" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -18,14 +29,18 @@
         </activity>
         <activity
             android:name=".CommentActivity"
-            android:label="@string/title_activity_comment"
-            android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
-            android:icon="@drawable/live_comment">
+            android:hardwareAccelerated="true"
+            android:icon="@drawable/live_comment"
+            android:label="@string/title_activity_comment" >
         </activity>
         <activity
             android:name=".ui.CommentList"
             android:label="@string/title_activity_comment" >
+        </activity>
+        <activity
+            android:name=".ui.Login"
+            android:label="@string/title_activity_login" >
         </activity>
     </application>
 
