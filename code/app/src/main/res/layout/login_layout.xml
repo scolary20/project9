@@ -56,6 +56,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView8"
+        android:hint="use only your email to sign in"
         android:layout_weight="0.04"
         android:ems="10"
         android:padding="5dip"
@@ -100,5 +101,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:background="@drawable/blue_background3"
-        android:text="sign up"/>
+        android:text="sign In/Up"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=""
+        android:textColor="@color/red"
+        android:id="@+id/error_messages"
+        android:layout_weight="0.20"/>
 </LinearLayout>

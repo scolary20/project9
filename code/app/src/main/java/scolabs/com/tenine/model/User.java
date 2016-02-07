@@ -6,6 +6,10 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import javax.validation.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 import java.util.Date;
 
@@ -14,10 +18,17 @@ import java.util.Date;
  */
 @Table(name = "User")
 public class User extends Model {
+
+    @NotNull(message = "Username is required")
     @Column
+    @Size(min = 4, max = 20, message = "username, min length = 4 and max = 20")
     String username;
+
+    @NotNull(message = "Email required")
     @Column
+    @Pattern(regexp="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message = "Not a valid email")
     String email;
+
     @Column
     String password;
     @Column
@@ -38,10 +49,20 @@ public class User extends Model {
     }
 
     public static User getDbUser(String username, String email) {
-                return new Select()
-                        .from(User.class)
-                        .where("username = ?", username)
-                        .executeSingle();
+        if(!username.equals(""))
+        {
+            return new Select()
+                    .from(User.class)
+                    .where("username = ?", username)
+                    .executeSingle();
+        }
+        else
+        {
+            return new Select()
+                    .from(User.class)
+                    .where("email = ?", email)
+                    .executeSingle();
+        }
     }
 
     public String getUsername() {
