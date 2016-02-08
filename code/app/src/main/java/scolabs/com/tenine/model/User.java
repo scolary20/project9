@@ -24,12 +24,14 @@ public class User extends Model {
     @Size(min = 4, max = 20, message = "username, min length = 4 and max = 20")
     String username;
 
-    @NotNull(message = "Email required")
+    @NotNull(message = "Email is required")
     @Column
     @Pattern(regexp="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message = "Not a valid email")
     String email;
 
     @Column
+    @NotNull(message = "Password is required")
+    @Size(min= 5, message = "Password length min = 5")
     String password;
     @Column
     Date date_created;
@@ -42,10 +44,11 @@ public class User extends Model {
 
     }
 
-    public User(String username, String email) {
+    public User(String username, String email, String password) {
         super();
         this.username = username;
         this.email = email;
+        this.password = password;
     }
 
     public static User getDbUser(String username, String email) {

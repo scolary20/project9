@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Date;
 
-import scolabs.com.tenine.ui.Login;
+import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
 
 
@@ -74,6 +74,8 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
+                Intent mIntet = new Intent(this, Login.class);
+                startActivity(mIntet);
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
@@ -111,7 +113,7 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,Login.class);
+            Intent intent = new Intent(this,Register.class);
             startActivity(intent);
             return true;
         }
