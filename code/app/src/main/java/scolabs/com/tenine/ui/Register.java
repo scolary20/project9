@@ -25,16 +25,17 @@ import javax.validation.ValidatorFactory;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.model.User;
 
-public class Login extends Activity {
+public class Register extends Activity {
     private String username;
     private String email;
     private User aUser;
-    private String error_messages = "Error:\n";
+    private String password;
+    private String error_messages = "\n";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
+        setContentView(R.layout.register_layout);
 
         final Button sing_up = (Button) findViewById(R.id.sign_btn);
 
@@ -47,39 +48,42 @@ public class Login extends Activity {
             public void onClick(View v) {
                 username = ((EditText) findViewById(R.id.username_field)).getText().toString().trim();
                 email = ((EditText) findViewById(R.id.email_field)).getText().toString().trim();
+                password = ((EditText) findViewById(R.id.password_field)).getText().toString().trim();
 
-                if (validateLoginCreditials() > 0) {
-                    TextView error = (TextView) findViewById(R.id.error_messages);
-                    error.setText(error_messages);
-                    error_messages = "";
-                } else {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //aUser = User.getDbUser(username, "");
-                        }
-                    });
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isValidateLoginCreditials() > 0) {
+                            Register.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView error = (TextView) findViewById(R.id.error_messages);
+                                    error.setText(error_messages);
+                                    error_messages = "";
+                                }
+                            });
+                        } else {
 
-                    if (aUser != null) {
-                        Log.d("Error 1", "user already exist");
-                    } else {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
+                            aUser = User.getDbUser(username, "");
+                            if (aUser != null) {
+                                Log.d("Error 1", "user already exist");
+                            } else {
                                 register(username, email);
+                                Log.d("Error 2", "user registration sucess!!!");
                             }
-                        });
-                        Log.d("Error 2", "user registration sucess!!!");
+                        }
                     }
-                }
+                }).start();
             }
         });
     }
 
     public void register(String username, String email) {
-        User user = new User(username, email);
+        User user = new User(username, email, password);
+
         TelephonyManager tManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
         String uid = tManager.getDeviceId();
+        Log.e("Password",uid);
         user.setPassword(uid);
         user.setDate_created(new Date());
         user.setServerId(5);
@@ -87,27 +91,14 @@ public class Login extends Activity {
         Log.e("User Id: ", "" + saveState);
     }
 
-    public int validateLoginCreditials() {
+    public int isValidateLoginCreditials() {
         ValidatorFactory factory = Validation.byDefaultProvider()
                 .configure()
                 .ignoreXmlConfiguration()
-                /*.messageInterpolator(new MessageInterpolator() {
-                    @Override
-                    public String interpolate(String messageTemplate, Context context) {
-                        int id = getApplicationContext().getResources().getIdentifier(messageTemplate, "string", R.class.getPackage().getName());
-                        return getApplicationContext().getString(id);
-                    }
-
-                    @Override
-                    public String interpolate(String messageTemplate, Context context, Locale locale) {
-                        return interpolate(messageTemplate, context);
-                    }
-                })*/.buildValidatorFactory();
+                .buildValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> constraintViolations = validator.validate(new User(username, email));
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(new User(username, email,password));
         int size = constraintViolations.size();
-        //while(constraintViolations.iterator().hasNext())
-        //{
         Iterator itr = constraintViolations.iterator();
         ConstraintViolation<User> user = null;
         while (itr.hasNext()) {
