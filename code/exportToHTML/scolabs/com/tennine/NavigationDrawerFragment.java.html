@@ -1,0 +1,339 @@
+<html>
+<head>
+<title>NavigationDrawerFragment.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { }
+.s2 { color: rgb(128,128,128); font-style: italic; }
+.s3 { color: rgb(128,128,128); font-style: italic; }
+.s4 { color: rgb(0,128,0); font-weight: bold; }
+.s5 { color: rgb(0,0,255); }
+.s6 { color: rgb(128,128,128); font-weight: bold; font-style: italic; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+NavigationDrawerFragment.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+
+<a name="l1"><span class="ln">1    </span></a><span class="s0">package </span><span class="s1">scolabs.com.tennine; 
+<a name="l2"><span class="ln">2    </span></a> 
+<a name="l3"><span class="ln">3    </span></a></span><span class="s0">import </span><span class="s1">android.support.v7.app.ActionBarActivity; 
+<a name="l4"><span class="ln">4    </span></a></span><span class="s0">import </span><span class="s1">android.app.Activity; 
+<a name="l5"><span class="ln">5    </span></a></span><span class="s0">import </span><span class="s1">android.support.v7.app.ActionBar; 
+<a name="l6"><span class="ln">6    </span></a></span><span class="s0">import </span><span class="s1">android.support.v4.app.Fragment; 
+<a name="l7"><span class="ln">7    </span></a></span><span class="s0">import </span><span class="s1">android.support.v4.app.ActionBarDrawerToggle; 
+<a name="l8"><span class="ln">8    </span></a></span><span class="s0">import </span><span class="s1">android.support.v4.view.GravityCompat; 
+<a name="l9"><span class="ln">9    </span></a></span><span class="s0">import </span><span class="s1">android.support.v4.widget.DrawerLayout; 
+<a name="l10"><span class="ln">10   </span></a></span><span class="s0">import </span><span class="s1">android.content.SharedPreferences; 
+<a name="l11"><span class="ln">11   </span></a></span><span class="s0">import </span><span class="s1">android.content.res.Configuration; 
+<a name="l12"><span class="ln">12   </span></a></span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+<a name="l13"><span class="ln">13   </span></a></span><span class="s0">import </span><span class="s1">android.preference.PreferenceManager; 
+<a name="l14"><span class="ln">14   </span></a></span><span class="s0">import </span><span class="s1">android.view.LayoutInflater; 
+<a name="l15"><span class="ln">15   </span></a></span><span class="s0">import </span><span class="s1">android.view.Menu; 
+<a name="l16"><span class="ln">16   </span></a></span><span class="s0">import </span><span class="s1">android.view.MenuInflater; 
+<a name="l17"><span class="ln">17   </span></a></span><span class="s0">import </span><span class="s1">android.view.MenuItem; 
+<a name="l18"><span class="ln">18   </span></a></span><span class="s0">import </span><span class="s1">android.view.View; 
+<a name="l19"><span class="ln">19   </span></a></span><span class="s0">import </span><span class="s1">android.view.ViewGroup; 
+<a name="l20"><span class="ln">20   </span></a></span><span class="s0">import </span><span class="s1">android.widget.AdapterView; 
+<a name="l21"><span class="ln">21   </span></a></span><span class="s0">import </span><span class="s1">android.widget.ArrayAdapter; 
+<a name="l22"><span class="ln">22   </span></a></span><span class="s0">import </span><span class="s1">android.widget.EditText; 
+<a name="l23"><span class="ln">23   </span></a></span><span class="s0">import </span><span class="s1">android.widget.ListView; 
+<a name="l24"><span class="ln">24   </span></a></span><span class="s0">import </span><span class="s1">android.widget.RelativeLayout; 
+<a name="l25"><span class="ln">25   </span></a></span><span class="s0">import </span><span class="s1">android.widget.TextView; 
+<a name="l26"><span class="ln">26   </span></a></span><span class="s0">import </span><span class="s1">android.widget.Toast; 
+<a name="l27"><span class="ln">27   </span></a> 
+<a name="l28"><span class="ln">28   </span></a></span><span class="s0">import </span><span class="s1">java.util.ArrayList; 
+<a name="l29"><span class="ln">29   </span></a> 
+<a name="l30"><span class="ln">30   </span></a></span><span class="s2">/** 
+<a name="l31"><span class="ln">31   </span></a> * Fragment used for managing interactions for and presentation of a navigation drawer. 
+<a name="l32"><span class="ln">32   </span></a> * See the </span><span class="s3">&lt;a href=&quot;https://developer.android.com/design/patterns/navigation-drawer.html#Interaction&quot;&gt;</span><span class="s2"> 
+<a name="l33"><span class="ln">33   </span></a> * design guidelines</span><span class="s3">&lt;/a&gt; </span><span class="s2">for a complete explanation of the behaviors implemented here. 
+<a name="l34"><span class="ln">34   </span></a> */</span><span class="s1"> 
+<a name="l35"><span class="ln">35   </span></a></span><span class="s0">public class </span><span class="s1">NavigationDrawerFragment </span><span class="s0">extends </span><span class="s1">Fragment { 
+<a name="l36"><span class="ln">36   </span></a> 
+<a name="l37"><span class="ln">37   </span></a>    </span><span class="s2">/** 
+<a name="l38"><span class="ln">38   </span></a>     * Remember the position of the selected item. 
+<a name="l39"><span class="ln">39   </span></a>     */</span><span class="s1"> 
+<a name="l40"><span class="ln">40   </span></a>    </span><span class="s0">private static final </span><span class="s1">String STATE_SELECTED_POSITION = </span><span class="s4">&quot;selected_navigation_drawer_position&quot;</span><span class="s1">; 
+<a name="l41"><span class="ln">41   </span></a> 
+<a name="l42"><span class="ln">42   </span></a>    </span><span class="s2">/** 
+<a name="l43"><span class="ln">43   </span></a>     * Per the design guidelines, you should show the drawer on launch until the user manually 
+<a name="l44"><span class="ln">44   </span></a>     * expands it. This shared preference tracks this. 
+<a name="l45"><span class="ln">45   </span></a>     */</span><span class="s1"> 
+<a name="l46"><span class="ln">46   </span></a>    </span><span class="s0">private static final </span><span class="s1">String PREF_USER_LEARNED_DRAWER = </span><span class="s4">&quot;navigation_drawer_learned&quot;</span><span class="s1">; 
+<a name="l47"><span class="ln">47   </span></a> 
+<a name="l48"><span class="ln">48   </span></a>    </span><span class="s2">/** 
+<a name="l49"><span class="ln">49   </span></a>     * A pointer to the current callbacks instance (the Activity). 
+<a name="l50"><span class="ln">50   </span></a>     */</span><span class="s1"> 
+<a name="l51"><span class="ln">51   </span></a>    </span><span class="s0">private </span><span class="s1">NavigationDrawerCallbacks mCallbacks; 
+<a name="l52"><span class="ln">52   </span></a> 
+<a name="l53"><span class="ln">53   </span></a>    </span><span class="s2">/** 
+<a name="l54"><span class="ln">54   </span></a>     * Helper component that ties the action bar to the navigation drawer. 
+<a name="l55"><span class="ln">55   </span></a>     */</span><span class="s1"> 
+<a name="l56"><span class="ln">56   </span></a>    </span><span class="s0">private </span><span class="s1">ActionBarDrawerToggle mDrawerToggle; 
+<a name="l57"><span class="ln">57   </span></a> 
+<a name="l58"><span class="ln">58   </span></a>    </span><span class="s0">private </span><span class="s1">DrawerLayout mDrawerLayout; 
+<a name="l59"><span class="ln">59   </span></a>    </span><span class="s0">private </span><span class="s1">ListView mDrawerListView; 
+<a name="l60"><span class="ln">60   </span></a>    </span><span class="s0">private </span><span class="s1">View mFragmentContainerView; 
+<a name="l61"><span class="ln">61   </span></a> 
+<a name="l62"><span class="ln">62   </span></a>    </span><span class="s0">private int </span><span class="s1">mCurrentSelectedPosition = </span><span class="s5">0</span><span class="s1">; 
+<a name="l63"><span class="ln">63   </span></a>    </span><span class="s0">private boolean </span><span class="s1">mFromSavedInstanceState; 
+<a name="l64"><span class="ln">64   </span></a>    </span><span class="s0">private boolean </span><span class="s1">mUserLearnedDrawer; 
+<a name="l65"><span class="ln">65   </span></a> 
+<a name="l66"><span class="ln">66   </span></a>    </span><span class="s0">public </span><span class="s1">NavigationDrawerFragment() { 
+<a name="l67"><span class="ln">67   </span></a>    } 
+<a name="l68"><span class="ln">68   </span></a> 
+<a name="l69"><span class="ln">69   </span></a>    @Override 
+<a name="l70"><span class="ln">70   </span></a>    </span><span class="s0">public void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+<a name="l71"><span class="ln">71   </span></a>        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+<a name="l72"><span class="ln">72   </span></a> 
+<a name="l73"><span class="ln">73   </span></a>        </span><span class="s2">// Read in the flag indicating whether or not the user has demonstrated awareness of the</span><span class="s1"> 
+<a name="l74"><span class="ln">74   </span></a>        </span><span class="s2">// drawer. See PREF_USER_LEARNED_DRAWER for details.</span><span class="s1"> 
+<a name="l75"><span class="ln">75   </span></a>        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity()); 
+<a name="l76"><span class="ln">76   </span></a>        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, </span><span class="s0">false</span><span class="s1">); 
+<a name="l77"><span class="ln">77   </span></a> 
+<a name="l78"><span class="ln">78   </span></a>        </span><span class="s0">if </span><span class="s1">(savedInstanceState != </span><span class="s0">null</span><span class="s1">) { 
+<a name="l79"><span class="ln">79   </span></a>            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION); 
+<a name="l80"><span class="ln">80   </span></a>            mFromSavedInstanceState = </span><span class="s0">true</span><span class="s1">; 
+<a name="l81"><span class="ln">81   </span></a>        } 
+<a name="l82"><span class="ln">82   </span></a> 
+<a name="l83"><span class="ln">83   </span></a>        </span><span class="s2">// Select either the default item (0) or the last selected item.</span><span class="s1"> 
+<a name="l84"><span class="ln">84   </span></a>        selectItem(mCurrentSelectedPosition); 
+<a name="l85"><span class="ln">85   </span></a>    } 
+<a name="l86"><span class="ln">86   </span></a> 
+<a name="l87"><span class="ln">87   </span></a>    @Override 
+<a name="l88"><span class="ln">88   </span></a>    </span><span class="s0">public void </span><span class="s1">onActivityCreated(Bundle savedInstanceState) { 
+<a name="l89"><span class="ln">89   </span></a>        </span><span class="s0">super</span><span class="s1">.onActivityCreated(savedInstanceState); 
+<a name="l90"><span class="ln">90   </span></a>        </span><span class="s2">// Indicate that this fragment would like to influence the set of actions in the action bar.</span><span class="s1"> 
+<a name="l91"><span class="ln">91   </span></a>        setHasOptionsMenu(</span><span class="s0">true</span><span class="s1">); 
+<a name="l92"><span class="ln">92   </span></a>    } 
+<a name="l93"><span class="ln">93   </span></a> 
+<a name="l94"><span class="ln">94   </span></a>    @Override 
+<a name="l95"><span class="ln">95   </span></a>    </span><span class="s0">public </span><span class="s1">View onCreateView(LayoutInflater inflater, ViewGroup container, 
+<a name="l96"><span class="ln">96   </span></a>                             Bundle savedInstanceState) { 
+<a name="l97"><span class="ln">97   </span></a>        mDrawerListView = (ListView) inflater.inflate( 
+<a name="l98"><span class="ln">98   </span></a>                R.layout.fragment_navigation_drawer, container, </span><span class="s0">false</span><span class="s1">); 
+<a name="l99"><span class="ln">99   </span></a>        mDrawerListView.setOnItemClickListener(</span><span class="s0">new </span><span class="s1">AdapterView.OnItemClickListener() { 
+<a name="l100"><span class="ln">100  </span></a>            @Override 
+<a name="l101"><span class="ln">101  </span></a>            </span><span class="s0">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent, View view, </span><span class="s0">int </span><span class="s1">position, </span><span class="s0">long </span><span class="s1">id) { 
+<a name="l102"><span class="ln">102  </span></a>                selectItem(position); 
+<a name="l103"><span class="ln">103  </span></a>            } 
+<a name="l104"><span class="ln">104  </span></a>        }); 
+<a name="l105"><span class="ln">105  </span></a> 
+<a name="l106"><span class="ln">106  </span></a>        View header = inflater.inflate(R.layout.left_nav_header, 
+<a name="l107"><span class="ln">107  </span></a>                </span><span class="s0">null</span><span class="s1">); 
+<a name="l108"><span class="ln">108  </span></a>        View footer = inflater.inflate(R.layout.list_nav_footer,</span><span class="s0">null</span><span class="s1">); 
+<a name="l109"><span class="ln">109  </span></a>        mDrawerListView.addHeaderView(header); 
+<a name="l110"><span class="ln">110  </span></a>        mDrawerListView.addFooterView(footer); 
+<a name="l111"><span class="ln">111  </span></a>        ArrayList&lt;ObjectDrawerItem&gt; drawerItem = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;(); 
+<a name="l112"><span class="ln">112  </span></a> 
+<a name="l113"><span class="ln">113  </span></a>        </span><span class="s2">//ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[2];</span><span class="s1"> 
+<a name="l114"><span class="ln">114  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.empire, </span><span class="s4">&quot;Empire&quot;</span><span class="s1">)); 
+<a name="l115"><span class="ln">115  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.game, </span><span class="s4">&quot;Game of thrones&quot;</span><span class="s1">)); 
+<a name="l116"><span class="ln">116  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.real, </span><span class="s4">&quot;Real husband of hollywood&quot;</span><span class="s1">)); 
+<a name="l117"><span class="ln">117  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.desperate, </span><span class="s4">&quot;Desperate housewives&quot;</span><span class="s1">)); 
+<a name="l118"><span class="ln">118  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.away, </span><span class="s4">&quot;how to get away with murder&quot;</span><span class="s1">)); 
+<a name="l119"><span class="ln">119  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.modern, </span><span class="s4">&quot;modern family&quot;</span><span class="s1">)); 
+<a name="l120"><span class="ln">120  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.breaking, </span><span class="s4">&quot;breaking bad&quot;</span><span class="s1">)); 
+<a name="l121"><span class="ln">121  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.bang, </span><span class="s4">&quot;big bang theory&quot;</span><span class="s1">)); 
+<a name="l122"><span class="ln">122  </span></a>        drawerItem.add(</span><span class="s0">new </span><span class="s1">ObjectDrawerItem(R.drawable.mary, </span><span class="s4">&quot;being mary jane&quot;</span><span class="s1">)); 
+<a name="l123"><span class="ln">123  </span></a> 
+<a name="l124"><span class="ln">124  </span></a>        DrawerItemCustomAdapter adapter = </span><span class="s0">new </span><span class="s1">DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row,drawerItem); 
+<a name="l125"><span class="ln">125  </span></a>        mDrawerListView.setAdapter(adapter); 
+<a name="l126"><span class="ln">126  </span></a> 
+<a name="l127"><span class="ln">127  </span></a> 
+<a name="l128"><span class="ln">128  </span></a> 
+<a name="l129"><span class="ln">129  </span></a> 
+<a name="l130"><span class="ln">130  </span></a>       </span><span class="s2">/* mDrawerListView.setAdapter(new ArrayAdapter&lt;String&gt;( 
+<a name="l131"><span class="ln">131  </span></a>                getActionBar().getThemedContext(), 
+<a name="l132"><span class="ln">132  </span></a>                android.R.layout.simple_list_item_activated_1, 
+<a name="l133"><span class="ln">133  </span></a>                android.R.id.text1, 
+<a name="l134"><span class="ln">134  </span></a>                new String[]{ 
+<a name="l135"><span class="ln">135  </span></a>                        getString(R.string.title_section1), 
+<a name="l136"><span class="ln">136  </span></a>                        getString(R.string.title_section2), 
+<a name="l137"><span class="ln">137  </span></a>                        getString(R.string.title_section3), 
+<a name="l138"><span class="ln">138  </span></a>                }));*/</span><span class="s1"> 
+<a name="l139"><span class="ln">139  </span></a> 
+<a name="l140"><span class="ln">140  </span></a>        mDrawerListView.setItemChecked(mCurrentSelectedPosition, </span><span class="s0">true</span><span class="s1">); 
+<a name="l141"><span class="ln">141  </span></a>        </span><span class="s0">return </span><span class="s1">mDrawerListView; 
+<a name="l142"><span class="ln">142  </span></a>    } 
+<a name="l143"><span class="ln">143  </span></a> 
+<a name="l144"><span class="ln">144  </span></a>    </span><span class="s0">public boolean </span><span class="s1">isDrawerOpen() { 
+<a name="l145"><span class="ln">145  </span></a>        </span><span class="s0">return </span><span class="s1">mDrawerLayout != </span><span class="s0">null </span><span class="s1">&amp;&amp; mDrawerLayout.isDrawerOpen(mFragmentContainerView); 
+<a name="l146"><span class="ln">146  </span></a>    } 
+<a name="l147"><span class="ln">147  </span></a> 
+<a name="l148"><span class="ln">148  </span></a>    </span><span class="s2">/** 
+<a name="l149"><span class="ln">149  </span></a>     * Users of this fragment must call this method to set up the navigation drawer interactions. 
+<a name="l150"><span class="ln">150  </span></a>     * 
+<a name="l151"><span class="ln">151  </span></a>     * </span><span class="s6">@param </span><span class="s2">fragmentId   The android:id of this fragment in its activity's layout. 
+<a name="l152"><span class="ln">152  </span></a>     * </span><span class="s6">@param </span><span class="s2">drawerLayout The DrawerLayout containing this fragment's UI. 
+<a name="l153"><span class="ln">153  </span></a>     */</span><span class="s1"> 
+<a name="l154"><span class="ln">154  </span></a>    </span><span class="s0">public void </span><span class="s1">setUp(</span><span class="s0">int </span><span class="s1">fragmentId, DrawerLayout drawerLayout) { 
+<a name="l155"><span class="ln">155  </span></a>        mFragmentContainerView = getActivity().findViewById(fragmentId); 
+<a name="l156"><span class="ln">156  </span></a>        mDrawerLayout = drawerLayout; 
+<a name="l157"><span class="ln">157  </span></a> 
+<a name="l158"><span class="ln">158  </span></a>        </span><span class="s2">// set a custom shadow that overlays the main content when the drawer opens</span><span class="s1"> 
+<a name="l159"><span class="ln">159  </span></a>        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START); 
+<a name="l160"><span class="ln">160  </span></a>        </span><span class="s2">// set up the drawer's list view with items and click listener</span><span class="s1"> 
+<a name="l161"><span class="ln">161  </span></a> 
+<a name="l162"><span class="ln">162  </span></a>        ActionBar actionBar = getActionBar(); 
+<a name="l163"><span class="ln">163  </span></a>        actionBar.setDisplayHomeAsUpEnabled(</span><span class="s0">true</span><span class="s1">); 
+<a name="l164"><span class="ln">164  </span></a>        actionBar.setHomeButtonEnabled(</span><span class="s0">true</span><span class="s1">); 
+<a name="l165"><span class="ln">165  </span></a> 
+<a name="l166"><span class="ln">166  </span></a>        </span><span class="s2">// ActionBarDrawerToggle ties together the the proper interactions</span><span class="s1"> 
+<a name="l167"><span class="ln">167  </span></a>        </span><span class="s2">// between the navigation drawer and the action bar app icon.</span><span class="s1"> 
+<a name="l168"><span class="ln">168  </span></a>        mDrawerToggle = </span><span class="s0">new </span><span class="s1">ActionBarDrawerToggle( 
+<a name="l169"><span class="ln">169  </span></a>                getActivity(),                    </span><span class="s2">/* host Activity */</span><span class="s1"> 
+<a name="l170"><span class="ln">170  </span></a>                mDrawerLayout,                    </span><span class="s2">/* DrawerLayout object */</span><span class="s1"> 
+<a name="l171"><span class="ln">171  </span></a>                R.drawable.ic_drawer,             </span><span class="s2">/* nav drawer image to replace 'Up' caret */</span><span class="s1"> 
+<a name="l172"><span class="ln">172  </span></a>                R.string.navigation_drawer_open,  </span><span class="s2">/* &quot;open drawer&quot; description for accessibility */</span><span class="s1"> 
+<a name="l173"><span class="ln">173  </span></a>                R.string.navigation_drawer_close  </span><span class="s2">/* &quot;close drawer&quot; description for accessibility */</span><span class="s1"> 
+<a name="l174"><span class="ln">174  </span></a>        ) { 
+<a name="l175"><span class="ln">175  </span></a>            @Override 
+<a name="l176"><span class="ln">176  </span></a>            </span><span class="s0">public void </span><span class="s1">onDrawerClosed(View drawerView) { 
+<a name="l177"><span class="ln">177  </span></a>                </span><span class="s0">super</span><span class="s1">.onDrawerClosed(drawerView); 
+<a name="l178"><span class="ln">178  </span></a>                </span><span class="s0">if </span><span class="s1">(!isAdded()) { 
+<a name="l179"><span class="ln">179  </span></a>                    </span><span class="s0">return</span><span class="s1">; 
+<a name="l180"><span class="ln">180  </span></a>                } 
+<a name="l181"><span class="ln">181  </span></a> 
+<a name="l182"><span class="ln">182  </span></a>                getActivity().supportInvalidateOptionsMenu(); </span><span class="s2">// calls onPrepareOptionsMenu()</span><span class="s1"> 
+<a name="l183"><span class="ln">183  </span></a>            } 
+<a name="l184"><span class="ln">184  </span></a> 
+<a name="l185"><span class="ln">185  </span></a>            @Override 
+<a name="l186"><span class="ln">186  </span></a>            </span><span class="s0">public void </span><span class="s1">onDrawerOpened(View drawerView) { 
+<a name="l187"><span class="ln">187  </span></a>                </span><span class="s0">super</span><span class="s1">.onDrawerOpened(drawerView); 
+<a name="l188"><span class="ln">188  </span></a>                </span><span class="s0">if </span><span class="s1">(!isAdded()) { 
+<a name="l189"><span class="ln">189  </span></a>                    </span><span class="s0">return</span><span class="s1">; 
+<a name="l190"><span class="ln">190  </span></a>                } 
+<a name="l191"><span class="ln">191  </span></a> 
+<a name="l192"><span class="ln">192  </span></a>                </span><span class="s0">if </span><span class="s1">(!mUserLearnedDrawer) { 
+<a name="l193"><span class="ln">193  </span></a>                    </span><span class="s2">// The user manually opened the drawer; store this flag to prevent auto-showing</span><span class="s1"> 
+<a name="l194"><span class="ln">194  </span></a>                    </span><span class="s2">// the navigation drawer automatically in the future.</span><span class="s1"> 
+<a name="l195"><span class="ln">195  </span></a>                    mUserLearnedDrawer = </span><span class="s0">true</span><span class="s1">; 
+<a name="l196"><span class="ln">196  </span></a>                    SharedPreferences sp = PreferenceManager 
+<a name="l197"><span class="ln">197  </span></a>                            .getDefaultSharedPreferences(getActivity()); 
+<a name="l198"><span class="ln">198  </span></a>                    sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, </span><span class="s0">true</span><span class="s1">).apply(); 
+<a name="l199"><span class="ln">199  </span></a>                } 
+<a name="l200"><span class="ln">200  </span></a> 
+<a name="l201"><span class="ln">201  </span></a>                getActivity().supportInvalidateOptionsMenu(); </span><span class="s2">// calls onPrepareOptionsMenu()</span><span class="s1"> 
+<a name="l202"><span class="ln">202  </span></a>            } 
+<a name="l203"><span class="ln">203  </span></a>        }; 
+<a name="l204"><span class="ln">204  </span></a> 
+<a name="l205"><span class="ln">205  </span></a>        </span><span class="s2">// If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,</span><span class="s1"> 
+<a name="l206"><span class="ln">206  </span></a>        </span><span class="s2">// per the navigation drawer design guidelines.</span><span class="s1"> 
+<a name="l207"><span class="ln">207  </span></a>        </span><span class="s0">if </span><span class="s1">(!mUserLearnedDrawer &amp;&amp; !mFromSavedInstanceState) { 
+<a name="l208"><span class="ln">208  </span></a>            mDrawerLayout.openDrawer(mFragmentContainerView); 
+<a name="l209"><span class="ln">209  </span></a>        } 
+<a name="l210"><span class="ln">210  </span></a> 
+<a name="l211"><span class="ln">211  </span></a>        </span><span class="s2">// Defer code dependent on restoration of previous instance state.</span><span class="s1"> 
+<a name="l212"><span class="ln">212  </span></a>        mDrawerLayout.post(</span><span class="s0">new </span><span class="s1">Runnable() { 
+<a name="l213"><span class="ln">213  </span></a>            @Override 
+<a name="l214"><span class="ln">214  </span></a>            </span><span class="s0">public void </span><span class="s1">run() { 
+<a name="l215"><span class="ln">215  </span></a>                mDrawerToggle.syncState(); 
+<a name="l216"><span class="ln">216  </span></a>            } 
+<a name="l217"><span class="ln">217  </span></a>        }); 
+<a name="l218"><span class="ln">218  </span></a> 
+<a name="l219"><span class="ln">219  </span></a>        mDrawerLayout.setDrawerListener(mDrawerToggle); 
+<a name="l220"><span class="ln">220  </span></a>    } 
+<a name="l221"><span class="ln">221  </span></a> 
+<a name="l222"><span class="ln">222  </span></a>    </span><span class="s0">private void </span><span class="s1">selectItem(</span><span class="s0">int </span><span class="s1">position) { 
+<a name="l223"><span class="ln">223  </span></a>        mCurrentSelectedPosition = position; 
+<a name="l224"><span class="ln">224  </span></a>        </span><span class="s0">if </span><span class="s1">(mDrawerListView != </span><span class="s0">null</span><span class="s1">) { 
+<a name="l225"><span class="ln">225  </span></a>            mDrawerListView.setItemChecked(position, </span><span class="s0">true</span><span class="s1">); 
+<a name="l226"><span class="ln">226  </span></a>        } 
+<a name="l227"><span class="ln">227  </span></a>        </span><span class="s0">if </span><span class="s1">(mDrawerLayout != </span><span class="s0">null</span><span class="s1">) { 
+<a name="l228"><span class="ln">228  </span></a>            mDrawerLayout.closeDrawer(mFragmentContainerView); 
+<a name="l229"><span class="ln">229  </span></a>        } 
+<a name="l230"><span class="ln">230  </span></a>        </span><span class="s0">if </span><span class="s1">(mCallbacks != </span><span class="s0">null</span><span class="s1">) { 
+<a name="l231"><span class="ln">231  </span></a>            mCallbacks.onNavigationDrawerItemSelected(position); 
+<a name="l232"><span class="ln">232  </span></a>        } 
+<a name="l233"><span class="ln">233  </span></a>    } 
+<a name="l234"><span class="ln">234  </span></a> 
+<a name="l235"><span class="ln">235  </span></a>    @Override 
+<a name="l236"><span class="ln">236  </span></a>    </span><span class="s0">public void </span><span class="s1">onAttach(Activity activity) { 
+<a name="l237"><span class="ln">237  </span></a>        </span><span class="s0">super</span><span class="s1">.onAttach(activity); 
+<a name="l238"><span class="ln">238  </span></a>        </span><span class="s0">try </span><span class="s1">{ 
+<a name="l239"><span class="ln">239  </span></a>            mCallbacks = (NavigationDrawerCallbacks) activity; 
+<a name="l240"><span class="ln">240  </span></a>        } </span><span class="s0">catch </span><span class="s1">(ClassCastException e) { 
+<a name="l241"><span class="ln">241  </span></a>            </span><span class="s0">throw new </span><span class="s1">ClassCastException(</span><span class="s4">&quot;Activity must implement NavigationDrawerCallbacks.&quot;</span><span class="s1">); 
+<a name="l242"><span class="ln">242  </span></a>        } 
+<a name="l243"><span class="ln">243  </span></a>    } 
+<a name="l244"><span class="ln">244  </span></a> 
+<a name="l245"><span class="ln">245  </span></a>    @Override 
+<a name="l246"><span class="ln">246  </span></a>    </span><span class="s0">public void </span><span class="s1">onDetach() { 
+<a name="l247"><span class="ln">247  </span></a>        </span><span class="s0">super</span><span class="s1">.onDetach(); 
+<a name="l248"><span class="ln">248  </span></a>        mCallbacks = </span><span class="s0">null</span><span class="s1">; 
+<a name="l249"><span class="ln">249  </span></a>    } 
+<a name="l250"><span class="ln">250  </span></a> 
+<a name="l251"><span class="ln">251  </span></a>    @Override 
+<a name="l252"><span class="ln">252  </span></a>    </span><span class="s0">public void </span><span class="s1">onSaveInstanceState(Bundle outState) { 
+<a name="l253"><span class="ln">253  </span></a>        </span><span class="s0">super</span><span class="s1">.onSaveInstanceState(outState); 
+<a name="l254"><span class="ln">254  </span></a>        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition); 
+<a name="l255"><span class="ln">255  </span></a>    } 
+<a name="l256"><span class="ln">256  </span></a> 
+<a name="l257"><span class="ln">257  </span></a>    @Override 
+<a name="l258"><span class="ln">258  </span></a>    </span><span class="s0">public void </span><span class="s1">onConfigurationChanged(Configuration newConfig) { 
+<a name="l259"><span class="ln">259  </span></a>        </span><span class="s0">super</span><span class="s1">.onConfigurationChanged(newConfig); 
+<a name="l260"><span class="ln">260  </span></a>        </span><span class="s2">// Forward the new configuration the drawer toggle component.</span><span class="s1"> 
+<a name="l261"><span class="ln">261  </span></a>        mDrawerToggle.onConfigurationChanged(newConfig); 
+<a name="l262"><span class="ln">262  </span></a>    } 
+<a name="l263"><span class="ln">263  </span></a> 
+<a name="l264"><span class="ln">264  </span></a>    @Override 
+<a name="l265"><span class="ln">265  </span></a>    </span><span class="s0">public void </span><span class="s1">onCreateOptionsMenu(Menu menu, MenuInflater inflater) { 
+<a name="l266"><span class="ln">266  </span></a>        </span><span class="s2">// If the drawer is open, show the global app actions in the action bar. See also</span><span class="s1"> 
+<a name="l267"><span class="ln">267  </span></a>        </span><span class="s2">// showGlobalContextActionBar, which controls the top-left area of the action bar.</span><span class="s1"> 
+<a name="l268"><span class="ln">268  </span></a>        </span><span class="s0">if </span><span class="s1">(mDrawerLayout != </span><span class="s0">null </span><span class="s1">&amp;&amp; isDrawerOpen()) { 
+<a name="l269"><span class="ln">269  </span></a>            inflater.inflate(R.menu.global, menu); 
+<a name="l270"><span class="ln">270  </span></a>            showGlobalContextActionBar(); 
+<a name="l271"><span class="ln">271  </span></a>        } 
+<a name="l272"><span class="ln">272  </span></a>        </span><span class="s0">super</span><span class="s1">.onCreateOptionsMenu(menu, inflater); 
+<a name="l273"><span class="ln">273  </span></a>    } 
+<a name="l274"><span class="ln">274  </span></a> 
+<a name="l275"><span class="ln">275  </span></a>    @Override 
+<a name="l276"><span class="ln">276  </span></a>    </span><span class="s0">public boolean </span><span class="s1">onOptionsItemSelected(MenuItem item) { 
+<a name="l277"><span class="ln">277  </span></a>        </span><span class="s0">if </span><span class="s1">(mDrawerToggle.onOptionsItemSelected(item)) { 
+<a name="l278"><span class="ln">278  </span></a>            </span><span class="s0">return true</span><span class="s1">; 
+<a name="l279"><span class="ln">279  </span></a>        } 
+<a name="l280"><span class="ln">280  </span></a> 
+<a name="l281"><span class="ln">281  </span></a>        </span><span class="s0">if </span><span class="s1">(item.getItemId() == R.id.action_example) { 
+<a name="l282"><span class="ln">282  </span></a>            Toast.makeText(getActivity(), </span><span class="s4">&quot;Example action.&quot;</span><span class="s1">, Toast.LENGTH_SHORT).show(); 
+<a name="l283"><span class="ln">283  </span></a>            </span><span class="s0">return true</span><span class="s1">; 
+<a name="l284"><span class="ln">284  </span></a>        } 
+<a name="l285"><span class="ln">285  </span></a> 
+<a name="l286"><span class="ln">286  </span></a>        </span><span class="s0">return super</span><span class="s1">.onOptionsItemSelected(item); 
+<a name="l287"><span class="ln">287  </span></a>    } 
+<a name="l288"><span class="ln">288  </span></a> 
+<a name="l289"><span class="ln">289  </span></a>    </span><span class="s2">/** 
+<a name="l290"><span class="ln">290  </span></a>     * Per the navigation drawer design guidelines, updates the action bar to show the global app 
+<a name="l291"><span class="ln">291  </span></a>     * 'context', rather than just what's in the current screen. 
+<a name="l292"><span class="ln">292  </span></a>     */</span><span class="s1"> 
+<a name="l293"><span class="ln">293  </span></a>    </span><span class="s0">private void </span><span class="s1">showGlobalContextActionBar() { 
+<a name="l294"><span class="ln">294  </span></a>        ActionBar actionBar = getActionBar(); 
+<a name="l295"><span class="ln">295  </span></a>        actionBar.setDisplayShowTitleEnabled(</span><span class="s0">true</span><span class="s1">); 
+<a name="l296"><span class="ln">296  </span></a>        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD); 
+<a name="l297"><span class="ln">297  </span></a>        actionBar.setTitle(R.string.app_name); 
+<a name="l298"><span class="ln">298  </span></a>    } 
+<a name="l299"><span class="ln">299  </span></a> 
+<a name="l300"><span class="ln">300  </span></a>    </span><span class="s0">private </span><span class="s1">ActionBar getActionBar() { 
+<a name="l301"><span class="ln">301  </span></a>        </span><span class="s0">return </span><span class="s1">((ActionBarActivity) getActivity()).getSupportActionBar(); 
+<a name="l302"><span class="ln">302  </span></a>    } 
+<a name="l303"><span class="ln">303  </span></a> 
+<a name="l304"><span class="ln">304  </span></a>    </span><span class="s2">/** 
+<a name="l305"><span class="ln">305  </span></a>     * Callbacks interface that all activities using this fragment must implement. 
+<a name="l306"><span class="ln">306  </span></a>     */</span><span class="s1"> 
+<a name="l307"><span class="ln">307  </span></a>    </span><span class="s0">public static interface </span><span class="s1">NavigationDrawerCallbacks { 
+<a name="l308"><span class="ln">308  </span></a>        </span><span class="s2">/** 
+<a name="l309"><span class="ln">309  </span></a>         * Called when an item in the navigation drawer is selected. 
+<a name="l310"><span class="ln">310  </span></a>         */</span><span class="s1"> 
+<a name="l311"><span class="ln">311  </span></a>        </span><span class="s0">void </span><span class="s1">onNavigationDrawerItemSelected(</span><span class="s0">int </span><span class="s1">position); 
+<a name="l312"><span class="ln">312  </span></a>    } 
+<a name="l313"><span class="ln">313  </span></a>} 
+<a name="l314"><span class="ln">314  </span></a></span></pre>
+</body>
+</html>

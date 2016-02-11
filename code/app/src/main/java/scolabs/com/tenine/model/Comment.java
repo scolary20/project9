@@ -1,18 +1,43 @@
 package scolabs.com.tenine.model;
 
+import android.support.annotation.ColorRes;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import java.util.Date;
 
 /**
  * Created by scolary on 1/30/2016.
  */
-public class Comment
+@Table(name="Comment")
+public class Comment extends Model
 {
+    @Column
     private final int WORDS_LIMIT = 144;
+    @Column
     private String content;
-    private String commentator;
+    @Column
     private Date date;
+    @Column
     private long ups_mark;
+    @Column
     private long down_mark;
+    @Column
+    private User commentator;
+
+
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
+
+    @Column
+    private Show show;
     
 
     public Comment()
@@ -20,7 +45,7 @@ public class Comment
 
     }
 
-    public Comment(String content, String commentator, Date date) {
+    public Comment(String content, User commentator, Date date) {
         this.content = content;
         this.commentator = commentator;
         this.date = date;
@@ -60,11 +85,11 @@ public class Comment
         this.date = date;
     }
 
-    public String getCommentator() {
+    public User getCommentator() {
         return commentator;
     }
 
-    public void setCommentator(String commentator) {
+    public void setCommentator(User commentator) {
         this.commentator = commentator;
     }
 

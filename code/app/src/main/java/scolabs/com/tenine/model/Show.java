@@ -1,25 +1,121 @@
 package scolabs.com.tenine.model;
 
+import android.support.annotation.ColorRes;
+
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by scolary on 1/29/2016.
  */
-public class Show {
+@Table(name="Show")
+public class Show extends Model{
+    @Column(index = true)
     private Date airing_date;
+    @Column
     private Date airing_time;
+    @Column
     private long num_watching;
-    private long comments;
+    @Column
+    private long num_comment;
+    @Column
     private long show_length;
+    @Column
     private String name;
+    @Column
     private String season;
+    @Column
+    private String episode;
+    @Column
     private String network;
-    private int id;
+    @Column(index = true)
+    private int showId;
+    @Column
+    private int rating_arrow; //1: up, 2: down
+    @Column
+    private String show_trailer_location;
+    @Column
+    private String show_stheme_location; //song theme
+    @Column
+    private String show_img_location;
+    @Column
+    private String comment_content;
+    @Column
+    private long rating;
+
     public Show(String name, String season, String network) {
         this.name = name;
         this.season = season;
         this.network = network;
-        this.id = 1+(int) (Math.random() * 100);
+        this.showId = 1 + (int) (Math.random() * 100);
+    }
+
+    public String getComment_content() {
+        return comment_content;
+    }
+
+    public void setComment_content(String comment_content) {
+        this.comment_content = comment_content;
+    }
+
+    public long getRating() {
+        return rating;
+    }
+
+    public void setRating(long rating) {
+        this.rating = rating;
+    }
+
+    public String getShow_trailer_location() {
+        return show_trailer_location;
+    }
+
+    public void setShow_trailer_location(String show_trailer_location) {
+        this.show_trailer_location = show_trailer_location;
+    }
+
+    public String getShow_img_location() {
+        return show_img_location;
+    }
+
+    public void setShow_img_location(String show_img_location) {
+        this.show_img_location = show_img_location;
+    }
+
+    public String getShow_stheme_location() {
+        return show_stheme_location;
+    }
+
+    public void setShow_stheme_location(String show_stheme_location) {
+        this.show_stheme_location = show_stheme_location;
+    }
+
+    public int getShowId() {
+        return showId;
+    }
+
+    public void setShowId(int showId) {
+        this.showId = showId;
+    }
+
+    public int getRating_arrow() {
+        return rating_arrow;
+    }
+
+    public void setRating_arrow(int rating_arrow) {
+        this.rating_arrow = rating_arrow;
+    }
+
+    public String getEpisode() {
+        return episode;
+    }
+
+    public void setEpisode(String episode) {
+        this.episode = episode;
     }
 
     public Date getAiring_date() {
@@ -38,17 +134,19 @@ public class Show {
         this.airing_time = airing_time;
     }
 
-    public long getComments() {
-        return comments;
+    public long getNum_comment() {
+        return num_comment;
     }
 
-    public void setComments(long comments) {
-        this.comments = comments;
+    public void setNum_comment(long num_comment) {
+        this.num_comment = num_comment;
     }
 
     public long getShow_length() {
         return show_length;
-    };
+    }
+
+    ;
 
     public void setShow_length(long show_length) {
         this.show_length = show_length;
@@ -90,14 +188,12 @@ public class Show {
         this.num_watching = num_watching;
     }
 
-    public int getId() {
-        return id;
+    public List<Comment> comments() {
+        return getMany(Comment.class, "Comment");
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public List<User> usersWatching() {
+        return getMany(User.class, "User");
     }
-
-private enum RatingTrend{up,down}
 }
 

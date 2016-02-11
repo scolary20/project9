@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by scolary on 2/6/2016.
@@ -51,19 +52,27 @@ public class User extends Model {
         this.password = password;
     }
 
-    public static User getDbUser(String username, String email) {
-        if(!username.equals(""))
+    public static User getDbUser(String username, String email, String password,String type) {
+        if(type.equals("both"))
         {
             return new Select()
                     .from(User.class)
-                    .where("username = ?", username)
+                    .where("email = ?", email)
+                    .and("password = ?", password)
+                    .executeSingle();
+        }
+        else if(type.equals("email"))
+        {
+            return new Select()
+                    .from(User.class)
+                    .where("email = ?", email)
                     .executeSingle();
         }
         else
         {
             return new Select()
                     .from(User.class)
-                    .where("email = ?", email)
+                    .where("username = ?", username)
                     .executeSingle();
         }
     }
@@ -114,6 +123,10 @@ public class User extends Model {
 
     public void setServerId(long serverId) {
         this.serverId = serverId;
+    }
+
+    public List<Comment> myComments() {
+        return getMany(Comment.class, "Comment");
     }
 }
 

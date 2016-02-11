@@ -1,17 +1,14 @@
 package scolabs.com.tenine.ui;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Configuration;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -28,27 +25,26 @@ import scolabs.com.tenine.model.User;
 public class Register extends Activity {
     private String username;
     private String email;
-    private User aUser;
     private String password;
     private String error_messages = "\n";
+    private long reg_status = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
+        Intent i = getIntent();
+        String user_email = i.getStringExtra("user_email");
 
         final Button sing_up = (Button) findViewById(R.id.sign_btn);
-
-        Configuration.Builder config = new Configuration.Builder(this);
-        config.addModelClass(User.class);
-        ActiveAndroid.initialize(config.create());
-
+        ((EditText) findViewById(R.id.email_field)).setText(user_email);
         sing_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username = ((EditText) findViewById(R.id.username_field)).getText().toString().trim();
-                email = ((EditText) findViewById(R.id.email_field)).getText().toString().trim();
+                username = ((EditText) findViewById(R.id.header_username)).getText().toString().trim();
+                email = ((EditText) findViewById(R.id.email_field)).getText().toString().trim().toLowerCase();
                 password = ((EditText) findViewById(R.id.password_field)).getText().toString().trim();
+                final TextView error = (TextView) findViewById(R.id.error_messages);
 
                 new Thread(new Runnable() {
                     @Override
@@ -57,19 +53,53 @@ public class Register extends Activity {
                             Register.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView error = (TextView) findViewById(R.id.error_messages);
+                                    error.setText("");
                                     error.setText(error_messages);
                                     error_messages = "";
                                 }
                             });
-                        } else {
+                        }
+                        else
+                        {
+                            User user_name = User.getDbUser(username,email,password,"username");
+                            User user_email = User.getDbUser(username,email,password,"email");
+                            if(user_name != null)
+                                error_messages += "Username already taken \n";
+                            else if(user_email != null)
+                                error_messages +=  "Email already in use\n";
 
-                            aUser = User.getDbUser(username, "");
-                            if (aUser != null) {
-                                Log.d("Error 1", "user already exist");
-                            } else {
-                                register(username, email);
-                                Log.d("Error 2", "user registration sucess!!!");
+                            if(user_email==null && user_name == null )
+                            {
+                                reg_status = register(username, email, password);
+                                Register.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        TextView error = (TextView) findViewById(R.id.error_messages);
+                                        error.setTextColor(Color.GREEN);
+                                        setContentView(R.layout.account_created);
+                                    }
+                                });
+                                try
+                                {
+                                    Thread.currentThread().sleep(4000);
+                                }
+                                catch(InterruptedException ex)
+                                {
+                                    ex.printStackTrace();
+                                }
+                                finish();
+                                Log.d("Message 3", "user registration success!!!");
+                            }
+                            else
+                            {
+                                Register.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        TextView error = (TextView) findViewById(R.id.error_messages);
+                                        error.setText(error_messages);
+                                        error_messages = "";
+                                    }
+                                });
                             }
                         }
                     }
@@ -78,17 +108,11 @@ public class Register extends Activity {
         });
     }
 
-    public void register(String username, String email) {
+    public long register(String username, String email, String password) {
         User user = new User(username, email, password);
-
-        TelephonyManager tManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-        String uid = tManager.getDeviceId();
-        Log.e("Password",uid);
-        user.setPassword(uid);
         user.setDate_created(new Date());
         user.setServerId(5);
-        long saveState = user.save();
-        Log.e("User Id: ", "" + saveState);
+        return user.save();
     }
 
     public int isValidateLoginCreditials() {

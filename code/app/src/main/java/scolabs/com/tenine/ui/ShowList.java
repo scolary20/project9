@@ -35,7 +35,6 @@ public class ShowList extends Fragment {
         SearchView search = (SearchView)v.findViewById(R.id.searchView);
         search.setQueryHint("Type your text here");
 
-
         loadShows();
         ListView list = (ListView) v.findViewById(R.id.listView);
         showAdapter = new ShowAdapter(getActivity(), R.layout.show_list_item, showList);
@@ -57,25 +56,38 @@ public class ShowList extends Fragment {
     }
 
     private void loadShows() {
-        showList = new ArrayList<>();
-        Show sw = new Show("Breaking Bad", "s3E11", "netflix");
-        sw.setShow_length(40);
 
         // Convert string to date
         SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        Date newdate = new Date();
-        String strdate2 = "10-02-2015 07:20:42";
+        String strdate2 = "10-02-2016 16:30:42";
+        String strdate3 = "10-02-2016 17:00:00";
+        Date newdate = null;
+        Date nd = null;
         try {
             newdate = dateformat2.parse(strdate2);
+            nd = dateformat2.parse(strdate3);
+            System.out.println(newdate);
         } catch (ParseException e) {
             e.printStackTrace();
-            sw.setAiring_date(newdate);
+        }
 
+        showList = new ArrayList<>();
+        Show sw = new Show("Breaking Bad", "s3E11", "netflix");
+        sw.setShow_length(40);
+        sw.setNum_comment(545326);
+        sw.setNum_watching(412556345L);
+        sw.setAiring_date(newdate);
+        sw.save();
             showList.add(sw);
-            showList.add(new Show("Empire", "s2E10", "hulu network"));
+        Show tr = new Show("Empire", "s4E3", "Hulu network");
+        tr.setAiring_date(nd);
+        tr.setNum_watching(5000);
+        tr.setNum_comment(30545);
+        tr.setShow_length(27);
+        tr.save();
+            showList.add(tr);
             showList.add(new Show("How to get away with murder", "s4E2", "Mtv"));
             showList.add(new Show("South park", "s6E7", "EuroSport"));
             showList.add(new Show("Modern Family", "s7E9", "showTime"));
-        }
     }
 }

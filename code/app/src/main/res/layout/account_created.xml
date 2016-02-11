@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/blue_background"
+              android:weightSum="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Account Successfully Created !!!"
+        android:gravity="center"
+        android:textSize="45dp"
+        android:textStyle="italic"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:id="@+id/textView11"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Hold on while you're being redirected to Login screen..."
+        android:background="@drawable/blue_background2"
+        android:gravity="center"
+        android:layout_margin="10dip"
+        android:textColor="#000"
+        android:layout_alignTop="@+id/textView11"
+        android:id="@+id/textView12"/>
+</RelativeLayout>

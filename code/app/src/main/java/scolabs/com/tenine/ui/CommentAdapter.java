@@ -53,7 +53,7 @@ public class CommentAdapter extends ArrayAdapter
 
         LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
         listItem = inflater.inflate(layoutResourceId, parent, false);
-        ItemActions(listItem);
+        itemActions(listItem);
         listItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -86,7 +86,7 @@ public class CommentAdapter extends ArrayAdapter
         return listItem;
     }
 
-    public void ItemActions(final View listItem)
+    public void itemActions(final View listItem)
     {
         final Animation bounce = AnimationUtils.loadAnimation(getContext(), R.anim.bounce_marks);
         listItem.setOnClickListener(new View.OnClickListener() {

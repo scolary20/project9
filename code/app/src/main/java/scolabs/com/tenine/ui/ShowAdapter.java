@@ -68,7 +68,7 @@ public class ShowAdapter extends ArrayAdapter {
         holder.show_name.setText(c.getName());
         holder.show_name.append(" " + c.getSeason());
         holder.network_name.setText(c.getNetwork());
-        holder.num_comments.setText(fmt.format(c.getComments()));
+        holder.num_comments.setText(fmt.format(c.getNum_comment()));
         holder.num_watching.setText(fmt.format(c.getNum_watching()));
         holder.img.setBounds(0, 0, 62, 62);
 

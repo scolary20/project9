@@ -2,6 +2,8 @@ package scolabs.com.tenine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -20,6 +22,7 @@ import java.util.Date;
 
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
+import scolabs.com.tenine.utils.Settings;
 
 
 public class MainActivity extends ActionBarActivity
@@ -50,6 +53,8 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         TextView header_date = (TextView)findViewById(R.id.header_date);
+        TextView username = (TextView)findViewById(R.id.header_username);
+        username.setText(Settings.getLoginUser().getUsername());
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
     }
@@ -73,12 +78,10 @@ public class MainActivity extends ActionBarActivity
                         .commit();
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
-                Intent mIntet = new Intent(this, Login.class);
-                startActivity(mIntet);
+                mTitle = "Section 2";
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = "Section 3";
                 break;
         }
     }
