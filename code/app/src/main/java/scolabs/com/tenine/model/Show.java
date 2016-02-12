@@ -152,7 +152,7 @@ public class Show extends Model{
         this.show_length = show_length;
     }
 
-    public void Show() {
+    public Show() {
 
     }
 

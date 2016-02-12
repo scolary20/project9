@@ -15,15 +15,30 @@
         android:layout_height="wrap_content"
         android:id="@+id/linear">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/riri"
-            android:id="@+id/commet_pp"
-            android:background="@drawable/rounded_profile"
-            android:layout_margin="5dip"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/photo_name"
+            android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/riri"
+                android:id="@+id/commet_pp"
+                android:background="@drawable/rounded_profile"
+                android:layout_margin="5dip"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="dj kas"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="5dip"
+                android:id="@+id/commentator_name"/>
+        </LinearLayout>
 
 
         <TextView

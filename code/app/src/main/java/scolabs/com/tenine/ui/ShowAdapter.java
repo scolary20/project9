@@ -14,6 +14,7 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -90,14 +91,11 @@ public class ShowAdapter extends ArrayAdapter {
     public void time_show_handler(ViewHolder holder, Show c) {
         if (c.getAiring_date() != null) {
             final Date d = new Date();
-            long minutes = d.getMinutes();
-            long seconds = d.getSeconds();
-
-
 
             //Calculating End Date
             long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
             int GRACE_PERIOD = 5;
+            long show_time = c.getAiring_time().getTime()+c.getAiring_time().getTime(); // Adding time to Date
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(c.getAiring_date());

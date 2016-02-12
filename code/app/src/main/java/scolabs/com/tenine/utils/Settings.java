@@ -21,19 +21,11 @@ public class Settings {
     // Create DB models...
     public static void setup_db(Context mContext, String pr, boolean db)
     {
-        created_db = db;
-        if(!created_db)
-        {
             Configuration.Builder config = new Configuration.Builder(mContext);
             config.addModelClass(User.class);
             config.addModelClass(Comment.class);
             config.addModelClass(Show.class);
             ActiveAndroid.initialize(config.create());
-            created_db = true;
-            SharedPreferences sr = PreferenceManager
-                    .getDefaultSharedPreferences(mContext);
-            sr.edit().putBoolean(pr, created_db).apply();
-        }
     }
 
     public static void setLoginUser(User aUser)

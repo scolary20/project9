@@ -20,6 +20,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Date;
 
+import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
 import scolabs.com.tenine.utils.Settings;
@@ -54,7 +55,9 @@ public class MainActivity extends ActionBarActivity
 
         TextView header_date = (TextView)findViewById(R.id.header_date);
         TextView username = (TextView)findViewById(R.id.header_username);
-        username.setText(Settings.getLoginUser().getUsername());
+        User aUser = Settings.getLoginUser();
+        if(aUser != null)
+            username.setText(aUser.getUsername());
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
     }

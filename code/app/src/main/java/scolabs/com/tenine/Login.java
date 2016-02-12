@@ -57,6 +57,7 @@ public class Login extends Activity {
         isUserLogin = sp.getBoolean(LOGIN_PREF, false);
         created_db = sp.getBoolean(AA_MODELS, false);
         String current_user = sp.getString(LOGIN_USER,"");
+        Settings.setup_db(Login.this,AA_MODELS, created_db); //DB_Models
 
         if(isUserLogin)
         {
@@ -70,23 +71,10 @@ public class Login extends Activity {
             viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
 
             final Button sign_in = (Button) findViewById(R.id.sign_btn);
-            if(!created_db)
-                Settings.setup_db(Login.this,AA_MODELS, created_db); //DB_Models
-
-            if(!created_db)
-            {
-                Configuration.Builder config = new Configuration.Builder(this);
-                config.addModelClass(User.class);
-                config.addModelClass(Comment.class);
-                config.addModelClass(Show.class);
-                ActiveAndroid.initialize(config.create());
                 created_db = true;
                 SharedPreferences sr = PreferenceManager
                         .getDefaultSharedPreferences(Login.this);
                 sr.edit().putBoolean(AA_MODELS, created_db).apply();
-            }
-
-
             sign_in.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

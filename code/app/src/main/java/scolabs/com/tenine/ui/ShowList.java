@@ -3,6 +3,7 @@ package scolabs.com.tenine.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.Date;
 
 import scolabs.com.tenine.CommentActivity;
 import scolabs.com.tenine.R;
+import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
 
 /**
@@ -58,7 +60,7 @@ public class ShowList extends Fragment {
     private void loadShows() {
 
         // Convert string to date
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         String strdate2 = "10-02-2016 16:30:42";
         String strdate3 = "10-02-2016 17:00:00";
         Date newdate = null;
@@ -69,9 +71,9 @@ public class ShowList extends Fragment {
             System.out.println(newdate);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        showList = new ArrayList<>();
+        /*showList = new ArrayList<>();
         Show sw = new Show("Breaking Bad", "s3E11", "netflix");
         sw.setShow_length(40);
         sw.setNum_comment(545326);
@@ -88,6 +90,9 @@ public class ShowList extends Fragment {
             showList.add(tr);
             showList.add(new Show("How to get away with murder", "s4E2", "Mtv"));
             showList.add(new Show("South park", "s6E7", "EuroSport"));
-            showList.add(new Show("Modern Family", "s7E9", "showTime"));
+            showList.add(new Show("Modern Family", "s7E9", "showTime"));*/
+
+        showList = ShowQueries.getShows();
+        Log.e("Show list size ",String.valueOf(showList.size()));
     }
 }

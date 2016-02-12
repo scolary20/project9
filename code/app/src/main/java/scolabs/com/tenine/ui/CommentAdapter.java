@@ -82,6 +82,8 @@ public class CommentAdapter extends ArrayAdapter
         lbl = (TextView) listItem.findViewById(R.id.comment_date);
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
         lbl.setText(dateFormat.format(c.getDate()));
+        TextView commentatorName = (TextView)listItem.findViewById(R.id.commentator_name);
+        commentatorName.setText("Scolary");
 
         return listItem;
     }
@@ -98,6 +100,7 @@ public class CommentAdapter extends ArrayAdapter
                 final ImageView profile_pic = (ImageView)listItem.findViewById(R.id.commet_pp);
                 final LinearLayout lly = (LinearLayout)listItem.findViewById(R.id.rating_linear);
                 final TextView content = (TextView)listItem.findViewById(R.id.content);
+
 
                 up.setOnClickListener(new View.OnClickListener() {
                     @Override
