@@ -2,11 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="scolabs.com.tenine.CommentActivity">
+
+    <item
+        android:title="comment"
+        android:id="@+id/comment_bt"
+        android:icon="@drawable/comment_icon"
+        android:orderInCategory="100"
+        app:showAsAction="always|withText"/>
+
     <item
         android:title="Hide Player"
         android:id="@+id/expand"
         android:icon="@drawable/expand"
         android:orderInCategory="100"
         app:showAsAction="always|withText"/>
+
 
 </menu>

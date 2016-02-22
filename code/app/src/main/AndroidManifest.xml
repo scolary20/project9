@@ -8,7 +8,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/CustomActionBarTheme">
         <meta-data
             android:name="AA_DB_NAME"
             android:value="tenine.db"/>
@@ -47,6 +47,12 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".WriteComment"
+            android:windowSoftInputMode="adjustResize"
+            android:label="Write Comment">
         </activity>
     </application>
 

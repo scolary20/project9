@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/blue_background5"
+              android:orientation="vertical"
+              android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/commet_pp"
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:layout_gravity="center"
+        android:layout_margin="5dip"
+        android:background="@drawable/rounded_profile"
+        android:gravity="right"
+        android:scaleType="fitXY"
+        android:src="@drawable/riri"/>
+
+
+    <LinearLayout
+        android:id="@+id/photo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="2dip"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip">
+
+        <TextView
+            android:id="@+id/up_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/up_mark"
+            android:drawablePadding="5dp"
+            android:text="mark up"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff"/>
+
+        <TextView
+            android:id="@+id/down_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/down_mark"
+            android:drawablePadding="5dp"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:text="mark down"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#fff"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@+id/watching"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:alpha="0.3"
+        android:background="#000"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:weightSum="1">
+
+            <EditText
+                android:id="@+id/cment_inputText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:layout_marginTop="10dip"
+                android:layout_weight="0.01"
+                android:background="@drawable/border_field2"
+                android:hint="comment here..."
+                android:padding="10dp"/>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:padding="10dp"
+                          android:weightSum="1">
+
+                <Button
+                    android:id="@+id/cment_cancel_bt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/blue_background3"
+                    android:gravity="center"
+                    android:text="Cancel"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="#fd7f7f"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/cment_post_bt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dip"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/blue_background3"
+                    android:gravity="center"
+                    android:text="Post this"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

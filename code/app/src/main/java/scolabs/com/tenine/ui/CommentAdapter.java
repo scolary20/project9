@@ -3,6 +3,7 @@ package scolabs.com.tenine.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.text.Layout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class CommentAdapter extends ArrayAdapter
     Context mContext;
     int layoutResourceId;
     ArrayList<Comment> data = null;
+    CommentAdapter cmd = null;
 
     public CommentAdapter(Context mContext, int layoutResourceId, ArrayList<Comment> data) {
 
@@ -42,10 +44,11 @@ public class CommentAdapter extends ArrayAdapter
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
         this.data = data;
+        cmd = this;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         final View listItem; //= convertView;
         NumberFormat nfm = NumberFormat.getInstance();
@@ -57,7 +60,7 @@ public class CommentAdapter extends ArrayAdapter
         listItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                comment_popup(v);
+                comment_popup(v,position);
                 return false;
             }
         });
@@ -97,6 +100,7 @@ public class CommentAdapter extends ArrayAdapter
 
                 TextView up = (TextView)listItem.findViewById(R.id.up_mark);
                 TextView down = (TextView)listItem.findViewById(R.id.down_mark);
+                final TextView name = (TextView)listItem.findViewById(R.id.commentator_name);
                 final ImageView profile_pic = (ImageView)listItem.findViewById(R.id.commet_pp);
                 final LinearLayout lly = (LinearLayout)listItem.findViewById(R.id.rating_linear);
                 final TextView content = (TextView)listItem.findViewById(R.id.content);
@@ -122,10 +126,12 @@ public class CommentAdapter extends ArrayAdapter
                         if(profile_pic.getVisibility()==View.GONE)
                         {
                             profile_pic.setVisibility(profile_pic.VISIBLE);
+                            name.setVisibility(name.VISIBLE);
                         }
                         else
                         {
                             profile_pic.setVisibility(profile_pic.GONE);
+                            name.setVisibility(name.GONE);
                         }
                     }
                 });
@@ -165,7 +171,7 @@ public class CommentAdapter extends ArrayAdapter
 
     }
 
-    public void comment_popup(final View listItem){
+    public void comment_popup(final View listItem, final int position){
         final Dialog dialog = new Dialog(Global.commentActivity);
         dialog.setContentView(R.layout.comment_popup);
         dialog.getWindow().setBackgroundDrawable(Global.commentActivity.getResources().getDrawable(R.drawable.blue_background2));
@@ -182,6 +188,8 @@ public class CommentAdapter extends ArrayAdapter
             @Override
             public void onClick(View v) {
                 listItem.setVisibility(listItem.GONE);
+                data.remove(data.get(position));
+                cmd.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -198,6 +206,9 @@ public class CommentAdapter extends ArrayAdapter
             @Override
             public void onClick(View v) {
                 listItem.setVisibility(listItem.GONE);
+                data.remove(data.get(position));
+                data.get(position).delete();
+                cmd.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });

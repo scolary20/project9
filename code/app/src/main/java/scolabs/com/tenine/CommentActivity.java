@@ -3,6 +3,7 @@ package scolabs.com.tenine;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -42,7 +44,11 @@ public class CommentActivity extends ActionBarActivity {
         actionBar.setLogo(R.drawable.live_comment);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+        Global.progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        Global.txt = (TextView)findViewById(R.id.cmt_feedback);
 
         TextView date = (TextView) findViewById(R.id.show_date);
         DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
@@ -67,7 +73,7 @@ public class CommentActivity extends ActionBarActivity {
         //set a title for the progress bar
         progressDialog.setTitle("Getting Content from server...");
         progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.show();
 
         try {
@@ -95,14 +101,9 @@ public class CommentActivity extends ActionBarActivity {
 
         int screen_orientation = this.getResources().getConfiguration().orientation;
         if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Global.lsView = (ListView) findViewById(R.id.listView2);
-                    Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
-                    startActivity(myIntent);
-                }
-            }).start();
+            Global.lsView = (ListView) findViewById(R.id.listView2);
+            Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
+            startActivity(myIntent);
         }
     }
 
@@ -122,7 +123,6 @@ public class CommentActivity extends ActionBarActivity {
         myVideoView.refreshDrawableState();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -147,6 +147,17 @@ public class CommentActivity extends ActionBarActivity {
                 myVideoView.setVisibility(myVideoView.VISIBLE);
             else
                 myVideoView.setVisibility(myVideoView.GONE);
+        }
+
+        if(id == android.R.id.home)
+        {
+            onBackPressed();
+        }
+
+        if(id == R.id.comment_bt){
+            Intent i = new Intent(this,WriteComment.class);
+            i.putExtra("showId", showId);
+            startActivityForResult(i,2);
         }
         return super.onOptionsItemSelected(item);
     }

@@ -33,8 +33,8 @@ public class ShowQueries {
 
         return (ArrayList)new Select()
                 .from(Show.class)
-                .where("airing_date < ?", tmr_midnight.getTime().getTime())
-                .and("airing_date >= ?", tday_midnight.getTime().getTime())
+                //.where("airing_date < ?", tmr_midnight.getTime().getTime())
+                //.and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .execute();
     }
 }

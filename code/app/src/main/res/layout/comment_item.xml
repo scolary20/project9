@@ -26,6 +26,7 @@
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/riri"
+                android:layout_gravity="center"
                 android:id="@+id/commet_pp"
                 android:background="@drawable/rounded_profile"
                 android:layout_margin="5dip"/>
