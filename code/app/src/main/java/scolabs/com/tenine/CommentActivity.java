@@ -30,6 +30,8 @@ public class CommentActivity extends ActionBarActivity {
     private int position = 0;
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
+    private long showId = Global.showId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

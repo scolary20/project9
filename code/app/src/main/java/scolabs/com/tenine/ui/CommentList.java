@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import scolabs.com.tenine.R;
+import scolabs.com.tenine.databaseQueries.CommentQueries;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Global;
 import scolabs.com.tenine.model.User;
@@ -21,6 +22,7 @@ public class CommentList extends Activity
 {
     private ArrayList<Comment> commentList = new ArrayList<>();
     CommentAdapter commentAdapter;
+    long showId = Global.showId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,13 +36,27 @@ public class CommentList extends Activity
         Global.commentListContext = this;
     }
     private void commentList() {
-        commentList.add(new Comment("this is a nice show I like it", new User("scolary", "jt@lar.com","pass"), new Date()));
-        commentList.add(new Comment("I am sleepy, i will shaw the show tommorow", Settings.getLoginUser(), new Date()));
-        commentList.add(new Comment("Jesus navas, whzt a name", new User("Nyota", "jt@lar.com","pass"), new Date()));
-        commentList.add(new Comment("lot lot of fun", new User("Dembaba", "jt@lar.com","pass"), new Date()));
-        commentList.add(new Comment("You cannot ignore..It gonna be there", new User("xCalibar", "jt@lar.com","pass"), new Date()));
-        commentList.add(new Comment("it's not easy...I am talking about", Settings.getLoginUser(), new Date()));
-        commentList.add(new Comment("Jesus navas, whzt a name", new User("Djogo", "jt@lar.com","pass"), new Date()));
-        commentList.add(new Comment("the sooner you get the",new User("Reward ent", "jt@lar.com","pass"), new Date()));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Comment c1 = new Comment("this is a nice show I like it", "scolary", new Date(),showId);
+                commentList.add(c1);
+                //c1.save();
+                Comment c2 = new Comment("I am sleepy, i will shaw the show tommorow", "tsent", new Date(), showId);
+                commentList.add(c2);
+                //c2.save();
+                Comment c3 = new Comment("Jesus navas, whzt a name", "Nyota", new Date(),showId);
+                commentList.add(c3);
+                //c3.save();
+                Comment c4 = new Comment("lot lot of fun", "Dembaba", new Date(),showId);
+                commentList.add(c4);
+                //c4.save();
+                Comment c5 = new Comment("You cannot ignore..It gonna be there", "xCalibar", new Date(),showId);
+                commentList.add(c5);
+                //c5.save();
+               commentAdapter.notifyDataSetChanged();
+            }
+        }).start();
+        //commentList = CommentQueries.getComments(showId);
     }
 }

@@ -15,7 +15,6 @@ import scolabs.com.tenine.model.User;
  * Created by scolary on 2/11/2016.
  */
 public class Settings {
-    private static boolean created_db = false;
     private static User loginUser;
     private Settings(){}
     // Create DB models...

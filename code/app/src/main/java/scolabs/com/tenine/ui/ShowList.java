@@ -19,6 +19,7 @@ import java.util.Date;
 import scolabs.com.tenine.CommentActivity;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
+import scolabs.com.tenine.model.Global;
 import scolabs.com.tenine.model.Show;
 
 /**
@@ -47,10 +48,9 @@ public class ShowList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
                                     long arg3) {
-                if (pos == 1) {
                     Intent myIntent = new Intent(getActivity(), CommentActivity.class);
+                    Global.showId = showList.get(pos).getShowId();
                     startActivityForResult(myIntent, 1);
-                }
             }
         });
 
@@ -61,8 +61,8 @@ public class ShowList extends Fragment {
 
         // Convert string to date
         /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "10-02-2016 16:30:42";
-        String strdate3 = "10-02-2016 17:00:00";
+        String strdate2 = "22-02-2016 00:24:42";
+        String strdate3 = "22-02-2016 00:30:00";
         Date newdate = null;
         Date nd = null;
         try {
@@ -71,9 +71,9 @@ public class ShowList extends Fragment {
             System.out.println(newdate);
         } catch (ParseException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        /*showList = new ArrayList<>();
+        showList = new ArrayList<>();
         Show sw = new Show("Breaking Bad", "s3E11", "netflix");
         sw.setShow_length(40);
         sw.setNum_comment(545326);
@@ -85,7 +85,7 @@ public class ShowList extends Fragment {
         tr.setAiring_date(nd);
         tr.setNum_watching(5000);
         tr.setNum_comment(30545);
-        tr.setShow_length(27);
+        tr.setShow_length(15);
         tr.save();
             showList.add(tr);
             showList.add(new Show("How to get away with murder", "s4E2", "Mtv"));

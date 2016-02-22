@@ -25,8 +25,21 @@ public class Comment extends Model
     @Column
     private long down_mark;
     @Column
-    private User commentator;
+    private String commentator;
 
+    @Column
+    private long showId;
+
+    public long getShowId() {
+        return showId;
+    }
+
+    public void setShowId(long showId) {
+        this.showId = showId;
+    }
+
+    @Column
+    private Show show;
 
     public Show getShow() {
         return show;
@@ -36,19 +49,16 @@ public class Comment extends Model
         this.show = show;
     }
 
-    @Column
-    private Show show;
-    
-
     public Comment()
     {
 
     }
 
-    public Comment(String content, User commentator, Date date) {
+    public Comment(String content, String commentator, Date date, long showId) {
         this.content = content;
         this.commentator = commentator;
         this.date = date;
+        this.showId = showId;
         ups_mark = 452342L;
     }
 
@@ -85,11 +95,11 @@ public class Comment extends Model
         this.date = date;
     }
 
-    public User getCommentator() {
+    public String getCommentator() {
         return commentator;
     }
 
-    public void setCommentator(User commentator) {
+    public void setCommentator(String commentator) {
         this.commentator = commentator;
     }
 

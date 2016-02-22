@@ -56,15 +56,17 @@ public class Login extends Activity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Login.this);
         isUserLogin = sp.getBoolean(LOGIN_PREF, false);
         created_db = sp.getBoolean(AA_MODELS, false);
-        String current_user = sp.getString(LOGIN_USER,"");
         Settings.setup_db(Login.this,AA_MODELS, created_db); //DB_Models
+        String current_user = sp.getString(LOGIN_USER,"");
+
 
         if(isUserLogin)
         {
-            Intent main_activity = new Intent(Login.this, MainActivity.class);
-            startActivity(main_activity);
+
             Settings.setLoginUser(User.getDbUser(current_user,"","","username"));
             Log.d("Message 1 ", "Login Successfully");
+            Intent main_activity = new Intent(Login.this, MainActivity.class);
+            startActivity(main_activity);
         }
         else
         {
@@ -106,7 +108,7 @@ public class Login extends Activity {
                                     SharedPreferences sp = PreferenceManager
                                             .getDefaultSharedPreferences(Login.this);
                                     sp.edit().putBoolean(LOGIN_PREF, true).apply();
-                                    sp.edit().putString(LOGIN_USER, username);
+                                    sp.edit().putString(LOGIN_USER, aUser.getUsername()).apply();
                                     Settings.setLoginUser(aUser);
                                     Intent main_activity = new Intent(Login.this, MainActivity.class);
                                     startActivity(main_activity);

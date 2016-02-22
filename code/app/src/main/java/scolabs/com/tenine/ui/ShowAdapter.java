@@ -95,7 +95,7 @@ public class ShowAdapter extends ArrayAdapter {
             //Calculating End Date
             long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
             int GRACE_PERIOD = 5;
-            long show_time = c.getAiring_time().getTime()+c.getAiring_time().getTime(); // Adding time to Date
+
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(c.getAiring_date());

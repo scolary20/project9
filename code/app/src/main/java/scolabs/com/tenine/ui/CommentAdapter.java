@@ -83,7 +83,7 @@ public class CommentAdapter extends ArrayAdapter
         DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
         lbl.setText(dateFormat.format(c.getDate()));
         TextView commentatorName = (TextView)listItem.findViewById(R.id.commentator_name);
-        commentatorName.setText("Scolary");
+        commentatorName.setText(c.getCommentator());
 
         return listItem;
     }

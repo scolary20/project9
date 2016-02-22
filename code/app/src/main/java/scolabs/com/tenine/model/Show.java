@@ -33,7 +33,7 @@ public class Show extends Model{
     @Column
     private String network;
     @Column(index = true)
-    private int showId;
+    private long showId;
     @Column
     private int rating_arrow; //1: up, 2: down
     @Column
@@ -94,7 +94,7 @@ public class Show extends Model{
         this.show_stheme_location = show_stheme_location;
     }
 
-    public int getShowId() {
+    public long getShowId() {
         return showId;
     }
 

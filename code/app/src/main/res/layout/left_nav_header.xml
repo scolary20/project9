@@ -34,7 +34,7 @@
         android:background="@drawable/blue_background"
         android:textColor="#fff"
         android:gravity="center"
-        android:text="Yasmeen Ndu  "
+        android:text=""
          />
 
     <ImageView

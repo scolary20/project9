@@ -10,4 +10,5 @@ public class Global {
     static public ListView lsView;
     static public Context commentActivity;
     static public Context commentListContext;
+    static public long showId;
 }
