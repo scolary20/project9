@@ -1,111 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
     android:id="@+id/comment_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
 
-    android:layout_height="wrap_content">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/linear"
         android:layout_width="match_parent"
-        android:weightSum="10"
-        android:layout_marginLeft="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_marginRight="5dip"
         android:layout_height="wrap_content"
-        android:id="@+id/linear">
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
         <LinearLayout
+            android:id="@+id/photo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/photo_name"
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/commet_pp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/riri"
-                android:layout_gravity="center"
-                android:id="@+id/commet_pp"
-                android:background="@drawable/rounded_profile"
-                android:layout_margin="5dip"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="dj kas"
-                android:gravity="center"
                 android:layout_gravity="center"
                 android:layout_margin="5dip"
-                android:id="@+id/commentator_name"/>
+                android:background="@drawable/rounded_profile"
+                android:scaleType="fitXY"
+                android:src="@drawable/riri"/>
+
+            <TextView
+                android:id="@+id/commentator_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dip"
+                android:gravity="center"
+                android:text="dj kas"/>
         </LinearLayout>
 
 
         <TextView
+            android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="je suis en colère avec tous les regards...ils me fou la fouille à mourir..."
-            android:id="@+id/content"
+            android:layout_gravity="right"
+            android:layout_marginTop="5dip"
+            android:layout_weight="10"
+            android:alpha="0.9"
             android:background="@drawable/contour"
             android:paddingLeft="15dip"
-            android:paddingTop="5dip"
             android:paddingRight="15dip"
-            android:textColor="#000"
-            android:alpha="0.9"
-            android:layout_marginTop="5dip"
-            android:layout_gravity="right"
-            android:layout_weight="10" />
-        </LinearLayout>
+            android:paddingTop="5dip"
+            android:text="je suis en colère avec tous les regards...ils me fou la fouille à mourir..."
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#000"/>
+    </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:weightSum="10"
         android:id="@+id/rating_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
-        android:layout_marginBottom="5dip"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal"
+        android:weightSum="10">
 
         <TextView
+            android:id="@+id/up_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="45 785 ups"
-            android:drawableLeft="@drawable/up_mark"
-            android:drawablePadding="5dp"
-            android:layout_weight="5"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:textColor="#999999"
-            android:id="@+id/up_mark" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="458 downs"
-            android:paddingRight="5dip"
-            android:paddingLeft="5dip"
-            android:drawableLeft="@drawable/down_mark"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:drawablePadding="5dp"
-            android:layout_marginLeft="5dp"
-            android:textColor="#999999"
-            android:id="@+id/down_mark" />
+            android:text="45 785 ups"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#999999"/>
 
         <TextView
+            android:id="@+id/down_mark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="4"
+            android:drawableLeft="@drawable/down_mark"
+            android:drawablePadding="5dp"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            android:text="458 downs"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="07:14 AM"
-            android:gravity="right"
+            android:textColor="#999999"/>
+
+        <TextView
+            android:id="@+id/comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginRight="5dip"
             android:layout_weight="1"
-            android:textColor="#999999"
-            android:id="@+id/comment_date"
-            android:layout_gravity="center_horizontal" />
+            android:gravity="right"
+            android:text="07:14 AM"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#999999"/>
     </LinearLayout>
 </LinearLayout>

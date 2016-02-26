@@ -1,7 +1,5 @@
 package scolabs.com.tenine.model;
 
-import android.support.annotation.ColorRes;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -32,7 +30,7 @@ public class Show extends Model{
     private String episode;
     @Column
     private String network;
-    @Column(index = true)
+    @Column(index = true, notNull = true, unique = true)
     private long showId;
     @Column
     private int rating_arrow; //1: up, 2: down
@@ -52,6 +50,10 @@ public class Show extends Model{
         this.season = season;
         this.network = network;
         this.showId = 1 + (int) (Math.random() * 100);
+    }
+
+    public Show() {
+
     }
 
     public String getComment_content() {
@@ -142,18 +144,14 @@ public class Show extends Model{
         this.num_comment = num_comment;
     }
 
+    ;
+
     public long getShow_length() {
         return show_length;
     }
 
-    ;
-
     public void setShow_length(long show_length) {
         this.show_length = show_length;
-    }
-
-    public Show() {
-
     }
 
     public String getName() {

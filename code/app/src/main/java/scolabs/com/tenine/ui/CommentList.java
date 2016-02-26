@@ -1,36 +1,28 @@
 package scolabs.com.tenine.ui;
 
 import android.app.Activity;
-
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.CommentQueries;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Global;
-import scolabs.com.tenine.model.User;
-import scolabs.com.tenine.utils.Settings;
 
 /**
  * Created by scolary on 1/30/2016.
  */
 public class CommentList extends Activity
 {
-    private ArrayList<Comment> commentList = new ArrayList<>();
     CommentAdapter commentAdapter;
     long showId = Global.showId;
     ListView list;
+    private ArrayList<Comment> commentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +43,10 @@ public class CommentList extends Activity
         @Override
         protected void onPostExecute(String result) {
 
+            final long totalScrollTime = 60000 * 40;
+            final int scrollPeriod = 1500;
+            final int heightToScroll = 20;
+
             list = Global.lsView;
             commentAdapter = new CommentAdapter(CommentList.this, R.layout.comment_item, commentList);
             list.setAdapter(commentAdapter);
@@ -58,6 +54,7 @@ public class CommentList extends Activity
             Global.cmAdapter = commentAdapter;
             Global.commentListContext = CommentList.this;
             Global.progressBar.setVisibility(View.GONE);
+
             if(commentList.size()>0)
             {
                 Global.txt.setVisibility(View.GONE);

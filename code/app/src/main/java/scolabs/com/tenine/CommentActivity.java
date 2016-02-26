@@ -1,12 +1,14 @@
 package scolabs.com.tenine;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -23,6 +25,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.CommentList;
 
 
@@ -33,6 +36,8 @@ public class CommentActivity extends ActionBarActivity {
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
     private long showId = Global.showId;
+    private boolean isScrolling = false;
+    private ScrollThread thread;
 
 
     @Override
@@ -157,8 +162,79 @@ public class CommentActivity extends ActionBarActivity {
         if(id == R.id.comment_bt){
             Intent i = new Intent(this,WriteComment.class);
             i.putExtra("showId", showId);
-            startActivityForResult(i,2);
+            i.putExtra("type", 0);
+            startActivityForResult(i, 2);
+        }
+
+        if (id == R.id.unsubscribe) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Lock This Show")
+                    .setMessage("You won't be able to comment\n Are you sure?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
+        if (id == R.id.auto_scroll) {
+            final ListView list = Global.lsView;
+            CommentAdapter commentAdapter = Global.cmAdapter;
+            list.setAdapter(commentAdapter);
+            list.setSmoothScrollbarEnabled(true);
+
+            if (!isScrolling) {
+                isScrolling = true;
+                thread = new ScrollThread();
+                list.post(thread);
+            } else {
+                thread.stop();
+                list.setTop(0);
+                isScrolling = false;
+            }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    class ScrollThread implements Runnable {
+        final long totalScrollTime = 60000 * 40;
+        final int scrollPeriod = 1500;
+        final int heightToScroll = 20;
+        final ListView list = Global.lsView;
+        Thread thd;
+
+
+        @Override
+        public void run() {
+            new CountDownTimer(totalScrollTime, scrollPeriod) {
+                public void onTick(long millisUntilFinished) {
+                    if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1
+                            && list.getChildAt(list.getChildCount() - 1).getBottom() <= list.getHeight()) {
+                        list.smoothScrollToPosition(0);
+                    }
+                    list.scrollBy(0, heightToScroll);
+                    thd = Thread.currentThread();
+                }
+
+                public void onFinish() {
+                    //you can add code for restarting timer here
+                }
+            }.start();
+        }
+
+        public void stop() {
+            try {
+                thd.interrupt();
+            } catch (Exception ex) {
+            }
+
+        }
     }
 }

@@ -1,12 +1,11 @@
 package scolabs.com.tenine;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 
 import java.util.Date;
 
@@ -29,6 +28,9 @@ public class WriteComment extends Activity
         final EditText input = (EditText)findViewById(R.id.cment_inputText);
         final Long showId = getIntent().getLongExtra("showId", -99);
 
+        if (getIntent().getIntExtra("type", 0) == 1)
+            input.setText(getIntent().getStringExtra("message"));
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,10 +44,19 @@ public class WriteComment extends Activity
                 if(!input.getText().equals(""))
                 {
                     String cment = input.getText().toString().trim();
-                    Log.e("showId", "" + showId);
                     String name = Settings.getLoginUser().getUsername();
-                    Comment c = new Comment(cment,name,new Date(),showId);
-                    c.save();
+                    Comment c;
+                    Intent cmInt = getIntent();
+                    if (cmInt.getIntExtra("type", 0) == 1) {
+                        c = (Comment) Global.cmAdapter.getItem(cmInt.getIntExtra("position", -99));
+                        c.setContent(cment);
+                        c.save();
+                    } else {
+                        c = new Comment(cment, name, new Date(), showId);
+                        Global.cmAdapter.add(c);
+                        c.save();
+                    }
+
                     Global.cmAdapter.notifyDataSetChanged();
                     finish();
                 }

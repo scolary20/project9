@@ -1,7 +1,5 @@
 package scolabs.com.tenine.model;
 
-import android.support.annotation.ColorRes;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -29,25 +27,16 @@ public class Comment extends Model
 
     @Column
     private long showId;
-
-    public long getShowId() {
-        return showId;
-    }
-
-    public void setShowId(long showId) {
-        this.showId = showId;
-    }
-
     @Column
     private Show show;
 
-    public Show getShow() {
-        return show;
-    }
+    @Column
+    private int marked_up;
 
-    public void setShow(Show show) {
-        this.show = show;
-    }
+    @Column
+    private int marked_down;
+    @Column(index = true, notNull = true, unique = true)
+    private long cmtId;
 
     public Comment()
     {
@@ -60,6 +49,47 @@ public class Comment extends Model
         this.date = date;
         this.showId = showId;
         ups_mark = 452342L;
+        this.cmtId = 1 + (int) (Math.random() * 100);
+    }
+
+    public int isMarked_down() {
+        return marked_down;
+    }
+
+    public void setMarked_down(int marked_down) {
+        this.marked_down = marked_down;
+    }
+
+    public int isMarked_up() {
+        return marked_up;
+    }
+
+    public void setMarked_up(int marked_up) {
+        this.marked_up = marked_up;
+    }
+
+    public long getCmtId() {
+        return cmtId;
+    }
+
+    public void setCmtId(long cmtId) {
+        this.cmtId = cmtId;
+    }
+
+    public long getShowId() {
+        return showId;
+    }
+
+    public void setShowId(long showId) {
+        this.showId = showId;
+    }
+
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
     }
 
     public long getUps_mark() {
@@ -106,6 +136,5 @@ public class Comment extends Model
     public int getWORDS_LIMIT() {
         return WORDS_LIMIT;
     }
-
 
 }
