@@ -19,9 +19,11 @@ import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import scolabs.com.tenine.model.Global;
@@ -36,8 +38,10 @@ public class CommentActivity extends ActionBarActivity {
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
     private long showId = Global.showId;
-    private boolean isScrolling = false;
+    private boolean isScrolling = true;
     private ScrollThread thread;
+    private ArrayList<CountDownTimer> waitTimeList;
+    private int scrollSpeedCount;
 
 
     @Override
@@ -45,12 +49,15 @@ public class CommentActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_ui);
 
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setLogo(R.drawable.live_comment);
         actionBar.setDisplayUseLogoEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        waitTimeList = new ArrayList<>();
+        scrollSpeedCount = 0;
 
         Global.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Global.txt = (TextView)findViewById(R.id.cmt_feedback);
@@ -58,6 +65,14 @@ public class CommentActivity extends ActionBarActivity {
         TextView date = (TextView) findViewById(R.id.show_date);
         DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
         date.setText(df.format(new Date()));
+
+        TextView numOfComments = (TextView) findViewById(R.id.numOfComments);
+        TextView numOfViewers = (TextView) findViewById(R.id.numOfViewers);
+
+
+
+
+
         Global.commentActivity = this;
 
         if (mediaControls == null) {
@@ -190,51 +205,57 @@ public class CommentActivity extends ActionBarActivity {
             list.setAdapter(commentAdapter);
             list.setSmoothScrollbarEnabled(true);
 
-            if (!isScrolling) {
-                isScrolling = true;
+            if (isScrolling) {
                 thread = new ScrollThread();
                 list.post(thread);
+                scrollSpeedCount++;
+                if (scrollSpeedCount == 5)
+                    isScrolling = false;
+                Toast.makeText(this, "Scrolling Speed: " + scrollSpeedCount, Toast.LENGTH_SHORT).show();
             } else {
-                thread.stop();
-                list.setTop(0);
-                isScrolling = false;
+                --scrollSpeedCount;
+                try {
+                    waitTimeList.get(scrollSpeedCount).onFinish();
+                    waitTimeList.remove(scrollSpeedCount);
+                } catch (NullPointerException ex) {
+                    ex.printStackTrace();
+                } finally {
+                    Toast.makeText(this, "Scrolling Speed: " + scrollSpeedCount, Toast.LENGTH_SHORT).show();
+
+                    if (scrollSpeedCount == 0) {
+                        isScrolling = true;
+                        list.scrollTo(0, 0);
+                    }
+                    System.out.println("Index " + scrollSpeedCount);
+                }
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     class ScrollThread implements Runnable {
-        final long totalScrollTime = 60000 * 40;
+        final long totalScrollTime = Long.MAX_VALUE;
         final int scrollPeriod = 1500;
         final int heightToScroll = 20;
         final ListView list = Global.lsView;
-        Thread thd;
 
 
         @Override
         public void run() {
-            new CountDownTimer(totalScrollTime, scrollPeriod) {
+            CountDownTimer waitTimer = new CountDownTimer(totalScrollTime, scrollPeriod) {
                 public void onTick(long millisUntilFinished) {
-                    if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1
+                    /*if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1
                             && list.getChildAt(list.getChildCount() - 1).getBottom() <= list.getHeight()) {
                         list.smoothScrollToPosition(0);
-                    }
+                    }*/
                     list.scrollBy(0, heightToScroll);
-                    thd = Thread.currentThread();
                 }
-
                 public void onFinish() {
-                    //you can add code for restarting timer here
+                    this.cancel();
                 }
             }.start();
-        }
-
-        public void stop() {
-            try {
-                thd.interrupt();
-            } catch (Exception ex) {
-            }
-
+            waitTimeList.add(waitTimer);
         }
     }
 }

@@ -14,7 +14,6 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -74,9 +73,9 @@ public class ShowAdapter extends ArrayAdapter {
         holder.img.setBounds(0, 0, 62, 62);
 
         if (c.getRating_arrow() == 1)
-            holder.rating_arrow.setCompoundDrawables(holder.img, null, null, null);
+            holder.rating_arrow.setCompoundDrawablesWithIntrinsicBounds(holder.img, null, null, null);
         else
-            holder.rating_arrow.setCompoundDrawables(holder.d_img, null, null, null);
+            holder.rating_arrow.setCompoundDrawablesWithIntrinsicBounds(holder.d_img, null, null, null);
         holder.rating_arrow.refreshDrawableState();
         time_show_handler(holder, c); //Handling starting show time
 

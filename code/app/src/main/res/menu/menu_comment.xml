@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/unsubscribe"
-        android:icon="@drawable/unsub"
+        android:icon="@drawable/lock_icon"
         android:orderInCategory="1"
         android:title="Unsubscribe"
         app:showAsAction="always|withText"/>

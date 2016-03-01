@@ -53,11 +53,12 @@
             android:layout_weight="10"
             android:alpha="0.9"
             android:background="@drawable/contour"
+            android:paddingBottom="7dip"
             android:paddingLeft="15dip"
             android:paddingRight="15dip"
             android:paddingTop="5dip"
             android:text="je suis en colère avec tous les regards...ils me fou la fouille à mourir..."
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#000"/>
     </LinearLayout>
 

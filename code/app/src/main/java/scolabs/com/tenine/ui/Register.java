@@ -3,6 +3,7 @@ package scolabs.com.tenine.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,14 @@ public class Register extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
+
+        TextView txt = (TextView) findViewById(R.id.signup_ad_message);
+        Typeface type = Typeface.createFromAsset(getAssets(), "simplifica.ttf");
+        Typeface font = Typeface.create(type, Typeface.BOLD);
+        txt.setTextColor(Color.parseColor("#4c4cff"));
+        txt.setTextSize(20f);
+        txt.setTypeface(font);
+
         Intent i = getIntent();
         String user_email = i.getStringExtra("user_email");
 

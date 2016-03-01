@@ -35,18 +35,13 @@ public class CommentList extends Activity
         @Override
         protected String doInBackground(String... params) {
             commentList = CommentQueries.getComments(showId);
-            Log.d("Number of Elements", ""+commentList.size());
-            Log.d("Show Id", ""+showId);
+            Log.i("Number of Elements", "" + commentList.size());
+            Log.i("Show Id", "" + showId);
             return "";
         }
 
         @Override
         protected void onPostExecute(String result) {
-
-            final long totalScrollTime = 60000 * 40;
-            final int scrollPeriod = 1500;
-            final int heightToScroll = 20;
-
             list = Global.lsView;
             commentAdapter = new CommentAdapter(CommentList.this, R.layout.comment_item, commentList);
             list.setAdapter(commentAdapter);

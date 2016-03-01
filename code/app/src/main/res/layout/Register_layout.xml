@@ -3,8 +3,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_margin="10dip"
-              android:orientation="vertical"
               android:background="@color/white"
+              android:orientation="vertical"
 
               android:padding="10dip"
               android:weightSum="1">
@@ -20,17 +20,17 @@
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/signup_ad_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
         android:background="@drawable/blue_background3"
-        android:padding="5dip"
         android:gravity="left"
+        android:padding="5dip"
         android:paddingBottom="10dip"
         android:text="@string/login_top_message"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="italic"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="italic|bold"/>
 
     <TextView
         android:id="@+id/textView8"
@@ -42,9 +42,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:paddingLeft="5dip"
-        android:textColor="#516666"
         android:text="Email"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#516666"
         android:textStyle="italic"/>
 
     <EditText
@@ -55,12 +55,12 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/textView8"
-        android:hint="use only your email to sign in"
         android:layout_weight="0.04"
-        android:ems="10"
-        android:padding="5dip"
         android:background="@drawable/border_field"
+        android:ems="10"
+        android:hint="use only your email to sign in"
         android:inputType="textEmailAddress"
+        android:padding="5dip"
         android:paddingBottom="10dip"
         />
 
@@ -72,8 +72,8 @@
         android:background="@color/white"
         android:paddingLeft="5dip"
         android:text="Username"
-        android:textColor="#516666"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#516666"
         android:textStyle="italic"
         />
 
@@ -86,10 +86,10 @@
         android:layout_alignTop="@+id/textView9"
         android:layout_toRightOf="@+id/textView9"
         android:layout_weight="0.04"
-        android:ems="10"
-        android:padding="5dip"
         android:background="@drawable/border_field"
+        android:ems="10"
         android:inputType="textPersonName"
+        android:padding="5dip"
         android:paddingBottom="5dip"
         />
 
@@ -101,8 +101,8 @@
         android:background="@color/white"
         android:paddingLeft="5dip"
         android:text="Password"
-        android:textColor="#516666"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#516666"
         android:textStyle="italic"
         />
 
@@ -114,29 +114,29 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/textView9"
         android:layout_toRightOf="@+id/textView9"
-        android:inputType="textPassword"
         android:layout_weight="0.04"
-        android:ems="10"
-        android:padding="5dip"
         android:background="@drawable/border_field"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:padding="5dip"
         android:paddingBottom="5dip"
         />
 
     <Button
         android:id="@+id/sign_btn"
-        android:layout_marginTop="5dip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_marginTop="5dip"
         android:background="@drawable/blue_background3"
         android:text="sign In/Up"/>
 
     <TextView
+        android:id="@+id/error_messages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_weight="0.20"
         android:text=""
-        android:textColor="@color/red"
-        android:id="@+id/error_messages"
-        android:layout_weight="0.20"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/red"/>
 </LinearLayout>

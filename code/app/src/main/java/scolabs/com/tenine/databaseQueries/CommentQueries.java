@@ -14,9 +14,6 @@ public class CommentQueries {
 
     public static ArrayList<Comment> getComments(long showId)
     {
-        try{
-            Thread.currentThread().sleep(1000);
-        }catch (Exception ex){}
 
         return (ArrayList)new Select()
                 .from(Comment.class)

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -77,6 +78,8 @@ public class CommentAdapter extends ArrayAdapter {
         Resources rct = mContext.getResources();
 
         TextView lbl = (TextView) listItem.findViewById(R.id.content);
+        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "bariol.ttf");
+        lbl.setTypeface(type);
         lbl.setText(c.getContent());
 
         Log.e(" Boolean Value", "" + c.isMarked_down());
