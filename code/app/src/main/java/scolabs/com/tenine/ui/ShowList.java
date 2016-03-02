@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,11 +83,11 @@ public class ShowList extends Fragment {
     private void loadShows() {
 
         // Convert string to date
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "22-02-2016 00:24:42";
-        String strdate3 = "22-02-2016 00:30:00";
-        String strdate4 = "01-03-2016 17:30:00";
-        String strdate5 = "01-03-2016 19:00:00";
+        /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String strdate2 = "01-02-2016 19:32:42";
+        String strdate3 = "01-02-2016 20:00:00";
+        String strdate4 = "01-03-2016 19:55:00";
+        String strdate5 = "01-03-2016 20:30:00";
         String strdate6 = "02-03-2016 10:00:00";
         String strdate7 = "03-03-2016 22:00:00";
         String strdate8 = "04-03-2016 23:59:00";
@@ -113,6 +114,7 @@ public class ShowList extends Fragment {
         }
 
         showList = new ArrayList<>();
+
         Show sw = new Show("Breaking Bad", "s3E11", "netflix");
         sw.setShow_length(40);
         sw.setNum_comment(545326);
@@ -120,7 +122,8 @@ public class ShowList extends Fragment {
         sw.setAiring_date(newdate);
         sw.setShow_img_location("breaking.png");
         sw.save();
-            showList.add(sw);
+        showList.add(sw);
+
         Show tr = new Show("Empire", "s4E3", "Hulu network");
         tr.setAiring_date(nd);
         tr.setNum_watching(5000);
@@ -128,7 +131,7 @@ public class ShowList extends Fragment {
         tr.setShow_length(15);
         tr.setShow_img_location("empire.png");
         tr.save();
-            showList.add(tr);
+        showList.add(tr);
 
         tr = new Show("How to get away with murder", "s4E2", "Mtv");
         tr.setShow_length(35);
@@ -148,7 +151,7 @@ public class ShowList extends Fragment {
         tr.save();
         showList.add(tr);
 
-        tr = new Show("Big bang theory", "s2E13", "Bet");
+        tr = new Show("Bein mary Jane", "s2E13", "Bet");
         tr.setShow_length(25);
         tr.setNum_comment(450);
         tr.setNum_watching(45);
@@ -184,6 +187,14 @@ public class ShowList extends Fragment {
         tr.save();
         showList.add(tr);
 
+        tr = new Show("Game of thrones", "s5E1", "Fox network");
+        tr.setShow_length(35);
+        tr.setNum_comment(25450);
+        tr.setNum_watching(9289);
+        tr.setAiring_date(newdate6);
+        tr.setShow_img_location("game.png");
+        tr.save();
+        showList.add(tr);*/
 
         showList = ShowQueries.getShows();
         Log.e("Show list size ",String.valueOf(showList.size()));

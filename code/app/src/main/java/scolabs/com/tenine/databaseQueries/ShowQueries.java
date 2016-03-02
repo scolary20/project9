@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.model.UserShow;
 
 /**
  * Created by scolary on 2/11/2016.
@@ -31,6 +32,15 @@ public class ShowQueries {
                 .from(Show.class)
                 .where("airing_date < ?", tmr_midnight.getTime().getTime())
                 .and("airing_date >= ?", tday_midnight.getTime().getTime())
+                .orderBy("airing_date ASC")
+                .execute();
+    }
+
+    public static ArrayList<Show> getMyShows() {
+        return (ArrayList) new Select()
+                .from(Show.class)
+                .innerJoin(UserShow.class)
+                .on("Show.showId=UserShow.showId")
                 .execute();
     }
 }

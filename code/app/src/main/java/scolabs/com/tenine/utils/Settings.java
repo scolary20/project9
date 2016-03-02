@@ -1,12 +1,11 @@
 package scolabs.com.tenine.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
 
+import scolabs.com.tenine.model.UserShow;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.User;
@@ -24,6 +23,7 @@ public class Settings {
             config.addModelClass(User.class);
             config.addModelClass(Comment.class);
             config.addModelClass(Show.class);
+        config.addModelClass(UserShow.class);
             ActiveAndroid.initialize(config.create());
     }
 

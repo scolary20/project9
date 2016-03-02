@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import scolabs.com.tenine.databaseQueries.ShowQueries;
+import scolabs.com.tenine.model.Show;
+
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
@@ -104,24 +107,11 @@ public class NavigationDrawerFragment extends Fragment {
         View footer = inflater.inflate(R.layout.list_nav_footer,null);
         mDrawerListView.addHeaderView(header);
         mDrawerListView.addFooterView(footer);
-        ArrayList<ObjectDrawerItem> drawerItem = new ArrayList<>();
+        ArrayList<Show> myShows = ShowQueries.getShows();
+        myShows.remove(1);
 
-        //ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[2];
-        drawerItem.add(new ObjectDrawerItem(R.drawable.empire, "Empire"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.game, "Game of thrones"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.real, "Real husband of hollywood"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.desperate, "Desperate housewives"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.away, "how to get away with murder"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.modern, "modern family"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.breaking, "breaking bad"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.bang, "big bang theory"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.mary, "being mary jane"));
-
-        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row,drawerItem);
+        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
         mDrawerListView.setAdapter(adapter);
-
-
-
 
        /* mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),

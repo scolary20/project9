@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +52,7 @@ public class ShowAdapter extends ArrayAdapter {
             convertView = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
 
+
             holder.show_name = (TextView) convertView.findViewById(R.id.show_name);
             holder.chronometer = (Chronometer) convertView.findViewById(R.id.chronometer);
             holder.num_watching = (TextView) convertView.findViewById(R.id.num_watching);
@@ -56,8 +60,8 @@ public class ShowAdapter extends ArrayAdapter {
             holder.network_name = (TextView) convertView.findViewById(R.id.network_name);
             holder.show_image = (ImageView) convertView.findViewById(R.id.show_image);
             holder.img = getContext().getResources().getDrawable(R.drawable.up_rating);
-            holder.sImage = getContext().getResources().getDrawable(R.drawable.breaking);
-            holder.show_default_img = getContext().getResources().getDrawable(R.drawable.empire);
+            holder.sImage = null;
+            holder.show_default_img = getContext().getResources().getDrawable(R.drawable.show_image_default);
             holder.rating_arrow = (TextView) convertView.findViewById(R.id.rating_arrow);
             holder.d_img = getContext().getResources().getDrawable(R.drawable.down_rating);
             convertView.setTag(holder);
@@ -71,6 +75,18 @@ public class ShowAdapter extends ArrayAdapter {
         holder.num_comments.setText(fmt.format(c.getNum_comment()));
         holder.num_watching.setText(fmt.format(c.getNum_watching()));
         holder.img.setBounds(0, 0, 62, 62);
+        InputStream ims = null;
+        try {
+            ims = mContext.getAssets().open(c.getShow_img_location());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        if (ims != null) {
+            holder.sImage = Drawable.createFromStream(ims, null);
+            holder.show_image.setImageDrawable(holder.sImage);
+        } else
+            holder.show_image.setImageDrawable(holder.show_default_img);
 
         if (c.getRating_arrow() == 1)
             holder.rating_arrow.setCompoundDrawablesWithIntrinsicBounds(holder.img, null, null, null);
@@ -79,12 +95,44 @@ public class ShowAdapter extends ArrayAdapter {
         holder.rating_arrow.refreshDrawableState();
         time_show_handler(holder, c); //Handling starting show time
 
-        if (c.getNetwork().equalsIgnoreCase("netflix")) {
-            holder.show_image.setImageDrawable(holder.sImage);
-        } else {
-            holder.show_image.setImageDrawable(holder.show_default_img);
-        }
+
         return convertView;
+    }
+
+    public static Object[] time_handler(Show c) {
+        if (c.getAiring_date() != null) {
+            final Date d = new Date();
+
+            //Calculating End Date
+            long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+            int GRACE_PERIOD = 5;
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(c.getAiring_date());
+            long t = cal.getTimeInMillis();
+            Date end_show = new Date(t + (c.getShow_length() * ONE_MINUTE_IN_MILLIS));
+            Date today = new Date();
+            int show_day = cal.get(Calendar.DAY_OF_WEEK);
+            cal.setTime(today);
+            int today_day = cal.get(Calendar.DAY_OF_WEEK);
+            long min_progress = today.getTime() - c.getAiring_date().getTime();
+            long show_actual_stat = SystemClock.elapsedRealtime() - (min_progress);
+            Boolean check_date = show_day == today_day;
+            Boolean ch = (today.after(c.getAiring_date()) && today.before(end_show));
+            Object[] values = new Object[6];
+            values[0] = today; // today date (Date)
+            values[1] = end_show; // end_show date (Date)
+            values[2] = show_day; // Weekday of the show (int)
+            values[3] = today_day; // Today's weekday (int)
+            values[4] = min_progress; // time elapsed since the show has started (long)
+            values[5] = show_actual_stat; // The actual time when the show started (long)
+            values[6] = check_date; // if the show is airing today (boolean)
+            values[7] = ch; //if the show is currently airing (boolean)
+
+            return values;
+        }
+
+        return null;
     }
 
     public void time_show_handler(ViewHolder holder, Show c) {
@@ -96,7 +144,7 @@ public class ShowAdapter extends ArrayAdapter {
             int GRACE_PERIOD = 5;
 
 
-            Calendar cal = Calendar.getInstance();
+            /Calendar cal = Calendar.getInstance();
             cal.setTime(c.getAiring_date());
             long t = cal.getTimeInMillis();
             Date end_show = new Date(t + (c.getShow_length() * ONE_MINUTE_IN_MILLIS));

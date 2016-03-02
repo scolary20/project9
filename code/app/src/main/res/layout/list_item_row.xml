@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_marginRight="10dip"
+        android:maxHeight="20dip"
         android:layout_below="@+id/textViewName"
         style="?android:attr/progressBarStyleHorizontal"/>
 

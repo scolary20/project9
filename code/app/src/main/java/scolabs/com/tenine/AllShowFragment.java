@@ -3,6 +3,7 @@ package scolabs.com.tenine;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,15 +17,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.model.UserShow;
+import scolabs.com.tenine.utils.Settings;
 
 
 /**
@@ -32,6 +37,7 @@ import scolabs.com.tenine.model.Show;
  */
 public class AllShowFragment extends Fragment {
     private ArrayList<Show> showList;
+    private ArrayList<Show> myShowList;
     private AllShowAdapter allShowAdapter;
     private boolean desc_clicked;
     private View layoutView;
@@ -87,21 +93,37 @@ public class AllShowFragment extends Fragment {
         public View getView(int pos, View v, ViewGroup parent) {
 
             View listItem;
+            final Show show = showList.get(pos);
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             listItem = inflater.inflate(layoutResourceId, parent, false);
             final TextView desc_view = (TextView) listItem.findViewById(R.id.show_description);
             final ImageButton view_btn = (ImageButton) listItem.findViewById(R.id.desc_btn);
             final Animation bounce = AnimationUtils.loadAnimation(getContext(), R.anim.image_animation);
             final ImageButton add_show = (ImageButton) listItem.findViewById(R.id.unlock_btn);
+            final ImageView showImg = (ImageView) listItem.findViewById(R.id.show_image);
+            final Drawable d;
 
             Typeface type = Typeface.createFromAsset(getActivity().getAssets(), "bariol.ttf");
             Typeface type_bold = Typeface.create(type, Typeface.BOLD_ITALIC);
             TextView showName = (TextView) listItem.findViewById(R.id.show_name);
             showName.setTypeface(type_bold);
-
-
-            Show show = showList.get(pos);
             showName.setText(show.getName());
+
+            InputStream ims = null;
+            try {
+                ims = mContext.getAssets().open(show.getShow_img_location());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            if (ims != null) {
+                d = Drawable.createFromStream(ims, null);
+                showImg.setImageDrawable(d);
+            } else {
+                d = getContext().getResources().getDrawable(R.drawable.show_image_default);
+                showImg.setImageDrawable(d);
+            }
+
 
             view_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -125,6 +147,9 @@ public class AllShowFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
+                    long id = Settings.getLoginUser().getId();
+                    new UserShow(id, show.getShowId()).save();
+                    myShowList.add(show);
                     Toast.makeText(mContext, "Show successfully added!!!", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -140,6 +165,8 @@ public class AllShowFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             showList = ShowQueries.getShows();
+            myShowList = ShowQueries.getMyShows();
+
             Log.i("Number of Elements", "" + showList.size());
             return "";
         }
@@ -154,6 +181,10 @@ public class AllShowFragment extends Fragment {
 
             ListView list = (ListView) layoutView.findViewById(R.id.allshow_list);
             list.setAdapter(allShowAdapter);
+            allShowAdapter = new AllShowAdapter(getActivity(), R.layout.allshow_item, showList);
+            list.setAdapter(allShowAdapter);
+            allShowAdapter.setNotifyOnChange(true);
+
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
@@ -176,17 +207,13 @@ public class AllShowFragment extends Fragment {
             tab1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showList.removeAll(showList);
+                    showList = myShowList;
                     allShowAdapter.notifyDataSetChanged();
                     Log.i("Click button", "clicked!!!");
                 }
             });
 
-            allShowAdapter = new AllShowAdapter(getActivity(), R.layout.allshow_item, showList);
-            list.setAdapter(allShowAdapter);
-            allShowAdapter.setNotifyOnChange(true);
             progressBar.setVisibility(View.GONE);
-
             if (showList.size() > 0) {
                 feedback.setVisibility(View.GONE);
             } else
