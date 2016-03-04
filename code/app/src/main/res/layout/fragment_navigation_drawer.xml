@@ -4,6 +4,6 @@
     android:dividerHeight="1dp"
     android:background="@drawable/blue_background"
     android:duplicateParentState="true"
-    android:listSelector="#dfecec"
+          android:listSelector="@drawable/blue_background3"
     tools:context=".NavigationDrawerFragment" />
 

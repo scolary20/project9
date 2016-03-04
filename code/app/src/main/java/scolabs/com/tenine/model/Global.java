@@ -5,6 +5,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import scolabs.com.tenine.ui.CommentAdapter;
 
 /**
@@ -18,4 +20,5 @@ public class Global {
     static public ProgressBar progressBar;
     static public TextView txt;
     static public CommentAdapter cmAdapter;
+    public static ArrayList<Thread> drawerShowThreads = new ArrayList<>();
 }

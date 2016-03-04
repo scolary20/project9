@@ -24,6 +24,7 @@ import java.util.Date;
 
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.Settings;
 
 /**
  * Created by scolary on 2/9/2016.
@@ -99,8 +100,11 @@ public class ShowAdapter extends ArrayAdapter {
         return convertView;
     }
 
-    public static Object[] time_handler(Show c) {
-        if (c.getAiring_date() != null) {
+
+    public void time_show_handler(ViewHolder holder, Show c) {
+
+        Object[] time_array = Settings.showTimeHandler(c);
+        if (time_array != null) {
             final Date d = new Date();
 
             //Calculating End Date
@@ -110,53 +114,15 @@ public class ShowAdapter extends ArrayAdapter {
             Calendar cal = Calendar.getInstance();
             cal.setTime(c.getAiring_date());
             long t = cal.getTimeInMillis();
-            Date end_show = new Date(t + (c.getShow_length() * ONE_MINUTE_IN_MILLIS));
-            Date today = new Date();
-            int show_day = cal.get(Calendar.DAY_OF_WEEK);
-            cal.setTime(today);
-            int today_day = cal.get(Calendar.DAY_OF_WEEK);
-            long min_progress = today.getTime() - c.getAiring_date().getTime();
-            long show_actual_stat = SystemClock.elapsedRealtime() - (min_progress);
-            Boolean check_date = show_day == today_day;
-            Boolean ch = (today.after(c.getAiring_date()) && today.before(end_show));
-            Object[] values = new Object[6];
-            values[0] = today; // today date (Date)
-            values[1] = end_show; // end_show date (Date)
-            values[2] = show_day; // Weekday of the show (int)
-            values[3] = today_day; // Today's weekday (int)
-            values[4] = min_progress; // time elapsed since the show has started (long)
-            values[5] = show_actual_stat; // The actual time when the show started (long)
-            values[6] = check_date; // if the show is airing today (boolean)
-            values[7] = ch; //if the show is currently airing (boolean)
+            Date end_show = (Date) time_array[1];
+            Date today = (Date) time_array[0];
+            int show_day = (int) time_array[2];
+            int today_day = (int) time_array[3];
+            long min_progress = (long) time_array[4];
+            holder.chronometer.setBase((long) time_array[5]);
 
-            return values;
-        }
-
-        return null;
-    }
-
-    public void time_show_handler(ViewHolder holder, Show c) {
-        if (c.getAiring_date() != null) {
-            final Date d = new Date();
-
-            //Calculating End Date
-            long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
-            int GRACE_PERIOD = 5;
-
-
-            /Calendar cal = Calendar.getInstance();
-            cal.setTime(c.getAiring_date());
-            long t = cal.getTimeInMillis();
-            Date end_show = new Date(t + (c.getShow_length() * ONE_MINUTE_IN_MILLIS));
-            Date today = new Date();
-            int show_day = cal.get(Calendar.DAY_OF_WEEK);
-            cal.setTime(today);
-            int today_day = cal.get(Calendar.DAY_OF_WEEK);
-            long min_progress = today.getTime() - c.getAiring_date().getTime();
-            holder.chronometer.setBase(SystemClock.elapsedRealtime() - (min_progress));
-
-            Boolean check_date = show_day == today_day;
-            Boolean ch = (today.after(c.getAiring_date()) && today.before(end_show));
+            Boolean check_date = (boolean) time_array[6];
+            Boolean ch = ((boolean) time_array[7]);
             Log.e("end show", end_show.toString());
             if (check_date && ch) {
 

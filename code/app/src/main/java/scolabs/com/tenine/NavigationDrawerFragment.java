@@ -1,5 +1,6 @@
 package scolabs.com.tenine;
 
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,8 +24,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import scolabs.com.tenine.databaseQueries.ShowQueries;
+import scolabs.com.tenine.model.Global;
 import scolabs.com.tenine.model.Show;
 
 /**
@@ -61,6 +65,7 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private ArrayList<Show> myShows;
 
     public NavigationDrawerFragment() {
     }
@@ -93,6 +98,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,23 +113,8 @@ public class NavigationDrawerFragment extends Fragment {
         View footer = inflater.inflate(R.layout.list_nav_footer,null);
         mDrawerListView.addHeaderView(header);
         mDrawerListView.addFooterView(footer);
-        ArrayList<Show> myShows = ShowQueries.getShows();
-        myShows.remove(1);
+        new LoadShows().execute(""); // Loading My Today's airing Shows....
 
-        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
-        mDrawerListView.setAdapter(adapter);
-
-       /* mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));*/
-
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
 
@@ -296,4 +287,27 @@ public class NavigationDrawerFragment extends Fragment {
          */
         void onNavigationDrawerItemSelected(int position);
     }
+
+    private class LoadShows extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
+            adapter.setNotifyOnChange(true);
+            mDrawerListView.setAdapter(adapter);
+            mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        }
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            myShows = ShowQueries.getMyAiringShows();
+            Log.e("My airing show size", "" + myShows.size());
+            return "";
+        }
+    }
+
+
 }

@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.AllShowFragment;
 import scolabs.com.tenine.CommentActivity;
 import scolabs.com.tenine.R;
@@ -40,8 +42,9 @@ public class ShowList extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.shows_ui, container, false);
-        SearchView search = (SearchView)v.findViewById(R.id.searchView);
-        search.setQueryHint("Type your text here");
+        EventBus.getDefault().register(this);
+        //SearchView search = (SearchView)v.findViewById(R.id.searchView);
+        //search.setQueryHint("Type your text here");
 
 
         loadShows();
@@ -73,22 +76,35 @@ public class ShowList extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.unlock_show_action) {
-            getFragmentManager().beginTransaction()
+
+            Intent i = new Intent(getActivity(), AllShowFragment.class);
+            startActivity(i);
+            /*getFragmentManager().beginTransaction()
                     .replace(R.id.container, new AllShowFragment())
-                    .addToBackStack("Shows Management").commit();
+                    .addToBackStack("Shows Management").commit();*/
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Subscribe
+    public void onEvent(Show show) {
+        show.delete();
+        showAdapter.remove(show);
+        showAdapter.notifyDataSetChanged();
+        Log.e("Show has been deleted", " " + show.getId());
+    }
+
+
     private void loadShows() {
 
         // Convert string to date
-        /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "01-02-2016 19:32:42";
-        String strdate3 = "01-02-2016 20:00:00";
+        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String strdate2 = "04-03-2016 00:10:00";
+        String strdate3 = "04-03-2016 00:01:00";
         String strdate4 = "01-03-2016 19:55:00";
         String strdate5 = "01-03-2016 20:30:00";
-        String strdate6 = "02-03-2016 10:00:00";
+        String strdate6 = "02-03-2016 18:00:00";
         String strdate7 = "03-03-2016 22:00:00";
         String strdate8 = "04-03-2016 23:59:00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
@@ -115,23 +131,23 @@ public class ShowList extends Fragment {
 
         showList = new ArrayList<>();
 
-        Show sw = new Show("Breaking Bad", "s3E11", "netflix");
-        sw.setShow_length(40);
-        sw.setNum_comment(545326);
-        sw.setNum_watching(412556345L);
+        /*Show sw = new Show("Breaking bad", "s5E22", "netflix");
+        sw.setShow_length(50);
+        sw.setNum_comment(5426);
+        sw.setNum_watching(4126345L);
         sw.setAiring_date(newdate);
-        sw.setShow_img_location("breaking.png");
+        sw.setShow_img_location("break.png");
         sw.save();
-        showList.add(sw);
+        //showList.add(sw);
 
-        Show tr = new Show("Empire", "s4E3", "Hulu network");
+        Show tr = new Show("Empire", "s3E3", "Hulu network");
         tr.setAiring_date(nd);
-        tr.setNum_watching(5000);
-        tr.setNum_comment(30545);
-        tr.setShow_length(15);
+        tr.setNum_watching(50500);
+        tr.setNum_comment(3052445);
+        tr.setShow_length(35);
         tr.setShow_img_location("empire.png");
         tr.save();
-        showList.add(tr);
+        //showList.add(tr);
 
         tr = new Show("How to get away with murder", "s4E2", "Mtv");
         tr.setShow_length(35);

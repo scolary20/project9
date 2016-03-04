@@ -9,14 +9,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-
+        android:weightSum="1"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/tab0"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.05"
+            android:layout_gravity="center"
+            android:background="@drawable/blue_background4"
+            android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+            />
+
+        <View
+            android:id="@+id/view0"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#1e3d4c"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"/>
 
         <Button
             android:id="@+id/tab1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:text="My Shows"/>
 
         <View
@@ -34,7 +54,7 @@
             android:id="@+id/tab2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
             android:text="All Shows"/>
     </LinearLayout>
 

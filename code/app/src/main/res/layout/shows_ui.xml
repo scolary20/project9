@@ -4,35 +4,15 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_margin="5dp"
-    android:background="@drawable/blue_background"
+              android:background="@drawable/blue_background6"
     android:layout_height="fill_parent">
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Today&apos;s airing shows"
-        android:id="@+id/airing_message"
-        android:padding="10dp"
-        android:gravity="right"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/white"
-        android:background="@drawable/blue_background"
-        android:layout_gravity="center_horizontal" />
-
-    <SearchView
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:queryHint="search here"
-        android:id="@+id/searchView" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0.5dp"
-        android:divider="#000"
+        android:layout_marginBottom="1dip"
+        android:dividerHeight="3dp"
+        android:divider="@color/transparent"
         tools:listitem="@layout/show_list_item"
         android:id="@+id/listView" />
 
