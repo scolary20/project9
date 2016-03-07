@@ -29,6 +29,7 @@ import java.util.zip.Inflater;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Global;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.Settings;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -304,6 +305,7 @@ public class NavigationDrawerFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             myShows = ShowQueries.getMyAiringShows();
+
             Log.e("My airing show size", "" + myShows.size());
             return "";
         }

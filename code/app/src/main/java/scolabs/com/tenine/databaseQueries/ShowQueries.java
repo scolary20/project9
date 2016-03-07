@@ -1,5 +1,7 @@
 package scolabs.com.tenine.databaseQueries;
 
+import android.util.Log;
+
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Calendar;
 
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.UserShow;
+import scolabs.com.tenine.utils.Settings;
 
 /**
  * Created by scolary on 2/11/2016.
@@ -30,8 +33,8 @@ public class ShowQueries {
 
         return (ArrayList)new Select()
                 .from(Show.class)
-                        //.where("airing_date < ?", tmr_midnight.getTime().getTime())
-                        //.and("airing_date >= ?", tday_midnight.getTime().getTime())
+                .where("airing_date < ?", tmr_midnight.getTime().getTime())
+                .and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .orderBy("airing_date ASC")
                 .execute();
     }
@@ -66,12 +69,23 @@ public class ShowQueries {
         tday_midnight.set(Calendar.MINUTE, 0);
         tday_midnight.set(Calendar.SECOND, 0);
 
-        return (ArrayList) new Select()
+        ArrayList<Show> myShows = (ArrayList) new Select()
                 .from(Show.class)
                 .innerJoin(UserShow.class)
                 .on("Show.showId=UserShow.showId")
-                        //.where("airing_date < ?", tmr_midnight.getTime().getTime())
-                        //.and("airing_date >= ?", tday_midnight.getTime().getTime())
+                .where("airing_date < ?", tmr_midnight.getTime().getTime())
+                .and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .execute();
+
+        ArrayList<Show> showToRemove = new ArrayList<>();
+        for (Show show : myShows) {
+            if (!(boolean) Settings.showTimeHandler(show)[7]) {
+                showToRemove.add(show);
+                Log.e(" Show name " + show.getName(), " deleted");
+                Log.e("Airing Date ", "" + show.getAiring_date().toString());
+            }
+        }
+        myShows.removeAll(showToRemove);
+        return myShows;
     }
 }

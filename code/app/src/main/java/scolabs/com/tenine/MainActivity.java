@@ -2,6 +2,7 @@ package scolabs.com.tenine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -53,6 +54,11 @@ public class MainActivity extends ActionBarActivity
 
         TextView header_date = (TextView)findViewById(R.id.header_date);
         TextView username = (TextView)findViewById(R.id.header_username);
+        TextView scolabs = (TextView) findViewById(R.id.scolabs);
+        Typeface sco = Typeface.createFromAsset(getAssets(), "simplifica.ttf");
+        Typeface font = Typeface.create(sco, Typeface.BOLD);
+        scolabs.setTypeface(font);
+
         User aUser = Settings.getLoginUser();
         if(aUser != null)
             username.setText(aUser.getUsername());

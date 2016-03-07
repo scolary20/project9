@@ -89,7 +89,6 @@ public class ShowList extends Fragment {
 
     @Subscribe
     public void onEvent(Show show) {
-        show.delete();
         showAdapter.remove(show);
         showAdapter.notifyDataSetChanged();
         Log.e("Show has been deleted", " " + show.getId());
@@ -99,14 +98,14 @@ public class ShowList extends Fragment {
     private void loadShows() {
 
         // Convert string to date
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "04-03-2016 00:10:00";
-        String strdate3 = "04-03-2016 00:01:00";
-        String strdate4 = "01-03-2016 19:55:00";
-        String strdate5 = "01-03-2016 20:30:00";
-        String strdate6 = "02-03-2016 18:00:00";
-        String strdate7 = "03-03-2016 22:00:00";
-        String strdate8 = "04-03-2016 23:59:00";
+        /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String strdate2 = "07-03-2016 02:21:00";
+        String strdate3 = "07-03-2016 02:20:00";
+        String strdate4 = "07-03-2016 02:15:00";
+        String strdate5 = "07-03-2016 02:22:00";
+        String strdate6 = "07-03-2016 02:17:00";
+        String strdate7 = "07-03-2016 07:45:00";
+        String strdate8 = "07-03-2016 07::00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
         newdate = null;
         newdate3 = null;
@@ -131,8 +130,8 @@ public class ShowList extends Fragment {
 
         showList = new ArrayList<>();
 
-        /*Show sw = new Show("Breaking bad", "s5E22", "netflix");
-        sw.setShow_length(50);
+        Show sw = new Show("Breaking bad", "s5E22", "netflix");
+        sw.setShow_length(10);
         sw.setNum_comment(5426);
         sw.setNum_watching(4126345L);
         sw.setAiring_date(newdate);
@@ -144,13 +143,12 @@ public class ShowList extends Fragment {
         tr.setAiring_date(nd);
         tr.setNum_watching(50500);
         tr.setNum_comment(3052445);
-        tr.setShow_length(35);
+        tr.setShow_length(9);
         tr.setShow_img_location("empire.png");
         tr.save();
-        //showList.add(tr);
-
+        showList.add(tr);
         tr = new Show("How to get away with murder", "s4E2", "Mtv");
-        tr.setShow_length(35);
+        tr.setShow_length(30);
         tr.setNum_comment(3);
         tr.setNum_watching(500);
         tr.setAiring_date(newdate3);
@@ -195,7 +193,7 @@ public class ShowList extends Fragment {
         showList.add(tr);
 
         tr = new Show("Desperate Housewifes", "s4E1", "Canal+");
-        tr.setShow_length(45);
+        tr.setShow_length(10);
         tr.setNum_comment(2550);
         tr.setNum_watching(989);
         tr.setAiring_date(newdate6);
@@ -204,7 +202,7 @@ public class ShowList extends Fragment {
         showList.add(tr);
 
         tr = new Show("Game of thrones", "s5E1", "Fox network");
-        tr.setShow_length(35);
+        tr.setShow_length(9);
         tr.setNum_comment(25450);
         tr.setNum_watching(9289);
         tr.setAiring_date(newdate6);

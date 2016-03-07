@@ -12,52 +12,66 @@
         android:layout_marginLeft="10dp"
         android:layout_below="@+id/linearLayout"
         android:background="#000" />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/settings"
-        android:drawablePadding="5dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="5dp"
-        android:background="@drawable/blue_background"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="Settings"
-        android:textColor="@color/white"
-        android:id="@+id/textView2" />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:drawableLeft="@drawable/help"
-        android:background="@drawable/blue_background"
-        android:gravity="center_horizontal|center_vertical"
-        android:drawablePadding="5dp"
-        android:paddingBottom="5dp"
-        android:text="Help"
+        android:drawableLeft="@drawable/notification"
+        android:padding="10dip"
+        android:drawablePadding="20dip"
+        android:background="@drawable/blue_background5"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:gravity="center_vertical"
+        android:text="Notification"
         android:textColor="@color/white"
-        android:id="@+id/textView3" />
+        android:id="@+id/notication"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:drawableLeft="@drawable/report"
-        android:background="@drawable/blue_background"
-        android:gravity="center_horizontal|center_vertical"
-        android:drawablePadding="5dp"
-        android:paddingBottom="5dp"
+        android:drawableLeft="@drawable/tv_icon"
+        android:padding="10dip"
+        android:drawablePadding="20dip"
+        android:background="@drawable/blue_background5"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:gravity="center_vertical"
+        android:text="Show settings"
         android:textColor="@color/white"
-        android:text="Report"
-        android:id="@+id/Report" />
+        android:id="@+id/showSettings"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/change_profile"
+        android:padding="10dip"
+        android:drawablePadding="20dip"
+        android:background="@drawable/blue_background5"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:gravity="center_vertical"
+        android:text="Change Profile"
+        android:textColor="@color/white"
+        android:id="@+id/profile"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/about"
+        android:padding="10dip"
+        android:drawablePadding="20dip"
+        android:background="@drawable/blue_background5"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:gravity="center_vertical"
+        android:text="About"
+        android:textColor="@color/white"
+        android:id="@+id/about"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center_horizontal|center_vertical"
-        android:text="scolabs 2016"
+        android:text="©2016 scolabs, All rights reserved"
         android:paddingBottom="5dp"
-        android:id="@+id/textView" />
+        android:id="@+id/scolabs"/>
 </LinearLayout>

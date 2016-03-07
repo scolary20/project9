@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,7 +34,6 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
     private ArrayList<Thread> threads;
     private final long ONE_MINUTE_IN_MILLIS = 60000;
     private DrawerItemCustomAdapter adapter;
-    boolean deleted = false;
 
     public DrawerItemCustomAdapter(Context mContext, int layoutResourceId, ArrayList<Show> data) {
 
@@ -45,26 +46,41 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
         EventBus.getDefault().register(this);
     }
 
+    static class ViewHolder {
+        ProgressBar progressBar;
+        ImageView imageViewIcon;
+        TextView textViewName;
+        TextView length;
+        Typeface font;
+        Typeface type;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        final ViewHolder holder;
         View listItem = convertView;
         final Show show = data.get(position);
         Drawable d;
+        if (listItem == null) {
+            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
+            listItem = inflater.inflate(layoutResourceId, parent, false);
+            holder = new ViewHolder();
 
-
-        LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-        listItem = inflater.inflate(layoutResourceId, parent, false);
-
-        ImageView imageViewIcon = (ImageView) listItem.findViewById(R.id.imageViewIcon);
-        TextView textViewName = (TextView) listItem.findViewById(R.id.textViewName);
-        TextView length = (TextView) listItem.findViewById(R.id.time_progress);
-
-        length.setText("" + show.getShow_length() + " min");
-        Typeface type = Typeface.createFromAsset(mContext.getAssets(), "simplifica.ttf");
-        Typeface font = Typeface.create(type, Typeface.BOLD);
-        textViewName.setTypeface(font);
-        textViewName.setText(show.getName());
+            holder.imageViewIcon = (ImageView) listItem.findViewById(R.id.imageViewIcon);
+            holder.textViewName = (TextView) listItem.findViewById(R.id.textViewName);
+            holder.length = (TextView) listItem.findViewById(R.id.time_progress);
+            holder.type = Typeface.createFromAsset(mContext.getAssets(), "simplifica.ttf");
+            holder.font = Typeface.create(holder.type, Typeface.BOLD);
+            listItem.setTag(holder);
+            holder.progressBar = null;
+            holder.progressBar = (ProgressBar) listItem.findViewById(R.id.progressBar);
+            holder.progressBar.setTag(show.getId());
+        } else
+            holder = (ViewHolder) listItem.getTag();
+        holder.length.setText("" + show.getShow_length() + " min");
+        holder.textViewName.setTypeface(holder.font);
+        holder.textViewName.setText(show.getName());
 
 
         InputStream ims = null;
@@ -76,18 +92,17 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
 
         if (ims != null) {
             d = Drawable.createFromStream(ims, null);
-            imageViewIcon.setImageDrawable(d);
+            holder.imageViewIcon.setImageDrawable(d);
         } else {
             d = getContext().getResources().getDrawable(R.drawable.show_image_default);
-            imageViewIcon.setImageDrawable(d);
+            holder.imageViewIcon.setImageDrawable(d);
         }
 
-        final ProgressBar progressBar = (ProgressBar) listItem.findViewById(R.id.progressBar);
-        final int show_length = (int)/*(show.getShow_length()*/ (1 * ONE_MINUTE_IN_MILLIS);
-        progressBar.setMax(show_length);
+        final int show_length = (int) (show.getShow_length() * ONE_MINUTE_IN_MILLIS);
+        holder.progressBar.setMax(show_length);
 
         if (threads == null || threads.size() == 0) {
-            myShowProgressHander(show_length, show, position, progressBar);
+            myShowProgressHander(show_length, show, position, holder.progressBar);
             System.gc();
         } else {
             boolean exist = false;
@@ -98,7 +113,7 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
                 }
             }
             if (!exist) {
-                myShowProgressHander(show_length, show, position, progressBar);
+                myShowProgressHander(show_length, show, position, holder.progressBar);
                 System.gc();
             }
         }
@@ -118,31 +133,34 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
     public void myShowProgressHander(final int show_length, final Show show, final int position, final ProgressBar progressBar) {
         Thread t = new Thread(new Runnable() {
             long actual_start = (long) (Settings.showTimeHandler(show)[4]);
-            int jumpTime = 0;//(int) actual_start;
+            int jumpTime = (int) actual_start;
+            int length = show_length + 1000;
 
             @Override
             public void run() {
-                while (jumpTime < show_length) {
+                while (jumpTime < length) {
                     try {
                         Thread.currentThread().sleep(1000);
                         jumpTime += 1000;
                         ((Activity) mContext).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                progressBar.setProgress(jumpTime);
+                                if (progressBar.getTag() == show.getId())
+                                    progressBar.setProgress(jumpTime);
                             }
                         });
-
-                        if (jumpTime == show_length) {
+                        if (jumpTime > show_length) {
                             ((Activity) mContext).runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    adapter.remove(show);
+                                    data.remove(data.get(position));
+                                    //adapter.remove(show);
                                     EventBus.getDefault().post(show);
                                     adapter.notifyDataSetChanged();
+                                    Log.e("Event finished", show.getName());
                                 }
                             });
-
+                            break;
                         }
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
@@ -154,7 +172,6 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
 
         });
 
-
         t.setName("" + show.getShowId());
         threads.add(t);
         t.start();
@@ -162,7 +179,11 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
 
     @Subscribe
     public void onEvent(Show[] arrShow) {
-        data.add(arrShow[0]);
-        adapter.notifyDataSetChanged();
+        if ((boolean) Settings.showTimeHandler(arrShow[0])[6]) {
+            if ((boolean) Settings.showTimeHandler(arrShow[0])[7]) {
+                data.add(arrShow[0]);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }

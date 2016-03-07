@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by scolary on 1/29/2016.
@@ -49,7 +50,7 @@ public class Show extends Model{
         this.name = name;
         this.season = season;
         this.network = network;
-        this.showId = 1 + (int) (Math.random() * 100);
+        this.showId = new Random().nextLong() * 100;   //1 + (int) (Math.random() * 100);
         rating_arrow = 2;
     }
 
