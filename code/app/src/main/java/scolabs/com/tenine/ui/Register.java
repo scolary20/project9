@@ -75,7 +75,7 @@ public class Register extends Activity {
                             if(user_name != null)
                                 error_messages += "Username already taken \n";
                             else if(user_email != null)
-                                error_messages +=  "Email already in use\n";
+                                error_messages += "Email already exists\n";
 
                             if(user_email==null && user_name == null )
                             {

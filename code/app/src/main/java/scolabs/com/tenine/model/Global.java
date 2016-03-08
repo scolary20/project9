@@ -17,6 +17,7 @@ public class Global {
     static public Context commentActivity;
     static public Context commentListContext;
     static public long showId;
+    static public Show show;
     static public ProgressBar progressBar;
     static public TextView txt;
     static public CommentAdapter cmAdapter;

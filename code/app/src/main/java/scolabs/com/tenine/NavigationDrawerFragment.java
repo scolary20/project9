@@ -309,7 +309,7 @@ public class NavigationDrawerFragment extends Fragment {
             Log.e("My airing show size", "" + myShows.size());
             return "";
         }
-    }
 
+    }
 
 }

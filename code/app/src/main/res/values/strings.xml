@@ -15,5 +15,6 @@
         Based on your comments and the number of viewers the sho will be instantly ranked..."Share that feeling when watching that scene. You will be surprised to know how many people feel the same way".</string>
     <string name="title_activity_login">Login</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_notification_view">NotificationView</string>
 
 </resources>

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView2"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_margin="10dip"
               android:background="@color/white"
               android:orientation="vertical"
-
               android:padding="10dip"
               android:weightSum="1">
 
@@ -16,6 +21,7 @@
         android:layout_weight="0.09"
         android:background="@drawable/blue_background"
         android:gravity="center"
+        android:padding="5dip"
         android:text="Sign Up"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -24,15 +30,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dip"
-        android:background="@drawable/blue_background3"
+        android:background="@color/transparent"
         android:gravity="left"
         android:padding="5dip"
         android:paddingBottom="10dip"
         android:text="@string/login_top_message"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="italic|bold"/>
+        android:textStyle="italic"/>
 
-    <TextView
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/background_floating_material_dark"/>
+
+        <TextView
         android:id="@+id/textView8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,6 +56,7 @@
         android:text="Email"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#516666"
+        android:paddingTop="5dip"
         android:textStyle="italic"/>
 
     <EditText
@@ -140,3 +152,4 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/red"/>
 </LinearLayout>
+</ScrollView>

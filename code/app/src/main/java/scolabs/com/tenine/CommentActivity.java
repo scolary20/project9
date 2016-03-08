@@ -69,10 +69,6 @@ public class CommentActivity extends ActionBarActivity {
         TextView numOfComments = (TextView) findViewById(R.id.numOfComments);
         TextView numOfViewers = (TextView) findViewById(R.id.numOfViewers);
 
-
-
-
-
         Global.commentActivity = this;
 
         if (mediaControls == null) {
@@ -97,8 +93,16 @@ public class CommentActivity extends ActionBarActivity {
         progressDialog.show();
 
         try {
+            int raw_id = getResources().getIdentifier(Global.show.getShow_trailer_location(), "raw", getPackageName());
+            String PATH = "android.resource://" + getPackageName() + "/" + raw_id;
             myVideoView.setMediaController(mediaControls);
-            myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.empire_trailer));
+
+            if (PATH != null)
+                myVideoView.setVideoPath(PATH);
+                //myVideoView.setVideoURI(Uri.parse("http://larytech.com/site/empire_trailer.mp4"));
+            else
+                //myVideoView.setVideoURI(Uri.parse("http://larytech.com/site/empire_trailer.mp4"));
+                myVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.big_bang_trailer));
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
             e.printStackTrace();

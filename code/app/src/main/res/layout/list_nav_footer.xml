@@ -1,77 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#f2f2ff"
-    android:padding="10dp"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#f2f2ff"
+              android:orientation="vertical"
+              android:padding="5dp">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_below="@+id/linearLayout"
-        android:background="#000" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#000"/>
+
+    <ImageView
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_gravity="center"
+        android:alpha="0.8"
+        android:id="@+id/image"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/shows_icon"/>
 
     <TextView
+        android:id="@+id/notication"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/blue_background5"
         android:drawableLeft="@drawable/notification"
-        android:padding="10dip"
         android:drawablePadding="20dip"
-        android:background="@drawable/blue_background5"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center_vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
         android:text="Notification"
-        android:textColor="@color/white"
-        android:id="@+id/notication"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white"/>
 
     <TextView
+        android:id="@+id/showSettings"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/blue_background5"
         android:drawableLeft="@drawable/tv_icon"
-        android:padding="10dip"
         android:drawablePadding="20dip"
-        android:background="@drawable/blue_background5"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center_vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
         android:text="Show settings"
-        android:textColor="@color/white"
-        android:id="@+id/showSettings"/>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/change_profile"
-        android:padding="10dip"
-        android:drawablePadding="20dip"
-        android:background="@drawable/blue_background5"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:gravity="center_vertical"
-        android:text="Change Profile"
-        android:textColor="@color/white"
-        android:id="@+id/profile"/>
+        android:textColor="@color/white"/>
+
 
     <TextView
+        android:id="@+id/about"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/blue_background5"
         android:drawableLeft="@drawable/about"
-        android:padding="10dip"
         android:drawablePadding="20dip"
-        android:background="@drawable/blue_background5"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:gravity="center_vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
         android:text="About"
-        android:textColor="@color/white"
-        android:id="@+id/about"/>
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white"/>
 
     <TextView
+        android:id="@+id/profile"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_background5"
+        android:drawableLeft="@drawable/change_profile"
+        android:drawablePadding="20dip"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:text="Change Profile"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/logout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_background5"
+        android:drawableLeft="@drawable/icon_logout"
+        android:drawablePadding="20dip"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dip"
+        android:paddingLeft="20dip"
+        android:paddingRight="10dip"
+        android:paddingTop="10dip"
+        android:text="Logout"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/scolabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dip"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:background="@color/transparent"
         android:gravity="center_horizontal|center_vertical"
-        android:text="©2016 scolabs, All rights reserved"
         android:paddingBottom="5dp"
-        android:id="@+id/scolabs"/>
+        android:text="©2016 scolabs, All rights reserved"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
 </LinearLayout>

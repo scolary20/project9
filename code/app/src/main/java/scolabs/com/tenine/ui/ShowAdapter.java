@@ -53,7 +53,6 @@ public class ShowAdapter extends ArrayAdapter {
             convertView = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
 
-
             holder.show_name = (TextView) convertView.findViewById(R.id.show_name);
             holder.chronometer = (Chronometer) convertView.findViewById(R.id.chronometer);
             holder.num_watching = (TextView) convertView.findViewById(R.id.num_watching);
@@ -137,10 +136,10 @@ public class ShowAdapter extends ArrayAdapter {
             //Date grace_period = new Date(et + GRACE_PERIOD * ONE_MINUTE_IN_MILLIS);
             default_color = holder.chronometer.getDrawingCacheBackgroundColor();
 
-            if (today.after(end_show)) /*&& today.before(grace_period))*/
-                holder.chronometer.setBackgroundColor(Color.parseColor("#ffb2b2"));
-            else
-                holder.chronometer.setBackgroundColor(default_color);
+            //if (today.after(end_show)) /*&& today.before(grace_period))*/
+            //holder.chronometer.setBackgroundColor(Color.parseColor("#ffb2b2"));
+            //else
+            //holder.chronometer.setBackgroundColor(default_color);
 
             if (today.before(c.getAiring_date())) {
                 cal.setTime(c.getAiring_date());

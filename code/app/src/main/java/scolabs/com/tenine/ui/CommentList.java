@@ -47,23 +47,6 @@ public class CommentList extends Activity
             list = Global.lsView;
             commentAdapter = new CommentAdapter(CommentList.this, R.layout.comment_item, commentList);
             list.setAdapter(commentAdapter);
-            list.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1
-                            && list.getChildAt(list.getChildCount() - 1).getBottom() <= list.getHeight()) {
-                        //list.smoothScrollToPosition(0);
-
-                    }
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    if (visibleItemCount == totalItemCount - 1)
-                        list.setBackgroundColor(Color.CYAN);
-                }
-            });
-
             commentAdapter.setNotifyOnChange(true);
             Global.cmAdapter = commentAdapter;
             Global.commentListContext = CommentList.this;

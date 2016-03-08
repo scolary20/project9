@@ -32,12 +32,13 @@
             android:paddingLeft="5dip"
             android:paddingRight="5dip"/>
 
+
         <Button
-            android:id="@+id/tab1"
+            android:id="@+id/tab2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="My Shows"/>
+            android:text="All Shows"/>
 
         <View
             android:id="@+id/view1"
@@ -51,11 +52,12 @@
             />
 
         <Button
-            android:id="@+id/tab2"
+            android:id="@+id/tab1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="All Shows"/>
+            android:text="My Shows"/>
+
     </LinearLayout>
 
 

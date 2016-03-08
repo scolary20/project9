@@ -6,6 +6,7 @@ import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.UserShow;

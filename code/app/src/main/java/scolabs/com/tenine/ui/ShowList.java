@@ -59,6 +59,7 @@ public class ShowList extends Fragment {
                                     long arg3) {
                 Intent myIntent = new Intent(getActivity(), CommentActivity.class);
                 Global.showId = showList.get(pos).getShowId();
+                Global.show = showList.get(pos);
                 startActivityForResult(myIntent, 1);
             }
         });
@@ -79,9 +80,6 @@ public class ShowList extends Fragment {
 
             Intent i = new Intent(getActivity(), AllShowFragment.class);
             startActivity(i);
-            /*getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new AllShowFragment())
-                    .addToBackStack("Shows Management").commit();*/
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -99,11 +97,11 @@ public class ShowList extends Fragment {
 
         // Convert string to date
         /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "07-03-2016 02:21:00";
-        String strdate3 = "07-03-2016 02:20:00";
-        String strdate4 = "07-03-2016 02:15:00";
-        String strdate5 = "07-03-2016 02:22:00";
-        String strdate6 = "07-03-2016 02:17:00";
+        String strdate2 = "08-03-2016 04:25:00";
+        String strdate3 = "08-03-2016 04:20:00";
+        String strdate4 = "08-03-2016 04:11:00";
+        String strdate5 = "08-03-2016 04:30:00";
+        String strdate6 = "07-03-2016 03:49:00";
         String strdate7 = "07-03-2016 07:45:00";
         String strdate8 = "07-03-2016 07::00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
@@ -136,6 +134,7 @@ public class ShowList extends Fragment {
         sw.setNum_watching(4126345L);
         sw.setAiring_date(newdate);
         sw.setShow_img_location("break.png");
+        sw.setShow_trailer_location("modern_trailer");
         sw.save();
         //showList.add(sw);
 
@@ -153,6 +152,7 @@ public class ShowList extends Fragment {
         tr.setNum_watching(500);
         tr.setAiring_date(newdate3);
         tr.setShow_img_location("away.png");
+        tr.setShow_trailer_location("empire_trailer");
         tr.save();
         showList.add(tr);
 
@@ -162,6 +162,7 @@ public class ShowList extends Fragment {
         tr.setNum_watching(600);
         tr.setAiring_date(newdate4);
         tr.setShow_img_location("bang.png");
+        tr.setShow_trailer_location("big_bang_trailer");
         tr.save();
         showList.add(tr);
 
@@ -179,6 +180,7 @@ public class ShowList extends Fragment {
         tr.setNum_comment(4500);
         tr.setNum_watching(45009983);
         tr.setAiring_date(newdate5);
+        tr.setShow_trailer_location("modern_trailer");
         tr.setShow_img_location("modern.png");
         tr.save();
         showList.add(tr);
@@ -206,6 +208,7 @@ public class ShowList extends Fragment {
         tr.setNum_comment(25450);
         tr.setNum_watching(9289);
         tr.setAiring_date(newdate6);
+        tr.setShow_trailer_location("game_trailer");
         tr.setShow_img_location("game.png");
         tr.save();
         showList.add(tr);*/

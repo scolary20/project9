@@ -178,6 +178,8 @@ public class AllShowFragment extends Activity {
             final Button tab2 = (Button) findViewById(R.id.tab2);
             final ImageButton tab0 = (ImageButton) findViewById(R.id.tab0);
             final Drawable button_bgd = tab2.getBackground();
+            tab1.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
+
             desc_clicked = false;
 
 
@@ -208,8 +210,8 @@ public class AllShowFragment extends Activity {
                 @Override
                 public void onClick(View v) {
                     // v.setEnabled(false);
-                    tab2.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
-                    tab1.setBackgroundDrawable(button_bgd);
+                    tab1.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
+                    tab2.setBackgroundDrawable(button_bgd);
                     showList = null;
                     showList = allShows;
                     allShowAdapter.notifyDataSetChanged();
@@ -220,8 +222,8 @@ public class AllShowFragment extends Activity {
             tab1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    tab1.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
-                    tab2.setBackgroundDrawable(button_bgd);
+                    tab2.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
+                    tab1.setBackgroundDrawable(button_bgd);
                     showList = null;
                     showList = myShowList;
                     allShowAdapter.notifyDataSetChanged();

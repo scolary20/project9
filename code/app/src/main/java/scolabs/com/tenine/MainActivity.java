@@ -1,27 +1,43 @@
 package scolabs.com.tenine;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.ApplicationErrorReport;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
+import scolabs.com.tenine.utils.NotificationsService;
 import scolabs.com.tenine.utils.Settings;
 
 
@@ -52,18 +68,77 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        final Animation bounce = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
+        Animation bounced = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
+        bounced.setDuration(3000);
+        final ImageView shows = (ImageView) findViewById(R.id.image);
+        shows.setAnimation(bounced);
+        bounce.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                startActivity(new Intent(MainActivity.this, AllShowFragment.class));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        shows.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shows.startAnimation(bounce);
+            }
+        });
+
         TextView header_date = (TextView)findViewById(R.id.header_date);
         TextView username = (TextView)findViewById(R.id.header_username);
+        TextView logout = (TextView) findViewById(R.id.logout);
         TextView scolabs = (TextView) findViewById(R.id.scolabs);
         Typeface sco = Typeface.createFromAsset(getAssets(), "simplifica.ttf");
         Typeface font = Typeface.create(sco, Typeface.BOLD);
         scolabs.setTypeface(font);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+                finish();
+            }
+        });
 
         User aUser = Settings.getLoginUser();
         if(aUser != null)
             username.setText(aUser.getUsername());
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
+        startService(new Intent(MainActivity.this, NotificationsService.class));
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                //.setTitle("Lock This Show")
+                .setMessage("Do you want to exit?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
@@ -100,7 +175,6 @@ public class MainActivity extends ActionBarActivity
         actionBar.setTitle(mTitle);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -113,6 +187,13 @@ public class MainActivity extends ActionBarActivity
         }
         return super.onCreateOptionsMenu(menu);
     }
+
+    public void logout() {
+        String filePath = this.getFilesDir().getParent() + "/shared_prefs/com.scolabs.tenine_preferences.xml";
+        File deletePrefFile = new File(filePath);
+        deletePrefFile.delete();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,8 +210,6 @@ public class MainActivity extends ActionBarActivity
         } else if (id == R.id.unlock_show_action) {
 
         }
-
-
 
         return super.onOptionsItemSelected(item);
     }

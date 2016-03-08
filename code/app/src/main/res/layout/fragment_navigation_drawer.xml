@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:choiceMode="singleChoice"
     android:dividerHeight="1dp"
-    android:background="@drawable/blue_background"
+          android:background="@color/transparent"
     android:duplicateParentState="true"
           android:listSelector="@drawable/blue_background3"
     tools:context=".NavigationDrawerFragment" />

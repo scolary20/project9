@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_margin="5dp"
-              android:background="@drawable/blue_background6"
+              android:background="@drawable/blue_background3"
     android:layout_height="fill_parent">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="1dip"
-        android:dividerHeight="3dp"
+        android:layout_marginBottom="4dip"
+        android:layout_marginRight="4dip"
+        android:layout_marginLeft="4dip"
+        android:layout_marginTop="4dip"
+        android:dividerHeight="5dp"
         android:divider="@color/transparent"
         tools:listitem="@layout/show_list_item"
         android:id="@+id/listView" />

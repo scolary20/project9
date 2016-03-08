@@ -66,13 +66,14 @@ public class Login extends Activity {
             Settings.setLoginUser(User.getDbUser(current_user,"","","username"));
             Log.d("Message 1 ", "Login Successfully");
             Intent main_activity = new Intent(Login.this, MainActivity.class);
-            startActivity(main_activity);
+            startActivityForResult(main_activity, 5);
         }
         else
         {
             viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
 
             final Button sign_in = (Button) findViewById(R.id.sign_btn);
+            final Button register = (Button) findViewById(R.id.register_btn);
                 created_db = true;
                 SharedPreferences sr = PreferenceManager
                         .getDefaultSharedPreferences(Login.this);
@@ -90,11 +91,13 @@ public class Login extends Activity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if (email.equals("") || password.equals("")) {
+                            if (isValidateLoginCreditials() > 0) {
                                 Login.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        error.setText("\n No Blank Field Allowed");
+                                        error.setText("");
+                                        error.setText(error_messages);
+                                        error_messages = "";
                                     }
                                 });
                             } else {
@@ -111,7 +114,7 @@ public class Login extends Activity {
                                     sp.edit().putString(LOGIN_USER, aUser.getUsername()).apply();
                                     Settings.setLoginUser(aUser);
                                     Intent main_activity = new Intent(Login.this, MainActivity.class);
-                                    startActivity(main_activity);
+                                    startActivityForResult(main_activity, 5);
 
                                     Log.d("Message 1 ", "Login Successfully");
                                 } else if (user != null) //User exists but wrong password
@@ -142,6 +145,14 @@ public class Login extends Activity {
                     }).start();
                 }
             });
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent reg = new Intent(Login.this, Register.class);
+                    reg.putExtra("user_email", "");
+                    startActivityForResult(reg, 10);
+                }
+            });
         }
     }
 
@@ -163,6 +174,19 @@ public class Login extends Activity {
         return size;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 5)
+            onDestroy();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        finish();
+        System.exit(0);
+    }
 
     // Using the following method, we will handle all screen swaps.
     public boolean onTouchEvent(MotionEvent touchevent) {
