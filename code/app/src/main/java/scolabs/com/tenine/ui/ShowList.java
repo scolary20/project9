@@ -43,9 +43,6 @@ public class ShowList extends Fragment {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.shows_ui, container, false);
         EventBus.getDefault().register(this);
-        //SearchView search = (SearchView)v.findViewById(R.id.searchView);
-        //search.setQueryHint("Type your text here");
-
 
         loadShows();
         ListView list = (ListView) v.findViewById(R.id.listView);
@@ -96,14 +93,14 @@ public class ShowList extends Fragment {
     private void loadShows() {
 
         // Convert string to date
-        /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "08-03-2016 04:25:00";
-        String strdate3 = "08-03-2016 04:20:00";
-        String strdate4 = "08-03-2016 04:11:00";
-        String strdate5 = "08-03-2016 04:30:00";
-        String strdate6 = "07-03-2016 03:49:00";
-        String strdate7 = "07-03-2016 07:45:00";
-        String strdate8 = "07-03-2016 07::00";
+        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String strdate2 = "10-03-2016 01:02:05";
+        String strdate3 = "10-03-2016 01:15:00";
+        String strdate4 = "10-03-2016 01:20:00";
+        String strdate5 = "10-03-2016 01:25:00";
+        String strdate6 = "10-03-2016 01:30:00";
+        String strdate7 = "10-03-2016 01:35:00";
+        String strdate8 = "10-03-2016 01:20:00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
         newdate = null;
         newdate3 = null;
@@ -211,7 +208,7 @@ public class ShowList extends Fragment {
         tr.setShow_trailer_location("game_trailer");
         tr.setShow_img_location("game.png");
         tr.save();
-        showList.add(tr);*/
+        showList.add(tr);
 
         showList = ShowQueries.getShows();
         Log.e("Show list size ",String.valueOf(showList.size()));

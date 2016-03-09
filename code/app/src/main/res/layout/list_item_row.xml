@@ -4,7 +4,6 @@
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:padding="10dp"
     android:paddingTop="5dp"
-                android:background="#f2f2ff"
     android:paddingBottom="5dp">
 
 

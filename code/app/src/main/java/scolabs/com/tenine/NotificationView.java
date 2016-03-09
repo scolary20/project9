@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.widget.TextView;
 
+import scolabs.com.tenine.model.Global;
+
 public class NotificationView extends Activity {
 
     @Override
@@ -30,6 +32,7 @@ public class NotificationView extends Activity {
 
         // remove the notification with the specific id
         myNotificationManager.cancel(id);
+        Global.notificationsCount = 0;
         Intent i = new Intent(NotificationView.this, Login.class);
         startActivity(i);
     }

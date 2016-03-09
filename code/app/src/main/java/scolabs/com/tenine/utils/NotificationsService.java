@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,59 +28,21 @@ import scolabs.com.tenine.model.Show;
 public class NotificationsService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String START_SHOWS_NOTIF = "start_shows_notifications";
-    private static final String ACTION_BAZ = "scolabs.com.tenine.utils.action.BAZ";
-    private long minute;
+
     private int numMessages;
     private NotificationManager myNotificationManager;
     private int notificationId = 112;
     private boolean isDone = true;
 
-    // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "scolabs.com.tenine.utils.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "scolabs.com.tenine.utils.extra.PARAM2";
-
     public NotificationsService() {
         super("NotificationsService");
     }
 
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, NotificationsService.class);
-        intent.setAction(START_SHOWS_NOTIF);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
-
-    /**
-     * Starts this service to perform action Baz with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, NotificationsService.class);
-        intent.setAction(ACTION_BAZ);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            final String action = intent.getAction();
-            if (START_SHOWS_NOTIF.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            }
+            handleActionFoo();
         }
     }
 
@@ -87,41 +50,56 @@ public class NotificationsService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionFoo(String param1, String param2) {
-        final ArrayList<Show> shows = ShowQueries.getMyAiringShows();
+    private void handleActionFoo() {
+        // final ArrayList<Show> shows = ShowQueries.getMyAiringShows();
         final long totalScrollTime = Long.MAX_VALUE;
         final int scrollPeriod = 1500;
-        final int heightToScroll = 20;
         final ArrayList<Show> showsToRemoved = new ArrayList<>();
         final Object object = new Object();
-
+        Settings.setup_db(this, "", true);
+        final ArrayList<Show> myShows = ShowQueries.getShows();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                CountDownTimer waitTimer = new CountDownTimer(totalScrollTime, scrollPeriod) {
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                        displayNotificationOne();
+                        Log.e("Intent ", "running..." + myShows.size());
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+        }).start();
+
+                /*CountDownTimer waitTimer = new CountDownTimer(totalScrollTime, scrollPeriod) {
                     public void onTick(long millisUntilFinished) {
                         minute += millisUntilFinished;
-                        if (minute == 60000 && isDone) {
-                            synchronized (object) {
+                        //if (minute == 60000 && isDone) {
+
+                            //synchronized (object) {
                                 isDone = false;
-                                for (Show show : shows) {
-                                    if (show.getAiring_date().getTime() > new Date().getTime()) {
+                                /*for (Show show : shows) {
+                                    //if (show.getAiring_date().getTime() > new Date().getTime()) {
                                         displayNotificationOne();
                                         showsToRemoved.add(show);
-                                    }
-                                }
+                                    //}
+                                //}
                                 shows.removeAll(showsToRemoved);
                                 isDone = true;
                             }
-                        }
+                            //minute = 0;
+                        //}
+
+
                     }
 
                     public void onFinish() {
                         this.cancel();
                     }
-                }.start();
-            }
-        }).start();
+                };*/
+        //waitTimer.start();
+
     }
 
     protected void displayNotificationOne() {

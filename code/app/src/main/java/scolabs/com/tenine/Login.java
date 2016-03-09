@@ -46,6 +46,7 @@ public class Login extends Activity {
     private static final String LOGIN_USER = "username";
     private boolean isUserLogin;
     private boolean created_db;
+    private boolean isServiceRunning;
 
 
     @Override
@@ -56,7 +57,7 @@ public class Login extends Activity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Login.this);
         isUserLogin = sp.getBoolean(LOGIN_PREF, false);
         created_db = sp.getBoolean(AA_MODELS, false);
-        Settings.setup_db(Login.this,AA_MODELS, created_db); //DB_Models
+        Settings.setup_db(Login.this, AA_MODELS, created_db); //DB_Models
         String current_user = sp.getString(LOGIN_USER,"");
 
 
@@ -66,6 +67,8 @@ public class Login extends Activity {
             Settings.setLoginUser(User.getDbUser(current_user,"","","username"));
             Log.d("Message 1 ", "Login Successfully");
             Intent main_activity = new Intent(Login.this, MainActivity.class);
+            if (!Settings.isServiceRunning(LocalService.class, this))
+                startService(new Intent(Login.this, LocalService.class));
             startActivityForResult(main_activity, 5);
         }
         else
@@ -114,6 +117,8 @@ public class Login extends Activity {
                                     sp.edit().putString(LOGIN_USER, aUser.getUsername()).apply();
                                     Settings.setLoginUser(aUser);
                                     Intent main_activity = new Intent(Login.this, MainActivity.class);
+                                    if (!Settings.isServiceRunning(LocalService.class, Login.this))
+                                        startService(new Intent(Login.this, LocalService.class));
                                     startActivityForResult(main_activity, 5);
 
                                     Log.d("Message 1 ", "Login Successfully");
@@ -233,4 +238,5 @@ public class Login extends Activity {
         }
         return false;
     }
+
 }

@@ -3,9 +3,13 @@ package scolabs.com.tenine;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.Date;
 
@@ -23,22 +27,23 @@ public class WriteComment extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_comment);
-        Button cancel = (Button)findViewById(R.id.cment_cancel_bt);
-        Button post = (Button)findViewById(R.id.cment_post_bt);
+
+        ImageButton send = (ImageButton) findViewById(R.id.send);
+        ImageView back = (ImageView) findViewById(R.id.back);
         final EditText input = (EditText)findViewById(R.id.cment_inputText);
         final Long showId = getIntent().getLongExtra("showId", -99);
 
         if (getIntent().getIntExtra("type", 0) == 1)
             input.setText(getIntent().getStringExtra("message"));
 
-        cancel.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
 
-        post.setOnClickListener(new View.OnClickListener() {
+        send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!input.getText().equals(""))

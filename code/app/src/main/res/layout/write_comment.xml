@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:background="@drawable/blue_background5"
               android:orientation="vertical"
               android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_gravity="left"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_marginBottom="5dip"
+        android:gravity="right"
+        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:layout_below="@+id/watching"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:alpha="0.3"
+        android:background="#000"/>
 
     <ImageView
         android:id="@+id/commet_pp"
@@ -64,61 +85,38 @@
         android:alpha="0.3"
         android:background="#000"/>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                       android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical"
-                      android:weightSum="1">
+                      android:layout_height="match_parent"
+                      android:orientation="horizontal"
+                      android:weightSum="1"
+                      android:id="@+id/group2">
 
             <EditText
                 android:id="@+id/cment_inputText"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dip"
                 android:layout_marginTop="10dip"
-                android:layout_weight="0.01"
+                android:layout_weight="0.8"
+                android:layout_marginBottom="10dip"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/border_field2"
                 android:hint="comment here..."
                 android:padding="10dp"/>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal"
-                          android:padding="10dp"
-                          android:weightSum="1">
-
-                <Button
-                    android:id="@+id/cment_cancel_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/blue_background3"
-                    android:gravity="center"
-                    android:text="Cancel"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="#fd7f7f"
-                    android:textStyle="bold"/>
-
-                <Button
-                    android:id="@+id/cment_post_bt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="5dip"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/blue_background3"
-                    android:gravity="center"
-                    android:text="Post this"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold"/>
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/send"
+                android:layout_width="60dip"
+                android:scaleType="fitXY"
+                android:layout_weight="0.1"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip"
+                android:background="@color/transparent"
+                android:src="@drawable/icon_send"
+                android:layout_height="50dip"
+                android:layout_gravity="center_vertical"
+                />
         </LinearLayout>
-    </ScrollView>
+
 </LinearLayout>

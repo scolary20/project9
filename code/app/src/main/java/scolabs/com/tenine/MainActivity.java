@@ -118,7 +118,7 @@ public class MainActivity extends ActionBarActivity
             username.setText(aUser.getUsername());
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
-        startService(new Intent(MainActivity.this, NotificationsService.class));
+
     }
 
     @Override

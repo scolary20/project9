@@ -1,5 +1,6 @@
 package scolabs.com.tenine.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.SystemClock;
 
@@ -76,5 +77,15 @@ public class Settings {
         }
 
         return null;
+    }
+
+    public static boolean isServiceRunning(Class<?> serviceClass, Context mcontext) {
+        ActivityManager manager = (ActivityManager) mcontext.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo serviceInfo : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(serviceInfo.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

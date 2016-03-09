@@ -61,6 +61,13 @@
 
         <service
             android:name=".utils.NotificationsService"
+            android:process=":my_process"
+            android:exported="false">
+        </service>
+
+        <service
+            android:name=".LocalService"
+            android:process=":local_service"
             android:exported="false">
         </service>
 

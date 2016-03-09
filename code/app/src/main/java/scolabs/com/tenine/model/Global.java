@@ -22,4 +22,5 @@ public class Global {
     static public TextView txt;
     static public CommentAdapter cmAdapter;
     public static ArrayList<Thread> drawerShowThreads = new ArrayList<>();
+    public static int notificationsCount = 0;
 }
