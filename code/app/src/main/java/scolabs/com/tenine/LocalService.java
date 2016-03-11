@@ -7,6 +7,10 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -28,6 +32,8 @@ import scolabs.com.tenine.utils.Settings;
  * Created by scolary on 3/8/2016.
  */
 public class LocalService extends Service {
+    public static final String BROADCAST = "com.scolabs.tenine.android.action.broadcast";
+    ArrayList<Show> myShows = new ArrayList<>();
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
     private NotificationManager myNotificationManager;
@@ -35,33 +41,6 @@ public class LocalService extends Service {
     private int numMessages;
     private AtomicBoolean isDone = new AtomicBoolean((true));
     private long OP_VALUE = Long.MAX_VALUE;
-    ArrayList<Show> myShows = new ArrayList<>();
-
-    // Handler that receives messages from the thread
-    private final class ServiceHandler extends Handler {
-        public ServiceHandler(Looper looper) {
-            super(looper);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            Log.e("Service ", "Service started !!!");
-            Settings.setup_db(getApplicationContext(), "", true);
-            while (OP_VALUE != 0) {
-                try {
-                    Thread.sleep(30000);
-                } catch (InterruptedException e) {
-                    // Restore interrupt status.
-                    Thread.currentThread().interrupt();
-                }
-                new LoadShows().execute();
-                OP_VALUE--;
-            }
-            // Stop the service using the startId, so that we don't stop
-            // the service in the middle of handling another job
-            stopSelf(msg.arg1);
-        }
-    }
 
     @Override
     public void onCreate() {
@@ -107,17 +86,25 @@ public class LocalService extends Service {
 
         // Invoking the default notification service
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        Drawable draw;
+        Bitmap draw;
+        Uri sound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.notif_sound);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         mBuilder.setContentTitle(title);
-        mBuilder.setContentText(text);
-        mBuilder.setTicker(sticker);
-        mBuilder.setSound(soundUri);//This sets the sound to play
-        if ((draw = notifImage(getApplicationContext(), imgLocation)) != null) {
-            mBuilder.setSmallIcon(R.drawable.lock_icon);
-        } else
-            mBuilder.setSmallIcon(R.drawable.lock_icon);
+        if (Global.notificationsCount > 1) {
+            mBuilder.setContentText("" + Global.notificationsCount + " shows have just started airing!");
+            mBuilder.setTicker("new notification");
+        } else {
+            mBuilder.setContentText(text);
+            mBuilder.setTicker(sticker);
+        }
+
+        if (sound != null)
+            mBuilder.setSound(sound);//This sets the sound to play
+        else
+            mBuilder.setSound(soundUri);
+        mBuilder.setSmallIcon(R.drawable.notif_icon);
+        mBuilder.setColor(Color.parseColor("#516666"));
 
         // Increase notification number every time a new notification arrives
         mBuilder.setNumber(++Global.notificationsCount);
@@ -148,37 +135,9 @@ public class LocalService extends Service {
         myNotificationManager.notify(notificationId, mBuilder.build());
     }
 
-
-    private class LoadShows extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (myShows.size() > 0 /*&& isDone == new AtomicBoolean(true)*/) {
-                for (Show show : myShows) {
-                    long dt = new Date().getTime();
-                    long air = show.getAiring_date().getTime();
-                    if (air >= (dt - 60000) && air < (air + 60000)) {
-                        displayNotificationOne("10/9c Notification", "Your Show" + show.getName() + "has started", "show has started!", "empire");
-                        Log.e("Notifiation", "" + show.getName() + " " + show.getAiring_date());
-                    }
-                }
-            }
-            Log.e("Shows size", "" + myShows.size());
-            isDone = new AtomicBoolean(false);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            myShows = ShowQueries.getMyAiringShows();
-            //ActiveAndroid.getDatabase().close();
-            return "";
-        }
-    }
-
-    public Drawable notifImage(Context mContext, String location) {
+    public Bitmap notifImage(Context mContext, String location) {
         InputStream ims = null;
-        Drawable sImage;
+        Bitmap sImage = null;
         try {
             ims = mContext.getAssets().open(location);
         } catch (Exception ex) {
@@ -186,9 +145,70 @@ public class LocalService extends Service {
         }
 
         if (ims != null) {
-            sImage = Drawable.createFromStream(ims, null);
+            //Bitmap Image = ((BitmapDrawable)Drawable.createFromStream(ims, null)).getBitmap();
+            sImage = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.empire);
             return sImage;
         }
         return null;
+    }
+
+    // Handler that receives messages from the thread
+    private final class ServiceHandler extends Handler {
+        public ServiceHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            Log.e("Service ", "Service started !!!");
+            Settings.setup_db(getApplicationContext(), "", true);
+            while (OP_VALUE != 0) {
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {
+                    // Restore interrupt status.
+                    Thread.currentThread().interrupt();
+                }
+                new LoadShows().execute();
+                OP_VALUE--;
+            }
+            // Stop the service using the startId, so that we don't stop
+            // the service in the middle of handling another job
+            stopSelf(msg.arg1);
+        }
+    }
+
+    private class LoadShows extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (myShows.size() > 0 && isDone.get()) {
+                isDone.set(false);
+                for (Show show : myShows) {
+                    long dt = new Date().getTime();
+                    long air = show.getAiring_date().getTime();
+                    if (air >= (dt - 30000) && air < (air + 40000)) {
+                        displayNotificationOne("10/9c Notification ", "" + show.getName() + " has started ", "show has started!", "empire");
+                        sendBroadcas();
+                        Log.e("Notifiation", "" + show.getName() + " " + show.getAiring_date());
+                    }
+                }
+            }
+            Log.e("Shows size", "" + myShows.size());
+            isDone.set(true);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            myShows = ShowQueries.getMyAiringShows();
+            return "";
+        }
+
+        public void sendBroadcas() {
+            Intent intent = new Intent(BROADCAST);
+            intent.setAction("show_started");
+            sendBroadcast(intent);
+        }
     }
 }

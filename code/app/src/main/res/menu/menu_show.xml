@@ -10,4 +10,11 @@
         android:orderInCategory="2"
         android:title="Unlock"
         app:showAsAction="always|withText"/>
+
+    <item
+        android:id="@+id/refresh_app"
+        android:icon="@drawable/refresh_icon"
+        android:orderInCategory="1"
+        android:title="Unlock"
+        app:showAsAction="always"/>
 </menu>

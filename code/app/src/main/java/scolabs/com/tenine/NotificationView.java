@@ -31,8 +31,8 @@ public class NotificationView extends Activity {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // remove the notification with the specific id
-        myNotificationManager.cancel(id);
         Global.notificationsCount = 0;
+        myNotificationManager.cancel(id);
         Intent i = new Intent(NotificationView.this, Login.class);
         startActivity(i);
     }

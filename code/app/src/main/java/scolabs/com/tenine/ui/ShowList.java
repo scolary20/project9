@@ -1,6 +1,9 @@
 package scolabs.com.tenine.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 
 import java.text.ParseException;
@@ -24,6 +28,7 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.AllShowFragment;
 import scolabs.com.tenine.CommentActivity;
+import scolabs.com.tenine.Login;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Global;
@@ -34,7 +39,17 @@ import scolabs.com.tenine.model.Show;
  */
 
 public class ShowList extends Fragment {
-    ShowAdapter showAdapter;
+    private ShowAdapter showAdapter;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("show_started")) {
+                Log.e("Receiver ", "Working !!!");
+                showAdapter.notifyDataSetChanged();
+            }
+        }
+    };
     private ArrayList<Show> showList;
 
     @Override
@@ -43,6 +58,9 @@ public class ShowList extends Fragment {
         super.onCreate(savedInstanceState);
         View v = inflater.inflate(R.layout.shows_ui, container, false);
         EventBus.getDefault().register(this);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("show_started");
+        getActivity().registerReceiver(receiver, filter);
 
         loadShows();
         ListView list = (ListView) v.findViewById(R.id.listView);
@@ -74,11 +92,17 @@ public class ShowList extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.unlock_show_action) {
-
             Intent i = new Intent(getActivity(), AllShowFragment.class);
             startActivity(i);
             return true;
+        } else if (item.getItemId() == R.id.refresh_app) {
+            Global.drawerShowThreads.removeAll(Global.drawerShowThreads);
+            Intent i = new Intent(getActivity(), Login.class);
+            startActivity(i);
+            Toast.makeText(getActivity().getApplicationContext(), "refreshed!", Toast.LENGTH_SHORT);
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -89,18 +113,22 @@ public class ShowList extends Fragment {
         Log.e("Show has been deleted", " " + show.getId());
     }
 
+    @Override
+    public void onDestroy() {
+        getActivity().unregisterReceiver(receiver);
+    }
 
     private void loadShows() {
 
         // Convert string to date
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "10-03-2016 01:02:05";
-        String strdate3 = "10-03-2016 01:15:00";
-        String strdate4 = "10-03-2016 01:20:00";
-        String strdate5 = "10-03-2016 01:25:00";
-        String strdate6 = "10-03-2016 01:30:00";
-        String strdate7 = "10-03-2016 01:35:00";
-        String strdate8 = "10-03-2016 01:20:00";
+        /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String strdate2 = "11-03-2016 03:53:00";
+        String strdate3 = "11-03-2016 03:47:00";
+        String strdate4 = "11-03-2016 03:55:00";
+        String strdate5 = "11-03-2016 04:00:00";
+        String strdate6 = "11-03-2016 04:05:00";
+        String strdate7 = "11-03-2016 04:10:00";
+        String strdate8 = "11-03-2016 04:15:00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
         newdate = null;
         newdate3 = null;
@@ -109,6 +137,7 @@ public class ShowList extends Fragment {
         newdate5 = null;
         newdate6 = null;
         newdate7 = null;
+        newdate8 = null;
         Date nd = null;
         try {
             newdate = dateformat2.parse(strdate2);
@@ -118,6 +147,7 @@ public class ShowList extends Fragment {
             newdate6 = dateformat2.parse(strdate6);
             newdate7 = dateformat2.parse(strdate7);
             nd = dateformat2.parse(strdate3);
+            newdate8 = dateformat2.parse(strdate8);
             System.out.println(newdate);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -130,10 +160,10 @@ public class ShowList extends Fragment {
         sw.setNum_comment(5426);
         sw.setNum_watching(4126345L);
         sw.setAiring_date(newdate);
-        sw.setShow_img_location("break.png");
+        sw.setShow_img_location("breaking.png");
         sw.setShow_trailer_location("modern_trailer");
         sw.save();
-        //showList.add(sw);
+        showList.add(sw);
 
         Show tr = new Show("Empire", "s3E3", "Hulu network");
         tr.setAiring_date(nd);
@@ -176,7 +206,7 @@ public class ShowList extends Fragment {
         tr.setShow_length(20);
         tr.setNum_comment(4500);
         tr.setNum_watching(45009983);
-        tr.setAiring_date(newdate5);
+        tr.setAiring_date(newdate8);
         tr.setShow_trailer_location("modern_trailer");
         tr.setShow_img_location("modern.png");
         tr.save();
@@ -208,7 +238,7 @@ public class ShowList extends Fragment {
         tr.setShow_trailer_location("game_trailer");
         tr.setShow_img_location("game.png");
         tr.save();
-        showList.add(tr);
+        showList.add(tr);*/
 
         showList = ShowQueries.getShows();
         Log.e("Show list size ",String.valueOf(showList.size()));

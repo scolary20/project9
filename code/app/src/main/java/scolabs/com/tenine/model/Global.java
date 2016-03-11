@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import scolabs.com.tenine.ui.CommentAdapter;
+import scolabs.com.tenine.ui.ShowAdapter;
 
 /**
  * Created by scolary on 1/30/2016.
@@ -23,4 +24,5 @@ public class Global {
     static public CommentAdapter cmAdapter;
     public static ArrayList<Thread> drawerShowThreads = new ArrayList<>();
     public static int notificationsCount = 0;
+    public static ShowAdapter showAdapter;
 }

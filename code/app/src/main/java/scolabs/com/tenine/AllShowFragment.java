@@ -129,14 +129,14 @@ public class AllShowFragment extends Activity {
                 public void onClick(View v) {
                     if (!desc_clicked) {
 
-                        desc_view.setVisibility(desc_view.VISIBLE);
+                        desc_view.setVisibility(View.VISIBLE);
                         Typeface type = Typeface.createFromAsset(AllShowFragment.this.getAssets(), "bariol.ttf");
                         desc_view.setText(R.string.login_top_message);
                         desc_view.setTypeface(type);
                         desc_view.setAnimation(bounce);
                         desc_clicked = true;
                     } else {
-                        desc_view.setVisibility(desc_view.GONE);
+                        desc_view.setVisibility(View.GONE);
                         desc_clicked = false;
                     }
                 }
@@ -146,7 +146,7 @@ public class AllShowFragment extends Activity {
                 @Override
                 public void onClick(View v) {
 
-                    long id = Settings.getLoginUser().getId();
+                    long id = Settings.getLoginUser().getUserId();
                     new UserShow(id, show.getShowId()).save();
                     myShowList.add(show);
                     Show[] arrShow = {show};

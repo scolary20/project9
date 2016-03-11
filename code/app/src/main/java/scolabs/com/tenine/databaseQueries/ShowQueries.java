@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.UserShow;
 import scolabs.com.tenine.utils.Settings;
@@ -88,5 +89,13 @@ public class ShowQueries {
         }
         myShows.removeAll(showToRemove);
         return myShows;
+    }
+
+    public static UserShow getUserShowById(long userId, long showId) {
+        return new Select()
+                .from(UserShow.class)
+                .where("showId = ?", showId)
+                .and("userId = ?", userId)
+                .executeSingle();
     }
 }

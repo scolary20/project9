@@ -24,7 +24,9 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.model.Global;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
@@ -34,6 +36,9 @@ import scolabs.com.tenine.utils.Settings;
  * Created by scolary on 2/8/2016.
  */
 public class Login extends Activity {
+    private static final String LOGIN_PREF = "user_already_login";
+    private static final String AA_MODELS = "models";
+    private static final String LOGIN_USER = "username";
     private ViewFlipper viewFlipper;
     private float lastX;
     private String username = "no_username"; //Set for validation purposes only
@@ -41,12 +46,8 @@ public class Login extends Activity {
     private User aUser;
     private String password;
     private String error_messages = "\n";
-    private static final String LOGIN_PREF = "user_already_login";
-    private static final String AA_MODELS = "models";
-    private static final String LOGIN_USER = "username";
     private boolean isUserLogin;
     private boolean created_db;
-    private boolean isServiceRunning;
 
 
     @Override
@@ -60,13 +61,17 @@ public class Login extends Activity {
         Settings.setup_db(Login.this, AA_MODELS, created_db); //DB_Models
         String current_user = sp.getString(LOGIN_USER,"");
 
-
         if(isUserLogin)
         {
 
-            Settings.setLoginUser(User.getDbUser(current_user,"","","username"));
+            Settings.setLoginUser(UserQueries.getDbUser(current_user, "", "", "username"));
             Log.d("Message 1 ", "Login Successfully");
             Intent main_activity = new Intent(Login.this, MainActivity.class);
+
+            Global.notificationsCount = 0;
+            if (Global.showAdapter != null)
+                Global.showAdapter.notifyDataSetChanged();
+
             if (!Settings.isServiceRunning(LocalService.class, this))
                 startService(new Intent(Login.this, LocalService.class));
             startActivityForResult(main_activity, 5);
@@ -105,8 +110,8 @@ public class Login extends Activity {
                                 });
                             } else {
 
-                                aUser = User.getDbUser(username, email, password, "both");
-                                User user = User.getDbUser(username, email, password, "email");
+                                aUser = UserQueries.getDbUser(username, email, password, "both");
+                                User user = UserQueries.getDbUser(username, email, password, "email");
 
                                 if (aUser != null) //email and Password
                                 {

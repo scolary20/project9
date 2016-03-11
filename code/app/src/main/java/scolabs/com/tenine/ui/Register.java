@@ -21,6 +21,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import scolabs.com.tenine.R;
+import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.User;
 
 public class Register extends Activity {
@@ -70,8 +71,8 @@ public class Register extends Activity {
                         }
                         else
                         {
-                            User user_name = User.getDbUser(username,email,password,"username");
-                            User user_email = User.getDbUser(username,email,password,"email");
+                            User user_name = UserQueries.getDbUser(username, email, password, "username");
+                            User user_email = UserQueries.getDbUser(username, email, password, "email");
                             if(user_name != null)
                                 error_messages += "Username already taken \n";
                             else if(user_email != null)
@@ -120,7 +121,6 @@ public class Register extends Activity {
     public long register(String username, String email, String password) {
         User user = new User(username, email, password);
         user.setDate_created(new Date());
-        user.setServerId(5);
         return user.save();
     }
 

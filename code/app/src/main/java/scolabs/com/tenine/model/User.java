@@ -13,6 +13,7 @@ import javax.validation.constraints.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by scolary on 2/6/2016.
@@ -23,6 +24,7 @@ public class User extends Model {
     @NotNull(message = "Username is required")
     @Column
     @Size(min = 4, max = 20, message = "username, min length = 4 and max = 20")
+    @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "username contains illegal characters")
     String username;
 
     @NotNull(message = "Email is required")
@@ -38,8 +40,8 @@ public class User extends Model {
     Date date_created;
     @Column
     Date last_modified;
-    @Column
-    long serverId;
+    @Column(unique = true, notNull = true)
+    long userId;
 
     public User(){
 
@@ -50,32 +52,9 @@ public class User extends Model {
         this.username = username;
         this.email = email;
         this.password = password;
+        userId = new Random().nextLong() * new Random().nextInt();
     }
 
-    public static User getDbUser(String username, String email, String password,String type) {
-        if(type.equals("both"))
-        {
-            return new Select()
-                    .from(User.class)
-                    .where("email = ?", email)
-                    .and("password = ?", password)
-                    .executeSingle();
-        }
-        else if(type.equals("email"))
-        {
-            return new Select()
-                    .from(User.class)
-                    .where("email = ?", email)
-                    .executeSingle();
-        }
-        else
-        {
-            return new Select()
-                    .from(User.class)
-                    .where("username = ?", username)
-                    .executeSingle();
-        }
-    }
 
     public String getUsername() {
         return username;
@@ -117,15 +96,15 @@ public class User extends Model {
         this.last_modified = last_modified;
     }
 
-    public long getServerId() {
-        return serverId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setServerId(long serverId) {
-        this.serverId = serverId;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
-    public List<Comment> myComments() {
+    public List<Comment> getMyComments() {
         return getMany(Comment.class, "Comment");
     }
 }

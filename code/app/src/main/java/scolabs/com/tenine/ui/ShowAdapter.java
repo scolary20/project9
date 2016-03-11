@@ -145,7 +145,8 @@ public class ShowAdapter extends ArrayAdapter {
                 cal.setTime(c.getAiring_date());
                 holder.chronometer.setBackgroundColor(default_color);
                 holder.chronometer.stop();
-                holder.chronometer.setText("" + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
+                holder.chronometer.setText("" + (cal.get(Calendar.HOUR_OF_DAY) < 10 ? "0" + cal.get(Calendar.HOUR_OF_DAY) : cal.get(Calendar.HOUR_OF_DAY)) + ":"
+                        + (cal.get(Calendar.MINUTE) < 10 ? "0" + cal.get(Calendar.MINUTE) : cal.get(Calendar.MINUTE)));
             }
         } else
         {

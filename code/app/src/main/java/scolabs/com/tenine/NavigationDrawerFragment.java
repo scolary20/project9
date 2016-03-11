@@ -1,5 +1,9 @@
 package scolabs.com.tenine;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -24,12 +28,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import scolabs.com.tenine.databaseQueries.ShowQueries;
-import scolabs.com.tenine.model.Global;
 import scolabs.com.tenine.model.Show;
-import scolabs.com.tenine.utils.Settings;
+
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -61,8 +63,21 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
-    private View mFragmentContainerView;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("show_started")) {
+                Log.e("Receiver ", "refresh views !!!");
+                mDrawerListView.refreshDrawableState();
+                mDrawerLayout.invalidate();
+                mDrawerLayout.requestLayout();
+                mDrawerLayout.refreshDrawableState();
 
+            }
+        }
+    };
+    private View mFragmentContainerView;
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
@@ -84,6 +99,10 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("show_started");
+        getActivity().registerReceiver(receiver, filter);
 
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
@@ -282,7 +301,7 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface NavigationDrawerCallbacks {
+    public interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */
@@ -295,21 +314,19 @@ public class NavigationDrawerFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
+            DrawerItemCustomAdapter adapter;
+            adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
             adapter.setNotifyOnChange(true);
             mDrawerListView.setAdapter(adapter);
             mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         }
 
-
         @Override
         protected String doInBackground(String... params) {
             myShows = ShowQueries.getMyAiringShows();
-
             Log.e("My airing show size", "" + myShows.size());
             return "";
         }
-
     }
 
 }

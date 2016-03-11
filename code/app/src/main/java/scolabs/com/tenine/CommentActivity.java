@@ -26,9 +26,12 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.CommentList;
+import scolabs.com.tenine.utils.Settings;
 
 
 public class CommentActivity extends ActionBarActivity {
@@ -37,7 +40,7 @@ public class CommentActivity extends ActionBarActivity {
     private int position = 0;
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
-    private long showId = Global.showId;
+    private long showId = Global.show.getShowId();
     private boolean isScrolling = true;
     private ScrollThread thread;
     private ArrayList<CountDownTimer> waitTimeList;
@@ -91,6 +94,7 @@ public class CommentActivity extends ActionBarActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.setCancelable(true);
         progressDialog.show();
+
 
         try {
             int raw_id = getResources().getIdentifier(Global.show.getShow_trailer_location(), "raw", getPackageName());
@@ -168,9 +172,9 @@ public class CommentActivity extends ActionBarActivity {
         }
         if (id == R.id.expand) {
             if (myVideoView.getVisibility() == View.GONE)
-                myVideoView.setVisibility(myVideoView.VISIBLE);
+                myVideoView.setVisibility(View.VISIBLE);
             else
-                myVideoView.setVisibility(myVideoView.GONE);
+                myVideoView.setVisibility(View.GONE);
         }
 
         if(id == android.R.id.home)
@@ -191,7 +195,9 @@ public class CommentActivity extends ActionBarActivity {
                     .setMessage("You won't be able to comment\n Are you sure?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
+                            long uId = Settings.getLoginUser().getUserId();
+                            ShowQueries.getUserShowById(uId, showId).delete();
+                            finish();
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

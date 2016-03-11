@@ -1,8 +1,10 @@
 package scolabs.com.tenine;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -28,12 +30,23 @@ import scolabs.com.tenine.utils.Settings;
  * Created by scolary on 1/27/2016.
  */
 public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
+    private final long ONE_MINUTE_IN_MILLIS = 60000;
     private Context mContext;
     private int layoutResourceId;
     private ArrayList<Show> data = null;
     private ArrayList<Thread> threads;
-    private final long ONE_MINUTE_IN_MILLIS = 60000;
     private DrawerItemCustomAdapter adapter;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals("show_started")) {
+                Log.e("Receiver ", "drawerItem received!!!");
+                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetInvalidated();
+            }
+        }
+    };
 
     public DrawerItemCustomAdapter(Context mContext, int layoutResourceId, ArrayList<Show> data) {
 
@@ -44,15 +57,10 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
         threads = Global.drawerShowThreads;
         adapter = this;
         EventBus.getDefault().register(this);
-    }
 
-    static class ViewHolder {
-        ProgressBar progressBar;
-        ImageView imageViewIcon;
-        TextView textViewName;
-        TextView length;
-        Typeface font;
-        Typeface type;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("show_started");
+        mContext.registerReceiver(receiver, filter);
     }
 
     @Override
@@ -122,7 +130,7 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(mContext, CommentActivity.class);
-                Global.showId = show.getShowId();
+                Global.show = show;
                 mContext.startActivity(myIntent);
             }
         });
@@ -185,5 +193,14 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
                 adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    static class ViewHolder {
+        ProgressBar progressBar;
+        ImageView imageViewIcon;
+        TextView textViewName;
+        TextView length;
+        Typeface font;
+        Typeface type;
     }
 }
