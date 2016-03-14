@@ -99,6 +99,7 @@ public class AllShowFragment extends Activity {
             final ImageButton view_btn = (ImageButton) listItem.findViewById(R.id.desc_btn);
             final Animation bounce = AnimationUtils.loadAnimation(getContext(), R.anim.image_animation);
             final ImageButton add_show = (ImageButton) listItem.findViewById(R.id.unlock_btn);
+            final ImageButton remove_show = (ImageButton) listItem.findViewById(R.id.remove_btn);
             final ImageView showImg = (ImageView) listItem.findViewById(R.id.show_image);
             final Drawable d;
 
@@ -154,6 +155,21 @@ public class AllShowFragment extends Activity {
                     Toast.makeText(mContext, "Show successfully added!!!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            remove_show.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    long id = Settings.getLoginUser().getUserId();
+                    UserShow sw = ShowQueries.getUserShowById(id, show.getShowId());
+                    if (sw != null) {
+                        sw.delete();
+                        myShowList.remove(show);
+                        allShowAdapter.notifyDataSetChanged();
+                        Toast.makeText(mContext, "Show successfully removed!!!", Toast.LENGTH_SHORT).show();
+                    }
+                    System.gc();//Garbage collector invocation.
+                }
+            });
             return listItem;
         }
 
@@ -182,7 +198,6 @@ public class AllShowFragment extends Activity {
 
             desc_clicked = false;
 
-
             ListView list = (ListView) findViewById(R.id.allshow_list);
             list.setAdapter(allShowAdapter);
             allShowAdapter = new AllShowAdapter(AllShowFragment.this, R.layout.allshow_item, showList);
@@ -208,26 +223,24 @@ public class AllShowFragment extends Activity {
 
             tab2.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) {//All shows
                     // v.setEnabled(false);
                     tab1.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
                     tab2.setBackgroundDrawable(button_bgd);
                     showList = null;
                     showList = allShows;
                     allShowAdapter.notifyDataSetChanged();
-                    Log.i("Click button", "clicked 1 !!!");
                 }
             });
 
             tab1.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) {// My shows
                     tab2.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_background4));
                     tab1.setBackgroundDrawable(button_bgd);
                     showList = null;
                     showList = myShowList;
                     allShowAdapter.notifyDataSetChanged();
-                    Log.i("Click button", "clicked!!!");
                 }
             });
 

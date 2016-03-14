@@ -83,8 +83,6 @@ public class ShowQueries {
         for (Show show : myShows) {
             if (!(boolean) Settings.showTimeHandler(show)[7]) {
                 showToRemove.add(show);
-                Log.e(" Show name " + show.getName(), " deleted");
-                Log.e("Airing Date ", "" + show.getAiring_date().toString());
             }
         }
         myShows.removeAll(showToRemove);

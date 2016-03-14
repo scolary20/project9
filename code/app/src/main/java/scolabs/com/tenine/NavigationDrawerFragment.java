@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
     private ArrayList<Show> myShows;
+    private View header;
 
     public NavigationDrawerFragment() {
     }
@@ -128,12 +130,12 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        View header = inflater.inflate(R.layout.left_nav_header,
+        header = inflater.inflate(R.layout.left_nav_header,
                 null);
         View footer = inflater.inflate(R.layout.list_nav_footer,null);
+        new LoadShows().execute(""); // Loading My Today's airing Shows....
         mDrawerListView.addHeaderView(header);
         mDrawerListView.addFooterView(footer);
-        new LoadShows().execute(""); // Loading My Today's airing Shows....
 
         return mDrawerListView;
     }
@@ -314,6 +316,10 @@ public class NavigationDrawerFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+            TextView watchingCount = (TextView) header.findViewById(R.id.watchingCount);
+            if (myShows != null) {
+                watchingCount.setText("currently watching " + myShows.size() + " " + (myShows.size() > 0 ? "shows" : "show"));
+            }
             DrawerItemCustomAdapter adapter;
             adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
             adapter.setNotifyOnChange(true);

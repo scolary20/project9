@@ -2,10 +2,7 @@ package scolabs.com.tenine.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +12,6 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -109,14 +105,9 @@ public class ShowAdapter extends ArrayAdapter {
             Calendar cal = Calendar.getInstance();
             cal.setTime(c.getAiring_date());
             //Calculating End Date
-            long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
-            int GRACE_PERIOD = 5;
             long t = cal.getTimeInMillis();
             Date end_show = (Date) time_array[1];
             Date today = (Date) time_array[0];
-            //int show_day = (int) time_array[2];
-            //int today_day = (int) time_array[3];
-            //long min_progress = (long) time_array[4];
             holder.chronometer.setBase((long) time_array[5]);
 
             Boolean check_date = (boolean) time_array[6];
@@ -132,20 +123,14 @@ public class ShowAdapter extends ArrayAdapter {
             }
 
             cal.setTime(end_show);
-            long et = cal.getTimeInMillis();
-            //Date grace_period = new Date(et + GRACE_PERIOD * ONE_MINUTE_IN_MILLIS);
             default_color = holder.chronometer.getDrawingCacheBackgroundColor();
-
-            //if (today.after(end_show)) /*&& today.before(grace_period))*/
-            //holder.chronometer.setBackgroundColor(Color.parseColor("#ffb2b2"));
-            //else
-            //holder.chronometer.setBackgroundColor(default_color);
 
             if (today.before(c.getAiring_date())) {
                 cal.setTime(c.getAiring_date());
                 holder.chronometer.setBackgroundColor(default_color);
                 holder.chronometer.stop();
-                holder.chronometer.setText("" + (cal.get(Calendar.HOUR_OF_DAY) < 10 ? "0" + cal.get(Calendar.HOUR_OF_DAY) : cal.get(Calendar.HOUR_OF_DAY)) + ":"
+                holder.chronometer.setText("" + (cal.get(Calendar.HOUR_OF_DAY) < 10 ? "0" +
+                        cal.get(Calendar.HOUR_OF_DAY) : cal.get(Calendar.HOUR_OF_DAY)) + ":"
                         + (cal.get(Calendar.MINUTE) < 10 ? "0" + cal.get(Calendar.MINUTE) : cal.get(Calendar.MINUTE)));
             }
         } else

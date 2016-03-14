@@ -52,17 +52,18 @@ public class WriteComment extends Activity
                     String name = Settings.getLoginUser().getUsername();
                     Comment c;
                     Intent cmInt = getIntent();
-                    if (cmInt.getIntExtra("type", 0) == 1) {
+                    if (cmInt.getIntExtra("type", 0) == 1) {//UPDATE
                         c = (Comment) Global.cmAdapter.getItem(cmInt.getIntExtra("position", -99));
                         c.setContent(cment);
                         c.save();
-                    } else {
+                    } else {//NEW COMMENT
                         c = new Comment(cment, name, new Date(), showId);
                         Global.cmAdapter.add(c);
                         c.save();
                     }
 
                     Global.cmAdapter.notifyDataSetChanged();
+                    Global.txt.setVisibility(View.GONE);
                     finish();
                 }
             }

@@ -9,15 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:weightSum="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="1">
 
         <ImageButton
             android:id="@+id/tab0"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_weight="0.05"
             android:layout_gravity="center"
+            android:layout_weight="0.05"
             android:background="@drawable/blue_background4"
             android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
             />
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/cmt_feedback"
-            android:dividerHeight="1dip"
+            android:dividerHeight="5dip"
             tools:listitem="@layout/allshow_item">
         </ListView>
     </RelativeLayout>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f2f2ff"
+    android:background="@drawable/blue_background2"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="5dp">
@@ -28,35 +29,36 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_date"
+        android:background="@drawable/blue_background"
+        android:gravity="center"
+        android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="5dp"
-        android:background="@drawable/blue_background"
-        android:textColor="#fff"
-        android:gravity="center"
         android:text=""
+        android:textColor="#fff"
          />
 
     <ImageView
         android:id="@+id/profile_picture"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_below="@+id/header_username"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/rounded_profile"
-        android:scaleType="fitXY"
         android:padding="10dp"
-        android:src="@drawable/profile_pic"
-        android:layout_below="@+id/header_username"
-        android:layout_centerHorizontal="true" />
+        android:scaleType="fitXY"
+        android:src="@drawable/profile_pic"/>
 
     <TextView
-        android:id="@+id/watching"
-        android:layout_below="@+id/profile_picture"
+        android:id="@+id/watchingCount"
         android:layout_width="wrap_content"
-        android:padding="10dp"
-        android:textStyle="italic"
         android:layout_height="wrap_content"
-        android:text="@string/watch_message" />
+        android:layout_below="@+id/profile_picture"
+        android:padding="5dp"
+        android:paddingLeft="10dp"
+        android:text=""
+        android:textStyle="italic"/>
 
     <View
         android:layout_width="match_parent"

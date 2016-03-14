@@ -103,6 +103,8 @@ public class LocalService extends Service {
             mBuilder.setSound(sound);//This sets the sound to play
         else
             mBuilder.setSound(soundUri);
+        mBuilder.setLights(0xff00ff00, 300, 100);
+        mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
         mBuilder.setSmallIcon(R.drawable.notif_icon);
         mBuilder.setColor(Color.parseColor("#516666"));
 

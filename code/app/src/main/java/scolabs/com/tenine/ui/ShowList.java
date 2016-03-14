@@ -122,13 +122,13 @@ public class ShowList extends Fragment {
 
         // Convert string to date
         /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "11-03-2016 03:53:00";
-        String strdate3 = "11-03-2016 03:47:00";
-        String strdate4 = "11-03-2016 03:55:00";
-        String strdate5 = "11-03-2016 04:00:00";
-        String strdate6 = "11-03-2016 04:05:00";
-        String strdate7 = "11-03-2016 04:10:00";
-        String strdate8 = "11-03-2016 04:15:00";
+        String strdate2 = "14-03-2016 20:45:00";
+        String strdate3 = "14-03-2016 20:49:00";
+        String strdate4 = "14-03-2016 20:55:00";
+        String strdate5 = "14-03-2016 20:00:00";
+        String strdate6 = "14-03-2016 21:05:00";
+        String strdate7 = "14-03-2016 21:10:00";
+        String strdate8 = "14-03-2016 21:20:00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
         newdate = null;
         newdate3 = null;

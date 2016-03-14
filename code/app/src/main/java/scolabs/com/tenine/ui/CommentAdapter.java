@@ -311,7 +311,7 @@ public class CommentAdapter extends ArrayAdapter {
                     dialog.dismiss();
                 } else {
                     dialog.dismiss();
-                    Toast.makeText(getContext(), "Error: You cannot modify this comment \nYou are not the owner", Toast.LENGTH_LONG);
+                    Toast.makeText(getContext(), "Error: You cannot modify this comment \nYou're not the owner", Toast.LENGTH_LONG);
                 }
             }
         });
