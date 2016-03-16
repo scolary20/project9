@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android"
+                   xmlns:tools="http://schemas.android.com/tools"
+                   tools:targetApi="21">
+
+    <item
+        android:id="@+id/on"
+        android:state_activated="true">
+        <bitmap
+            android:src="@drawable/ani_img_5"/>
+    </item>
+
+    <item
+        android:id="@+id/off">
+        <bitmap
+            android:src="@drawable/ani_img_rev_9"/>
+    </item>
+
+    <transition
+        android:drawable="@drawable/logo_animation_down"
+        android:fromId="@+id/on"
+        android:toId="@+id/off">
+    </transition>
+
+    <transition
+        android:drawable="@drawable/logo_animation_up"
+        android:fromId="@id/off"
+        android:toId="@id/on">
+    </transition>
+
+</animated-selector>

@@ -1,4 +1,4 @@
-package scolabs.com.tenine.model;
+package scolabs.com.tenine.utils;
 
 import android.content.Context;
 import android.widget.ListView;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.ShowAdapter;
 

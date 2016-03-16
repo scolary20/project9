@@ -30,7 +30,7 @@ import scolabs.com.tenine.R;
 import scolabs.com.tenine.WriteComment;
 import scolabs.com.tenine.databaseQueries.CommentQueries;
 import scolabs.com.tenine.model.Comment;
-import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.Settings;
 
 /**

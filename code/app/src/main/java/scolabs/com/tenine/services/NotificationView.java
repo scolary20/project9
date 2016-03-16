@@ -1,4 +1,4 @@
-package scolabs.com.tenine;
+package scolabs.com.tenine.services;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -7,14 +7,15 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.widget.TextView;
 
-import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.Login;
+import scolabs.com.tenine.R;
+import scolabs.com.tenine.utils.Global;
 
 public class NotificationView extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.f);
         CharSequence s = "Inside the activity of Notification one ";
         int id = 0;
 

@@ -3,10 +3,7 @@ package scolabs.com.tenine;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,7 +11,7 @@ import android.widget.ImageView;
 import java.util.Date;
 
 import scolabs.com.tenine.model.Comment;
-import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.Settings;
 
 /**

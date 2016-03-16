@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,9 +14,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,7 +36,7 @@ import scolabs.com.tenine.CommentActivity;
 import scolabs.com.tenine.Login;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
-import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
 
 /**
@@ -50,6 +55,7 @@ public class ShowList extends Fragment {
             }
         }
     };
+    private ImageView mImageViewFilling;
     private ArrayList<Show> showList;
 
     @Override
@@ -80,7 +86,17 @@ public class ShowList extends Fragment {
         });
 
         setHasOptionsMenu(true);
+        LinearLayout view = (LinearLayout) v.findViewById(R.id.linearAnim);
+        view.setVisibility(View.GONE);
 
+        if (showList != null && showList.size() < 1) {
+            TextView tx = (TextView) v.findViewById(R.id.no_show_message);
+            tx.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.bounce_marks));
+            view.setVisibility(View.VISIBLE);
+            mImageViewFilling = (ImageView) v.findViewById(R.id.imageview_animation_list_filling);
+            AnimationDrawable up = ((AnimationDrawable) mImageViewFilling.getBackground());
+            up.start();
+        }
         return v;
     }
 
@@ -98,6 +114,7 @@ public class ShowList extends Fragment {
         } else if (item.getItemId() == R.id.refresh_app) {
             Global.drawerShowThreads.removeAll(Global.drawerShowThreads);
             Intent i = new Intent(getActivity(), Login.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
             Toast.makeText(getActivity().getApplicationContext(), "refreshed!", Toast.LENGTH_SHORT);
         }
@@ -115,20 +132,30 @@ public class ShowList extends Fragment {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         getActivity().unregisterReceiver(receiver);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("show_started");
+        getActivity().registerReceiver(receiver, filter);
+    }
+
 
     private void loadShows() {
 
         // Convert string to date
         /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "14-03-2016 20:45:00";
-        String strdate3 = "14-03-2016 20:49:00";
-        String strdate4 = "14-03-2016 20:55:00";
-        String strdate5 = "14-03-2016 20:00:00";
-        String strdate6 = "14-03-2016 21:05:00";
-        String strdate7 = "14-03-2016 21:10:00";
-        String strdate8 = "14-03-2016 21:20:00";
+        String strdate2 = "16-03-2016 03:30:00";
+        String strdate3 = "16-03-2016 03:20:00";
+        String strdate4 = "16-03-2016 03:55:00";
+        String strdate5 = "16-03-2016 03:30:00";
+        String strdate6 = "16-03-2016 04:00:00";
+        String strdate7 = "16-03-2016 04:30:00";
+        String strdate8 = "16-03-2016 05:00:00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
         newdate = null;
         newdate3 = null;

@@ -13,9 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Configuration;
-
 import java.util.Iterator;
 import java.util.Set;
 
@@ -25,10 +22,9 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import scolabs.com.tenine.databaseQueries.UserQueries;
-import scolabs.com.tenine.model.Comment;
-import scolabs.com.tenine.model.Global;
-import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.User;
+import scolabs.com.tenine.services.LocalService;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.utils.Settings;
 

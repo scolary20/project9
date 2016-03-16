@@ -24,12 +24,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
 
@@ -51,17 +55,15 @@ public class NavigationDrawerFragment extends Fragment {
      * expands it. This shared preference tracks this.
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
+    public int todayShowsSize;
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
     private NavigationDrawerCallbacks mCallbacks;
-
     /**
      * Helper component that ties the action bar to the navigation drawer.
      */
     private ActionBarDrawerToggle mDrawerToggle;
-
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -74,7 +76,6 @@ public class NavigationDrawerFragment extends Fragment {
                 mDrawerLayout.invalidate();
                 mDrawerLayout.requestLayout();
                 mDrawerLayout.refreshDrawableState();
-
             }
         }
     };
@@ -105,6 +106,7 @@ public class NavigationDrawerFragment extends Fragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction("show_started");
         getActivity().registerReceiver(receiver, filter);
+        EventBus.getDefault().register(this);
 
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
@@ -134,6 +136,7 @@ public class NavigationDrawerFragment extends Fragment {
                 null);
         View footer = inflater.inflate(R.layout.list_nav_footer,null);
         new LoadShows().execute(""); // Loading My Today's airing Shows....
+
         mDrawerListView.addHeaderView(header);
         mDrawerListView.addFooterView(footer);
 
@@ -218,6 +221,13 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    @Subscribe
+    public void onEvent(String close) {
+        if (mDrawerLayout != null && close.equals("close")) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        }
+    }
+
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
@@ -300,6 +310,10 @@ public class NavigationDrawerFragment extends Fragment {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
     }
 
+    public int getAiringShowNumber() {
+        return (myShows != null ? myShows.size() : -99);
+    }
+
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
@@ -330,9 +344,10 @@ public class NavigationDrawerFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             myShows = ShowQueries.getMyAiringShows();
+            todayShowsSize = ShowQueries.getTodayShowsCount();
+            Log.e("Today size in Nav", "" + todayShowsSize);
             Log.e("My airing show size", "" + myShows.size());
             return "";
         }
     }
-
 }

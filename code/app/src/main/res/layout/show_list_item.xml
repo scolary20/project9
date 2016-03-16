@@ -12,9 +12,9 @@
         android:id="@+id/show_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/blue_background"
-        android:gravity="center"
         android:alpha="2"
+        android:background="@drawable/blue_background4"
+        android:gravity="center"
         android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#fff" />
@@ -40,28 +40,28 @@
             />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal"
             android:layout_toEndOf="@+id/show_image"
             android:layout_toRightOf="@+id/show_image"
-            android:orientation="vertical"
             android:background="@drawable/blue_background2"
-            android:id="@+id/linearLayout">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/num_watching"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:alpha="0.8"
                 android:gravity="left"
                 android:paddingLeft="2dip"
                 android:paddingRight="2dip"
-                android:alpha="0.8"
                 android:text="711 908"
-                android:textColor="#156260"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#156260"
                 />
 
             <TextView
@@ -69,15 +69,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
+                android:alpha="0.7"
                 android:gravity="left"
+                android:paddingBottom="5dp"
                 android:paddingLeft="2dip"
                 android:paddingRight="2dip"
-                android:textStyle="italic"
-                android:alpha="0.7"
                 android:text="currently watching"
-                android:paddingBottom="5dp"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/background_floating_material_dark" />
+                android:textColor="@color/background_floating_material_dark"
+                android:textStyle="italic"/>
 
             <View
                 android:layout_width="match_parent"
@@ -89,12 +89,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:gravity="left"
-                android:text="43 826 084"
                 android:alpha="0.8"
+                android:gravity="left"
                 android:paddingLeft="2dip"
                 android:paddingRight="2dip"
                 android:paddingTop="10dip"
+                android:text="43 826 084"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#156260" />
 
@@ -103,15 +103,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:gravity="left"
-                android:textStyle="italic"
-                android:text="comments"
                 android:alpha="0.7"
+                android:gravity="left"
+                android:paddingBottom="5dip"
                 android:paddingLeft="2dip"
                 android:paddingRight="2dip"
-                android:paddingBottom="5dip"
+                android:text="comments"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/background_floating_material_dark" />
+                android:textColor="@color/background_floating_material_dark"
+                android:textStyle="italic"/>
 
             <View
                 android:layout_width="match_parent"
@@ -119,18 +119,18 @@
                 android:background="@color/background_floating_material_dark" />
 
             <Chronometer
-                android:layout_width="106dp"
-                android:layout_margin="10dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/chronometer"
-                android:textSize="25dp"
-                android:gravity="center"
-                android:alpha="0.95"
-                android:layout_gravity="center"
-                android:layout_below="@+id/linearLayout"
-                android:layout_toRightOf="@+id/show_image"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/linearLayout"
                 android:layout_alignRight="@+id/linearLayout"
-                android:layout_alignEnd="@+id/linearLayout" />
+                android:layout_below="@+id/linearLayout"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@+id/show_image"
+                android:alpha="0.95"
+                android:gravity="center"
+                android:textSize="25dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -142,15 +142,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:gravity="left"
-                android:textStyle="italic"
-                android:paddingTop="5dip"
-                android:drawablePadding="5dip"
                 android:alpha="0.7"
-                android:text="rating trend"
+                android:drawablePadding="5dip"
+                android:gravity="left"
                 android:paddingBottom="5dip"
+                android:paddingTop="5dip"
+                android:text="rating trend"
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
-                android:textColor="@color/background_floating_material_dark" />
+                android:textColor="@color/background_floating_material_dark"
+                android:textStyle="italic"/>
 
 
         </LinearLayout>

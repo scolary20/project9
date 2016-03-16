@@ -64,18 +64,21 @@
             android:exported="false"
             android:process=":my_process">
         </service>
-
         <service
-            android:name=".LocalService"
+            android:name=".services.LocalService"
             android:exported="false"
             android:process=":local_service">
         </service>
 
         <activity
-            android:name=".NotificationView"
+            android:name=".services.NotificationView"
             android:label="@string/title_activity_notification_view">
         </activity>
-
+        <activity
+            android:name=".Settings"
+            android:icon="@drawable/ic_app"
+            android:label="@string/title_activity_settings">
+        </activity>
     </application>
 
 </manifest>

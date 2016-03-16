@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
               android:background="@drawable/blue_background3"
-    android:layout_height="fill_parent">
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearAnim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="5dip"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="15dip"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageview_animation_list_filling"
+            android:layout_width="96dip"
+            android:layout_height="96dip"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/logo_animation_up"
+            android:gravity="center_horizontal"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/no_show_message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="There is no airing Shows Today \n Come Back Tomorrow !!!"/>
+
+    </LinearLayout>
 
     <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dip"
-        android:layout_marginRight="4dip"
         android:layout_marginLeft="4dip"
+        android:layout_marginRight="4dip"
         android:layout_marginTop="4dip"
-        android:dividerHeight="5dp"
         android:divider="@color/transparent"
-        tools:listitem="@layout/show_list_item"
-        android:id="@+id/listView" />
+        android:dividerHeight="5dp"
+        tools:listitem="@layout/show_list_item"/>
 
 </LinearLayout>

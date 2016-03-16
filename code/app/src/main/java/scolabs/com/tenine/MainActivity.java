@@ -3,12 +3,6 @@ package scolabs.com.tenine;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.ApplicationErrorReport;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -28,16 +22,22 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.andexert.library.RippleView;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
-import scolabs.com.tenine.utils.NotificationsService;
 import scolabs.com.tenine.utils.Settings;
 
 
@@ -69,11 +69,34 @@ public class MainActivity extends ActionBarActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         final Animation bounce = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
+        final Animation bounce1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
         Animation bounced = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
+        Animation bounced1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bounce);
+
         bounced.setDuration(3000);
-        final ImageView shows = (ImageView) findViewById(R.id.image);
+        bounced1.setDuration(3000);
+        final TextView shows = (TextView) findViewById(R.id.image);
+        final TextView airing_show = (TextView) findViewById(R.id.lg_img);
+
         shows.setAnimation(bounced);
+        airing_show.setAnimation(bounced1);
+
         bounce.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                startActivity(new Intent(MainActivity.this, AllShowFragment.class));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        bounce1.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 
@@ -81,7 +104,12 @@ public class MainActivity extends ActionBarActivity
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                startActivity(new Intent(MainActivity.this, AllShowFragment.class));
+                mTitle = "Today's Airing shows";
+                Fragment f = new ShowList();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, f).addToBackStack("Show List")
+                        .commit();
+                EventBus.getDefault().post("close");
             }
 
             @Override
@@ -97,29 +125,75 @@ public class MainActivity extends ActionBarActivity
             }
         });
 
+        airing_show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                airing_show.startAnimation(bounce1);
+            }
+        });
+
+        // Header Layout
         TextView header_date = (TextView)findViewById(R.id.header_date);
         TextView username = (TextView)findViewById(R.id.header_username);
+
+        // Footer Layout
         TextView logout = (TextView) findViewById(R.id.logout);
+        RippleView settings = (RippleView) findViewById(R.id.settings);
         TextView scolabs = (TextView) findViewById(R.id.scolabs);
+        LinearLayout box = (LinearLayout) findViewById(R.id.box_linear);
+        ImageView pro_pic = (ImageView) findViewById(R.id.profile_picture);
         Typeface sco = Typeface.createFromAsset(getAssets(), "simplifica.ttf");
         Typeface font = Typeface.create(sco, Typeface.BOLD);
         scolabs.setTypeface(font);
+        shows.setTypeface(font);
+        airing_show.setTypeface(font);
 
-        logout.setOnClickListener(new View.OnClickListener() {
+        settings.setOnClickListener(new View.OnClickListener() { //Settings
             @Override
             public void onClick(View v) {
-                logout();
-                finish();
+                Intent i = new Intent(MainActivity.this, scolabs.com.tenine.Settings.class);
+                startActivity(i);
             }
         });
+
+        setBoxAndProBackground(box, pro_pic); //Change profile pic and box background
+        EventBus.getDefault().register(this);
 
         User aUser = Settings.getLoginUser();
         if(aUser != null)
             username.setText(aUser.getUsername());
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
-
     }
+
+    @SuppressWarnings("deprecation")
+    public void setBoxAndProBackground(LinearLayout box, ImageView pro_pic) {
+        Log.e("Today size", "" + mNavigationDrawerFragment.todayShowsSize);
+        if (mNavigationDrawerFragment != null) {
+            int today = mNavigationDrawerFragment.todayShowsSize; // number of shows airing today
+            int airing = mNavigationDrawerFragment.getAiringShowNumber(); // number of shows airing now
+
+            if (airing == 0 && today == 0) {
+                box.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile_red_grenite));
+                pro_pic.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile_red_grenite));
+            }
+
+            if (today > 0 && airing == 0) {
+                box.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile));
+                pro_pic.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile));
+            }
+
+            if (airing > 0) {
+                box.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile_red));
+                pro_pic.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile_red));
+            }
+
+            box.refreshDrawableState();
+            pro_pic.refreshDrawableState();
+
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -153,21 +227,16 @@ public class MainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = "Today's Airing shows";
+                mTitle = "Today Airing shows";
                 Fragment f = new ShowList();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, f).addToBackStack("Show List")
                         .commit();
                 break;
-            case 2:
-                mTitle = "Section 2";
-                break;
-            case 3:
-                mTitle = "Section 3";
-                break;
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -188,10 +257,10 @@ public class MainActivity extends ActionBarActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void logout() {
-        String filePath = this.getFilesDir().getParent() + "/shared_prefs/com.scolabs.tenine_preferences.xml";
-        File deletePrefFile = new File(filePath);
-        deletePrefFile.delete();
+    @Subscribe
+    public void onEventLogout(String strg) {
+        if (strg.equals("logout"))
+            finish();
     }
 
 
@@ -207,10 +276,7 @@ public class MainActivity extends ActionBarActivity
             Intent intent = new Intent(this,Register.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.unlock_show_action) {
-
         }
-
         return super.onOptionsItemSelected(item);
     }
 

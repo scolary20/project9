@@ -27,8 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import scolabs.com.tenine.databaseQueries.ShowQueries;
-import scolabs.com.tenine.model.Global;
-import scolabs.com.tenine.model.User;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.CommentList;
 import scolabs.com.tenine.utils.Settings;

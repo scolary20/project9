@@ -1,4 +1,4 @@
-package scolabs.com.tenine;
+package scolabs.com.tenine.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.*;
@@ -23,8 +21,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
-import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.Settings;
 

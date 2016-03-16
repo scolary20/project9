@@ -16,5 +16,13 @@
     <string name="title_activity_login">Login</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_notification_view">NotificationView</string>
+    <string name="title_activity_settings">Settings</string>
+    <string-array name="media_type">
+        <item>video</item>
+        <item>theme song</item>
+        <item>picture</item>
+        <item>picture and theme song</item>
+        <item>none</item>
+    </string-array>
 
 </resources>

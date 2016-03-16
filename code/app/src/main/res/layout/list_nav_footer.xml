@@ -14,86 +14,84 @@
         android:layout_marginRight="10dp"
         android:background="#000"/>
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
+    <LinearLayout
+        android:id="@+id/box_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:alpha="0.8"
-        android:background="@color/transparent"
-        android:scaleType="fitXY"
-        android:src="@drawable/shows_icon"/>
+        android:background="@drawable/rounded_profile"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dip"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/lg_img"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_gravity="left"
+            android:layout_weight="0.5"
+            android:drawablePadding="2dip"
+            android:drawableRight="@drawable/ic_app"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:text="Airing Shows"
+
+            android:textColor="#000"
+            />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="8dp"
+            android:background="#1e3d4c"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip"
+            />
+
+        <TextView
+            android:id="@+id/image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_gravity="right"
+            android:layout_weight="0.5"
+            android:drawableLeft="@drawable/shows_icon"
+            android:drawablePadding="2dip"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:text="All Shows"
+            android:textColor="#000"
+            />
+    </LinearLayout>
 
     <com.andexert.library.RippleView
-        android:id="@+id/more"
+        android:id="@+id/settings"
         rv_centered="true"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/notication"
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/blue_background4"
-        android:drawableLeft="@drawable/notification"
-        android:drawablePadding="20dip"
-        android:gravity="center_vertical"
-        android:paddingBottom="10dip"
-        android:paddingLeft="20dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:text="Notification"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white"/>
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="2dip">
+
+        <TextView
+            android:id="@+id/in_settings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_background4"
+            android:drawableLeft="@drawable/settings2"
+            android:drawablePadding="20dip"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dip"
+            android:paddingLeft="20dip"
+            android:paddingRight="10dip"
+            android:paddingTop="10dip"
+            android:text="Settings"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/white"/>
     </com.andexert.library.RippleView>
-
-    <TextView
-        android:id="@+id/showSettings"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/blue_background4"
-        android:drawableLeft="@drawable/tv_icon"
-        android:drawablePadding="20dip"
-        android:gravity="center_vertical"
-        android:paddingBottom="10dip"
-        android:paddingLeft="20dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:text="Show settings"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white"/>
-
-
-    <TextView
-        android:id="@+id/about"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/blue_background4"
-        android:drawableLeft="@drawable/about"
-        android:drawablePadding="20dip"
-        android:gravity="center_vertical"
-        android:paddingBottom="10dip"
-        android:paddingLeft="20dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:text="About"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white"/>
-
-    <TextView
-        android:id="@+id/profile"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/blue_background4"
-        android:drawableLeft="@drawable/change_profile"
-        android:drawablePadding="20dip"
-        android:gravity="center_vertical"
-        android:paddingBottom="10dip"
-        android:paddingLeft="20dip"
-        android:paddingRight="10dip"
-        android:paddingTop="10dip"
-        android:text="Change Profile"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/logout"
@@ -109,7 +107,8 @@
         android:paddingTop="10dip"
         android:text="Logout"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/scolabs"

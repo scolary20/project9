@@ -1,12 +1,10 @@
 package scolabs.com.tenine.ui;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.CommentQueries;
 import scolabs.com.tenine.model.Comment;
-import scolabs.com.tenine.model.Global;
+import scolabs.com.tenine.utils.Global;
 
 /**
  * Created by scolary on 1/30/2016.

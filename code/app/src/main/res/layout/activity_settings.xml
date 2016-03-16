@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:id="@+id/scrollView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/veert"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dip"
+            android:background="@drawable/background"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/notif_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dip"
+                android:paddingBottom="10dip"
+                android:text="Notifications"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue"/>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:background="@color/white"/>
+
+            <Switch
+                android:id="@+id/start_show_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:checked="true"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:switchPadding="10dip"
+                android:text="Show Start"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+            <Switch
+                android:id="@+id/end_show_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:checked="true"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:switchPadding="10dip"
+                android:text="Show End"/>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+            <Switch
+                android:id="@+id/new_comment_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:checked="true"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:switchPadding="10dip"
+                android:text="New Comment"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+            <LinearLayout
+                android:id="@+id/mark_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:weightSum="1">
+
+                <Switch
+                    android:id="@+id/mark_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:switchPadding="10dip"
+                    android:text="Comment Marked"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_show"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/background"
+            android:orientation="vertical"
+            android:padding="10dip">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dip"
+                android:paddingBottom="10dip"
+                android:text="Show Settings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"/>
+
+            <Switch
+                android:id="@+id/cache_shows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:checked="true"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:switchPadding="10dip"
+                android:text="Cache Shows"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+            <Switch
+                android:id="@+id/load_shows"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:checked="false"
+                android:orientation="horizontal"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:switchPadding="10dip"
+                android:text="Load only my airing shows"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+
+            <LinearLayout
+                android:id="@+id/m_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dip"
+                android:orientation="vertical"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Media type for Comment Screen"/>
+
+                <Spinner
+                    android:id="@+id/media_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawSelectorOnTop="true"
+                    android:entries="@array/media_type"/>
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_help"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/background"
+            android:orientation="vertical"
+            android:padding="10dip">
+
+            <TextView
+                android:id="@+id/h_s"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dip"
+                android:paddingBottom="10dip"
+                android:text="Help &amp; Support"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/about"
+                rv_centered="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip">
+
+                <TextView
+                    android:id="@+id/in_about"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@color/button_material_light"
+                    android:drawablePadding="20dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:text="About"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000"/>
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/terms"
+                rv_centered="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip">
+
+                <TextView
+                    android:id="@+id/in_terms"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@color/button_material_light"
+                    android:drawablePadding="20dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:text="Terms and Privacy Policy"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000"/>
+            </com.andexert.library.RippleView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/button_material_light"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/contact"
+                rv_centered="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip">
+
+                <TextView
+                    android:id="@+id/in_contact"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@color/button_material_light"
+                    android:drawablePadding="20dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:text="Contact us"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000"/>
+            </com.andexert.library.RippleView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/acc_liner"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/background"
+            android:orientation="vertical"
+            android:padding="10dip">
+
+            <TextView
+                android:id="@+id/acc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="10dip"
+                android:paddingBottom="10dip"
+                android:text="Account Settings"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"/>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/back_up"
+                rv_centered="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip">
+
+                <TextView
+                    android:id="@+id/in_back_up"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@color/button_material_light"
+                    android:drawablePadding="20dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:text="Back Up &amp; Recovery"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000"/>
+            </com.andexert.library.RippleView>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/logout"
+                rv_centered="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip">
+
+                <TextView
+                    android:id="@+id/in_logout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@color/button_material_light"
+                    android:drawablePadding="20dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:text="Logout"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000"/>
+            </com.andexert.library.RippleView>
+
+            <com.andexert.library.RippleView
+                android:id="@+id/delete_acc"
+                rv_centered="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip">
+
+                <TextView
+                    android:id="@+id/in_delete_acc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dip"
+                    android:background="@color/button_material_light"
+                    android:drawablePadding="20dip"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dip"
+                    android:paddingLeft="20dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="10dip"
+                    android:text="Delete Account"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#000"/>
+            </com.andexert.library.RippleView>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,13 +1,13 @@
 package scolabs.com.tenine;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,13 +160,29 @@ public class AllShowFragment extends Activity {
                 @Override
                 public void onClick(View v) {
                     long id = Settings.getLoginUser().getUserId();
-                    UserShow sw = ShowQueries.getUserShowById(id, show.getShowId());
+                    final UserShow sw = ShowQueries.getUserShowById(id, show.getShowId());
                     if (sw != null) {
-                        sw.delete();
-                        myShowList.remove(show);
-                        allShowAdapter.notifyDataSetChanged();
-                        Toast.makeText(mContext, "Show successfully removed!!!", Toast.LENGTH_SHORT).show();
-                    }
+
+                        new AlertDialog.Builder(AllShowFragment.this)
+                                //.setTitle("Lock This Show")
+                                .setMessage("You are about to remove the show: \n" + show.getName())
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        sw.delete(); //delete show
+                                        myShowList.remove(show);
+                                        allShowAdapter.notifyDataSetChanged();
+                                        Toast.makeText(mContext, "Show successfully removed!!!", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    } else
+                        Toast.makeText(mContext, "Action Not Allowed", Toast.LENGTH_SHORT).show();
                     System.gc();//Garbage collector invocation.
                 }
             });
@@ -230,6 +246,13 @@ public class AllShowFragment extends Activity {
                     showList = null;
                     showList = allShows;
                     allShowAdapter.notifyDataSetChanged();
+                    if (showList.size() > 0) {
+                        feedback.setVisibility(View.GONE);
+                    } else {
+                        feedback.setVisibility(View.VISIBLE);
+                        feedback.setText("No Shows...");
+                    }
+
                 }
             });
 
@@ -241,14 +264,19 @@ public class AllShowFragment extends Activity {
                     showList = null;
                     showList = myShowList;
                     allShowAdapter.notifyDataSetChanged();
+                    if (myShowList.size() > 0) {
+                        feedback.setVisibility(View.GONE);
+                    } else {
+                        feedback.setVisibility(View.VISIBLE);
+                        feedback.setText("No Shows...\n Subscribe to more shows for a greater experience");
+                    }
+
                 }
             });
 
             progressBar.setVisibility(View.GONE);
-            if (showList.size() > 0) {
-                feedback.setVisibility(View.GONE);
-            } else
-                feedback.setText("No shows...");
+            feedback.setVisibility(View.GONE);
+
         }
 
         @Override

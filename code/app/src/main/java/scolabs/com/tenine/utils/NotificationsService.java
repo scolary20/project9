@@ -6,14 +6,12 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-import scolabs.com.tenine.NotificationView;
+import scolabs.com.tenine.services.NotificationView;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
