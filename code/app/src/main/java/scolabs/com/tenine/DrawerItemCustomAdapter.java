@@ -23,7 +23,7 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 1/27/2016.
@@ -139,7 +139,7 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
 
     public void myShowProgressHander(final int show_length, final Show show, final int position, final ProgressBar progressBar) {
         Thread t = new Thread(new Runnable() {
-            long actual_start = (long) (Settings.showTimeHandler(show)[4]);
+            long actual_start = (long) (GlobalSettings.showTimeHandler(show)[4]);
             int jumpTime = (int) actual_start;
             int length = show_length + 1000;
 
@@ -186,8 +186,8 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
 
     @Subscribe
     public void onEvent(Show[] arrShow) {
-        if ((boolean) Settings.showTimeHandler(arrShow[0])[6]) {
-            if ((boolean) Settings.showTimeHandler(arrShow[0])[7]) {
+        if ((boolean) GlobalSettings.showTimeHandler(arrShow[0])[6]) {
+            if ((boolean) GlobalSettings.showTimeHandler(arrShow[0])[7]) {
                 data.add(arrShow[0]);
                 adapter.notifyDataSetChanged();
             }

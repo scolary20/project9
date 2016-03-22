@@ -34,11 +34,13 @@
             android:alwaysRetainTaskState="true"
             android:hardwareAccelerated="true"
             android:icon="@drawable/live_comment"
-            android:label="@string/title_activity_comment">
+            android:label="@string/title_activity_comment"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".ui.CommentList"
-            android:label="@string/title_activity_comment">
+            android:label="@string/title_activity_comment"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
             android:name=".ui.Register"

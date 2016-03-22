@@ -25,7 +25,7 @@ import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 3/8/2016.
@@ -162,7 +162,7 @@ public class LocalService extends Service {
         @Override
         public void handleMessage(Message msg) {
             Log.e("Service ", "Service started !!!");
-            Settings.setup_db(getApplicationContext(), "", true);
+            GlobalSettings.setup_db(getApplicationContext(), "", true);
             while (OP_VALUE != 0) {
                 try {
                     Thread.sleep(30000);
@@ -192,11 +192,11 @@ public class LocalService extends Service {
                     if (air >= (dt - 30000) && air < (air + 40000)) {
                         displayNotificationOne("10/9c Notification ", "" + show.getName() + " has started ", "show has started!", "empire");
                         sendBroadcas();
-                        Log.e("Notifiation", "" + show.getName() + " " + show.getAiring_date());
+                        Log.i("Notifiation", "" + show.getName() + " " + show.getAiring_date());
                     }
                 }
             }
-            Log.e("Shows size", "" + myShows.size());
+            Log.i("Shows size", "" + myShows.size());
             isDone.set(true);
         }
 

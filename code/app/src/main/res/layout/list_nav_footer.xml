@@ -93,6 +93,31 @@
             android:textColor="@color/white"/>
     </com.andexert.library.RippleView>
 
+    <com.andexert.library.RippleView
+        android:id="@+id/archive"
+        rv_centered="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dip"
+        android:layout_marginTop="2dip">
+
+        <TextView
+            android:id="@+id/in_archive"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_background4"
+            android:drawableLeft="@drawable/archive_icon"
+            android:drawablePadding="20dip"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dip"
+            android:paddingLeft="20dip"
+            android:paddingRight="10dip"
+            android:paddingTop="10dip"
+            android:text="Shows Archive"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/white"/>
+    </com.andexert.library.RippleView>
+
     <TextView
         android:id="@+id/logout"
         android:layout_width="fill_parent"

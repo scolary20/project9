@@ -20,7 +20,7 @@ import java.util.Date;
 
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.model.Show;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 2/9/2016.
@@ -99,7 +99,7 @@ public class ShowAdapter extends ArrayAdapter {
     public void time_show_handler(ViewHolder holder, Show c) {
 
 
-        Object[] time_array = Settings.showTimeHandler(c);
+        Object[] time_array = GlobalSettings.showTimeHandler(c);
         if (time_array != null) {
             final Date d = new Date();
             Calendar cal = Calendar.getInstance();
@@ -127,11 +127,13 @@ public class ShowAdapter extends ArrayAdapter {
 
             if (today.before(c.getAiring_date())) {
                 cal.setTime(c.getAiring_date());
+                int format = cal.get(Calendar.AM_PM);
+                String am_pm = format == 0 ? " am" : " pm";
                 holder.chronometer.setBackgroundColor(default_color);
                 holder.chronometer.stop();
-                holder.chronometer.setText("" + (cal.get(Calendar.HOUR_OF_DAY) < 10 ? "0" +
-                        cal.get(Calendar.HOUR_OF_DAY) : cal.get(Calendar.HOUR_OF_DAY)) + ":"
-                        + (cal.get(Calendar.MINUTE) < 10 ? "0" + cal.get(Calendar.MINUTE) : cal.get(Calendar.MINUTE)));
+                holder.chronometer.setText("" + (cal.get(Calendar.HOUR) < 10 ? "0" +
+                        cal.get(Calendar.HOUR) : cal.get(Calendar.HOUR)) + ":"
+                        + (cal.get(Calendar.MINUTE) < 10 ? "0" + cal.get(Calendar.MINUTE) : cal.get(Calendar.MINUTE)) + am_pm);
             }
         } else
         {

@@ -2,6 +2,7 @@ package scolabs.com.tenine;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,10 +12,16 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.widget.ActionBarContextView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -27,10 +34,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import scolabs.com.tenine.databaseQueries.ShowQueries;
+import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.CommentList;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 
 public class CommentActivity extends ActionBarActivity {
@@ -44,6 +52,7 @@ public class CommentActivity extends ActionBarActivity {
     private ScrollThread thread;
     private ArrayList<CountDownTimer> waitTimeList;
     private int scrollSpeedCount;
+    private ImageButton send;
 
 
     @Override
@@ -60,6 +69,8 @@ public class CommentActivity extends ActionBarActivity {
 
         waitTimeList = new ArrayList<>();
         scrollSpeedCount = 0;
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        int screen_orientation = this.getResources().getConfiguration().orientation;
 
         Global.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Global.txt = (TextView)findViewById(R.id.cmt_feedback);
@@ -69,7 +80,31 @@ public class CommentActivity extends ActionBarActivity {
         date.setText(df.format(new Date()));
 
         TextView numOfComments = (TextView) findViewById(R.id.numOfComments);
-        TextView numOfViewers = (TextView) findViewById(R.id.numOfViewers);
+        final EditText input = (EditText) findViewById(R.id.cment_inputText);
+
+        if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
+            send = (ImageButton) findViewById(R.id.sendButton);
+            send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!input.getText().equals("")) {
+                        String cment = input.getText().toString().trim();
+                        String name = GlobalSettings.getLoginUser().getUsername();
+                        Comment c = new Comment(cment, name, new Date(), showId);
+                        Global.cmAdapter.add(c);
+                        c.save();
+                        Global.cmAdapter.notifyDataSetChanged();
+                        ListView list = Global.lsView;
+                        list.smoothScrollToPosition(Global.cmAdapter.getCount());
+                        Global.txt.setVisibility(View.GONE);
+                        input.setText("");
+                        input.clearFocus();
+                        GlobalSettings.hideKeyboard(CommentActivity.this);
+                    }
+                }
+            });
+        }
+
 
         Global.commentActivity = this;
 
@@ -126,7 +161,6 @@ public class CommentActivity extends ActionBarActivity {
             }
         });
 
-        int screen_orientation = this.getResources().getConfiguration().orientation;
         if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
             Global.lsView = (ListView) findViewById(R.id.listView2);
             Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
@@ -194,7 +228,7 @@ public class CommentActivity extends ActionBarActivity {
                     .setMessage("You won't be able to comment\n Are you sure?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            long uId = Settings.getLoginUser().getUserId();
+                            long uId = GlobalSettings.getLoginUser().getUserId();
                             ShowQueries.getUserShowById(uId, showId).delete();
                             finish();
                         }

@@ -26,4 +26,5 @@ public class Global {
     public static ArrayList<Thread> drawerShowThreads = new ArrayList<>();
     public static int notificationsCount = 0;
     public static ShowAdapter showAdapter;
+    public static String email;
 }

@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,13 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.UserShow;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 
 /**
@@ -147,7 +149,7 @@ public class AllShowFragment extends Activity {
                 @Override
                 public void onClick(View v) {
 
-                    long id = Settings.getLoginUser().getUserId();
+                    long id = GlobalSettings.getLoginUser().getUserId();
                     new UserShow(id, show.getShowId()).save();
                     myShowList.add(show);
                     Show[] arrShow = {show};
@@ -159,7 +161,7 @@ public class AllShowFragment extends Activity {
             remove_show.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    long id = Settings.getLoginUser().getUserId();
+                    long id = GlobalSettings.getLoginUser().getUserId();
                     final UserShow sw = ShowQueries.getUserShowById(id, show.getShowId());
                     if (sw != null) {
 

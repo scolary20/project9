@@ -52,7 +52,7 @@ public class User extends Model {
         this.username = username;
         this.email = email;
         this.password = password;
-        userId = new Random().nextLong() * new Random().nextInt();
+        userId = new Random().nextInt(30000);
     }
 
 

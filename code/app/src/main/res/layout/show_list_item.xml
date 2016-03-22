@@ -142,8 +142,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:alpha="0.7"
-                android:drawablePadding="5dip"
+                android:alpha="0.8"
+                android:drawablePadding="3dip"
                 android:gravity="left"
                 android:paddingBottom="5dip"
                 android:paddingTop="5dip"
@@ -151,8 +151,6 @@
                 android:textAppearance="?android:attr/textAppearanceListItemSmall"
                 android:textColor="@color/background_floating_material_dark"
                 android:textStyle="italic"/>
-
-
         </LinearLayout>
     </RelativeLayout>
 

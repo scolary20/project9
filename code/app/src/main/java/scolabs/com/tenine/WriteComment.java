@@ -12,7 +12,7 @@ import java.util.Date;
 
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.utils.Global;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 2/22/2016.
@@ -46,7 +46,7 @@ public class WriteComment extends Activity
                 if(!input.getText().equals(""))
                 {
                     String cment = input.getText().toString().trim();
-                    String name = Settings.getLoginUser().getUsername();
+                    String name = GlobalSettings.getLoginUser().getUsername();
                     Comment c;
                     Intent cmInt = getIntent();
                     if (cmInt.getIntExtra("type", 0) == 1) {//UPDATE

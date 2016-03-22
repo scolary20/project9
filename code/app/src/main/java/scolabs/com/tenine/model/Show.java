@@ -50,7 +50,7 @@ public class Show extends Model{
         this.name = name;
         this.season = season;
         this.network = network;
-        this.showId = new Random().nextLong() * 100;   //1 + (int) (Math.random() * 100);
+        this.showId = new Random().nextInt();   //1 + (int) (Math.random() * 100);
         rating_arrow = 2;
     }
 

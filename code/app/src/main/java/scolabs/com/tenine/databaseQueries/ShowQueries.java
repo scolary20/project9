@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.UserShow;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 2/11/2016.
@@ -20,7 +19,7 @@ public class ShowQueries {
 
     public static ArrayList<Show> getShows() //Today's airing shows...
     {
-        Calendar tmr_midnight = Calendar.getInstance();
+       /* Calendar tmr_midnight = Calendar.getInstance();
         Calendar tday_midnight = Calendar.getInstance();
 
         //Upper
@@ -38,29 +37,28 @@ public class ShowQueries {
                 .where("airing_date < ?", tmr_midnight.getTime().getTime())
                 .and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .orderBy("airing_date ASC")
+                .execute();*/
+        Date today = GlobalSettings.removeTime(new Date());
+        return (ArrayList) new Select()
+                .from(Show.class)
+                .where("airing_date <= " + new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .or("airing_time = ?", today.getTime())
+                .orderBy("airing_date ASC")
                 .execute();
     }
 
-    public static int getTodayShowsCount()//Today's airing shows...
+    public static int getTodayShowsCount()//Today's airing shows count
     {
-        Calendar tmr_midnight = Calendar.getInstance();
-        Calendar tday_midnight = Calendar.getInstance();
-
-        //Upper
-        tmr_midnight.set(Calendar.HOUR_OF_DAY, 23); // same for minutes and seconds
-        tmr_midnight.set(Calendar.MINUTE, 59);
-        tmr_midnight.set(Calendar.SECOND, 60);
-
-        //Lower
-        tday_midnight.set(Calendar.HOUR_OF_DAY, 0); // same for minutes and seconds
-        tday_midnight.set(Calendar.MINUTE, 0);
-        tday_midnight.set(Calendar.SECOND, 0);
-
-        return new Select()
+        Date today = GlobalSettings.removeTime(new Date());
+        int sh = new Select()
                 .from(Show.class)
-                .where("airing_date < ?", tmr_midnight.getTime().getTime())
-                .and("airing_date >= ?", tday_midnight.getTime().getTime())
-                .execute().size();
+                .where("airing_date <= " + new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .or("airing_time = ?", today.getTime())
+                .count();
+        Log.e("Shows Count", " " + sh);
+        return sh;
     }
 
     public static ArrayList<Show> getAllShows() {
@@ -97,18 +95,30 @@ public class ShowQueries {
                 .from(Show.class)
                 .innerJoin(UserShow.class)
                 .on("Show.showId=UserShow.showId")
-                .where("airing_date < ?", tmr_midnight.getTime().getTime())
-                .and("airing_date >= ?", tday_midnight.getTime().getTime())
+                .where("airing_date <= " + new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                        //.where("airing_date < ?", tmr_midnight.getTime().getTime())
+                        //.and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .execute();
 
-        ArrayList<Show> showToRemove = new ArrayList<>();
+       /* ArrayList<Show> showToRemove = new ArrayList<>();
         for (Show show : myShows) {
-            if (!(boolean) Settings.showTimeHandler(show)[7]) {
+            if (!(boolean) GlobalSettings.showTimeHandler(show)[7]) {
                 showToRemove.add(show);
             }
-        }
-        myShows.removeAll(showToRemove);
+        }*/
+        // myShows.removeAll(showToRemove);
         return myShows;
+    }
+
+    public static int getMyAiringShowsCount() {
+        return new Select()
+                .from(Show.class)
+                .innerJoin(UserShow.class)
+                .on("Show.showId=UserShow.showId")
+                .where("airing_date <= " + new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .count();
     }
 
     public static UserShow getUserShowById(long userId, long showId) {

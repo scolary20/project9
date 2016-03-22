@@ -55,7 +55,6 @@ public class NavigationDrawerFragment extends Fragment {
      * expands it. This shared preference tracks this.
      */
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-    public int todayShowsSize;
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
@@ -344,8 +343,6 @@ public class NavigationDrawerFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             myShows = ShowQueries.getMyAiringShows();
-            todayShowsSize = ShowQueries.getTodayShowsCount();
-            Log.e("Today size in Nav", "" + todayShowsSize);
             Log.e("My airing show size", "" + myShows.size());
             return "";
         }

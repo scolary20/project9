@@ -78,18 +78,71 @@
         android:text="Loading Comments..."
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textCursorDrawable="@drawable/blue_background3"
-        android:visibility="gone"
-        />
+        android:visibility="gone"/>
 
-    <ListView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+        <ListView
         android:id="@+id/listView2"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/view"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="5dip"
         android:dividerHeight="1dip"
-        android:paddingBottom="5dp"
         tools:listitem="@layout/comment_item"/>
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/group2"
+            android:layout_below="@+id/linearLayout"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/button_material_light"/>
 
+        <LinearLayout
+            android:id="@+id/group2"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="3dip"
+            android:layout_marginLeft="2dip"
+            android:layout_marginRight="2dip"
+            android:layout_marginTop="1dip"
+            android:background="@color/transparent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/cment_inputText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="5dip"
+                android:layout_weight="0.8"
+                android:background="@drawable/border_field2"
+                android:hint="comment here..."
+                android:padding="10dp"
+                android:soundEffectsEnabled="true"/>
+
+            <ImageButton
+                android:id="@+id/sendButton"
+                android:layout_width="60dip"
+                android:layout_height="50dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.1"
+                android:background="@color/transparent"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_send"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

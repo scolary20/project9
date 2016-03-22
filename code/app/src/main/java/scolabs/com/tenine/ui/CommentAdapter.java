@@ -31,7 +31,7 @@ import scolabs.com.tenine.WriteComment;
 import scolabs.com.tenine.databaseQueries.CommentQueries;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.utils.Global;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 2/2/2016.
@@ -301,7 +301,7 @@ public class CommentAdapter extends ArrayAdapter {
             public void onClick(View v) {
 
                 Comment c = data.get(position);
-                if (c.getCommentator().equalsIgnoreCase(Settings.getLoginUser().getUsername())) {
+                if (c.getCommentator().equalsIgnoreCase(GlobalSettings.getLoginUser().getUsername())) {
                     Intent i = new Intent(getContext(), WriteComment.class);
                     i.putExtra("showId", c.getShowId());
                     i.putExtra("message", c.getContent());

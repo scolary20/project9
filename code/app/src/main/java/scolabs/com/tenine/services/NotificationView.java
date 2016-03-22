@@ -16,6 +16,7 @@ public class NotificationView extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.service_layout);
         CharSequence s = "Inside the activity of Notification one ";
         int id = 0;
 

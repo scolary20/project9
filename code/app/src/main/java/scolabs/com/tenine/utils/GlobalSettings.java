@@ -1,11 +1,15 @@
 package scolabs.com.tenine.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.SystemClock;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.facebook.stetho.Stetho;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,9 +22,11 @@ import scolabs.com.tenine.model.User;
 /**
  * Created by scolary on 2/11/2016.
  */
-public class Settings {
+public class GlobalSettings {
     private static User loginUser;
-    private Settings(){}
+
+    private GlobalSettings() {
+    }
     // Create DB models...
     public static void setup_db(Context mContext, String pr, boolean db)
     {
@@ -30,17 +36,24 @@ public class Settings {
             config.addModelClass(Show.class);
         config.addModelClass(UserShow.class);
             ActiveAndroid.initialize(config.create());
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(mContext)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(mContext))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(mContext))
+                        .build());
+    }
+
+    public static User getLoginUser() {
+        return loginUser;
     }
 
     public static void setLoginUser(User aUser)
     {
         if(aUser != null)
             loginUser = aUser;
-    }
-
-    public static User getLoginUser()
-    {
-        return loginUser;
     }
 
     public static Object[] showTimeHandler(Show c) {
@@ -87,5 +100,26 @@ public class Settings {
             }
         }
         return false;
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static Date removeTime(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
     }
 }

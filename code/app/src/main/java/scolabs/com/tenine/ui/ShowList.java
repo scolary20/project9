@@ -38,6 +38,7 @@ import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 1/29/2016.
@@ -149,15 +150,14 @@ public class ShowList extends Fragment {
 
         // Convert string to date
         /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "16-03-2016 03:30:00";
-        String strdate3 = "16-03-2016 03:20:00";
-        String strdate4 = "16-03-2016 03:55:00";
-        String strdate5 = "16-03-2016 03:30:00";
-        String strdate6 = "16-03-2016 04:00:00";
-        String strdate7 = "16-03-2016 04:30:00";
-        String strdate8 = "16-03-2016 05:00:00";
-        Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8;
-        newdate = null;
+        String strdate2 = "22-03-2016 03:10:00";
+        String strdate3 = "22-03-2016 09:08:00";
+        String strdate4 = "22-03-2016 05:44:00";
+        String strdate5 = "23-03-2016 04:00:00";
+        String strdate6 = "22-03-2016 14:57:00";
+        String strdate7 = "23-03-2016 20:45:00";
+        String strdate8 = "21-03-2016 11:40:00";
+        Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8, nd;
         newdate3 = null;
         newdate = null;
         newdate4 = null;
@@ -165,7 +165,7 @@ public class ShowList extends Fragment {
         newdate6 = null;
         newdate7 = null;
         newdate8 = null;
-        Date nd = null;
+        nd = null;
         try {
             newdate = dateformat2.parse(strdate2);
             newdate3 = dateformat2.parse(strdate3);
@@ -186,7 +186,9 @@ public class ShowList extends Fragment {
         sw.setShow_length(10);
         sw.setNum_comment(5426);
         sw.setNum_watching(4126345L);
+        sw.setRating_arrow(1);
         sw.setAiring_date(newdate);
+        sw.setAiring_time(GlobalSettings.removeTime(newdate));
         sw.setShow_img_location("breaking.png");
         sw.setShow_trailer_location("modern_trailer");
         sw.save();
@@ -194,37 +196,45 @@ public class ShowList extends Fragment {
 
         Show tr = new Show("Empire", "s3E3", "Hulu network");
         tr.setAiring_date(nd);
+        tr.setAiring_time(GlobalSettings.removeTime(nd));
         tr.setNum_watching(50500);
         tr.setNum_comment(3052445);
         tr.setShow_length(9);
         tr.setShow_img_location("empire.png");
+        Log.e("Stripped Date", "" + GlobalSettings.removeTime(tr.getAiring_time()));
+        Log.e("Real Date", "" + GlobalSettings.removeTime(new Date()));
         tr.save();
         showList.add(tr);
+
         tr = new Show("How to get away with murder", "s4E2", "Mtv");
         tr.setShow_length(30);
         tr.setNum_comment(3);
         tr.setNum_watching(500);
         tr.setAiring_date(newdate3);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate3));
         tr.setShow_img_location("away.png");
         tr.setShow_trailer_location("empire_trailer");
         tr.save();
         showList.add(tr);
 
-        tr = new Show("bang", "s4E3", "Mtv Kids");
+        tr = new Show("Bib Bang Theory", "s4E3", "Mtv Kids");
         tr.setShow_length(55);
         tr.setNum_comment(45);
         tr.setNum_watching(600);
         tr.setAiring_date(newdate4);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate4));
         tr.setShow_img_location("bang.png");
         tr.setShow_trailer_location("big_bang_trailer");
+        tr.setRating_arrow(1);
         tr.save();
         showList.add(tr);
 
-        tr = new Show("Bein mary Jane", "s2E13", "Bet");
+        tr = new Show("Being mary Jane", "s2E13", "Bet");
         tr.setShow_length(25);
         tr.setNum_comment(450);
         tr.setNum_watching(45);
         tr.setAiring_date(newdate5);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate5));
         tr.setShow_img_location("mary.png");
         tr.save();
         showList.add(tr);
@@ -234,6 +244,7 @@ public class ShowList extends Fragment {
         tr.setNum_comment(4500);
         tr.setNum_watching(45009983);
         tr.setAiring_date(newdate8);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate8));
         tr.setShow_trailer_location("modern_trailer");
         tr.setShow_img_location("modern.png");
         tr.save();
@@ -244,7 +255,10 @@ public class ShowList extends Fragment {
         tr.setNum_comment(1004);
         tr.setNum_watching(4598);
         tr.setAiring_date(newdate7);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate7));
         tr.setShow_img_location("real.jpg");
+        Log.e("Stripped Date", "" + GlobalSettings.removeTime(newdate7));
+        Log.e("Real Date", "" + GlobalSettings.removeTime(new Date()));
         tr.save();
         showList.add(tr);
 
@@ -253,7 +267,10 @@ public class ShowList extends Fragment {
         tr.setNum_comment(2550);
         tr.setNum_watching(989);
         tr.setAiring_date(newdate6);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate6));
         tr.setShow_img_location("desperate.png");
+        Log.e("Stripped Date", "" + GlobalSettings.removeTime(tr.getAiring_time()));
+        Log.e("Real Date", "" + GlobalSettings.removeTime(new Date()));
         tr.save();
         showList.add(tr);
 
@@ -262,8 +279,11 @@ public class ShowList extends Fragment {
         tr.setNum_comment(25450);
         tr.setNum_watching(9289);
         tr.setAiring_date(newdate6);
+        tr.setAiring_time(GlobalSettings.removeTime(newdate6));
         tr.setShow_trailer_location("game_trailer");
         tr.setShow_img_location("game.png");
+        Log.e("Stripped Date", "" + GlobalSettings.removeTime(tr.getAiring_time()));
+        Log.e("Real Date", ""+GlobalSettings.removeTime(new Date()));
         tr.save();
         showList.add(tr);*/
 

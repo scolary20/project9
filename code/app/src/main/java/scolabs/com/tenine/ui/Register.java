@@ -1,7 +1,9 @@
 package scolabs.com.tenine.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import javax.validation.ValidatorFactory;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.User;
+import scolabs.com.tenine.utils.Global;
 
 public class Register extends Activity {
     private String username;
@@ -87,6 +90,7 @@ public class Register extends Activity {
                                         TextView error = (TextView) findViewById(R.id.error_messages);
                                         error.setTextColor(Color.GREEN);
                                         setContentView(R.layout.account_created);
+                                        Global.email = email;
                                     }
                                 });
                                 try

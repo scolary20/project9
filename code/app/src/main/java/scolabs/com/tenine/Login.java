@@ -1,6 +1,7 @@
 package scolabs.com.tenine;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.services.LocalService;
 import scolabs.com.tenine.ui.Register;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 2/8/2016.
@@ -44,6 +45,7 @@ public class Login extends Activity {
     private String error_messages = "\n";
     private boolean isUserLogin;
     private boolean created_db;
+    private String MyPREFERENCES;
 
 
     @Override
@@ -54,13 +56,13 @@ public class Login extends Activity {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Login.this);
         isUserLogin = sp.getBoolean(LOGIN_PREF, false);
         created_db = sp.getBoolean(AA_MODELS, false);
-        Settings.setup_db(Login.this, AA_MODELS, created_db); //DB_Models
+        GlobalSettings.setup_db(Login.this, AA_MODELS, created_db); //DB_Models
         String current_user = sp.getString(LOGIN_USER,"");
 
         if(isUserLogin)
         {
 
-            Settings.setLoginUser(UserQueries.getDbUser(current_user, "", "", "username"));
+            GlobalSettings.setLoginUser(UserQueries.getDbUser(current_user, "", "", "username"));
             Log.d("Message 1 ", "Login Successfully");
             Intent main_activity = new Intent(Login.this, MainActivity.class);
 
@@ -68,7 +70,7 @@ public class Login extends Activity {
             if (Global.showAdapter != null)
                 Global.showAdapter.notifyDataSetChanged();
 
-            if (!Settings.isServiceRunning(LocalService.class, this))
+            if (!GlobalSettings.isServiceRunning(LocalService.class, this))
                 startService(new Intent(Login.this, LocalService.class));
             startActivityForResult(main_activity, 5);
         }
@@ -116,9 +118,9 @@ public class Login extends Activity {
                                             .getDefaultSharedPreferences(Login.this);
                                     sp.edit().putBoolean(LOGIN_PREF, true).apply();
                                     sp.edit().putString(LOGIN_USER, aUser.getUsername()).apply();
-                                    Settings.setLoginUser(aUser);
+                                    GlobalSettings.setLoginUser(aUser);
                                     Intent main_activity = new Intent(Login.this, MainActivity.class);
-                                    if (!Settings.isServiceRunning(LocalService.class, Login.this))
+                                    if (!GlobalSettings.isServiceRunning(LocalService.class, Login.this))
                                         startService(new Intent(Login.this, LocalService.class));
                                     startActivityForResult(main_activity, 5);
 
@@ -162,6 +164,8 @@ public class Login extends Activity {
         }
     }
 
+
+    // Handles Form Validation
     public int isValidateLoginCreditials() {
         ValidatorFactory factory = Validation.byDefaultProvider()
                 .configure()
@@ -185,6 +189,10 @@ public class Login extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 5)
             onDestroy();
+        else if (requestCode == 10) {
+            MyPREFERENCES = Global.email + "_settings_prefs";
+            getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        }
     }
 
     @Override
@@ -239,5 +247,4 @@ public class Login extends Activity {
         }
         return false;
     }
-
 }

@@ -1,7 +1,6 @@
 package scolabs.com.tenine;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -24,11 +22,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.andexert.library.RippleView;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -38,7 +34,7 @@ import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
-import scolabs.com.tenine.utils.Settings;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 
 public class MainActivity extends ActionBarActivity
@@ -136,6 +132,7 @@ public class MainActivity extends ActionBarActivity
         TextView header_date = (TextView)findViewById(R.id.header_date);
         TextView username = (TextView)findViewById(R.id.header_username);
 
+
         // Footer Layout
         TextView logout = (TextView) findViewById(R.id.logout);
         RippleView settings = (RippleView) findViewById(R.id.settings);
@@ -159,7 +156,7 @@ public class MainActivity extends ActionBarActivity
         setBoxAndProBackground(box, pro_pic); //Change profile pic and box background
         EventBus.getDefault().register(this);
 
-        User aUser = Settings.getLoginUser();
+        User aUser = GlobalSettings.getLoginUser();
         if(aUser != null)
             username.setText(aUser.getUsername());
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
@@ -168,10 +165,11 @@ public class MainActivity extends ActionBarActivity
 
     @SuppressWarnings("deprecation")
     public void setBoxAndProBackground(LinearLayout box, ImageView pro_pic) {
-        Log.e("Today size", "" + mNavigationDrawerFragment.todayShowsSize);
         if (mNavigationDrawerFragment != null) {
-            int today = mNavigationDrawerFragment.todayShowsSize; // number of shows airing today
-            int airing = mNavigationDrawerFragment.getAiringShowNumber(); // number of shows airing now
+            int today = ShowQueries.getTodayShowsCount(); // number of shows airing today
+            int airing = ShowQueries.getMyAiringShowsCount(); // number of shows airing now
+            Log.e("today", "" + today);
+            Log.e("airing", "" + airing);
 
             if (airing == 0 && today == 0) {
                 box.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_profile_red_grenite));

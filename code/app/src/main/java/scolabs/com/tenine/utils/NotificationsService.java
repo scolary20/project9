@@ -54,7 +54,7 @@ public class NotificationsService extends IntentService {
         final int scrollPeriod = 1500;
         final ArrayList<Show> showsToRemoved = new ArrayList<>();
         final Object object = new Object();
-        Settings.setup_db(this, "", true);
+        GlobalSettings.setup_db(this, "", true);
         final ArrayList<Show> myShows = ShowQueries.getShows();
         new Thread(new Runnable() {
             @Override
