@@ -1,19 +1,18 @@
 package scolabs.com.tenine.model;
 
-import com.activeandroid.Configuration;
+import android.graphics.Bitmap;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
-import javax.validation.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * Created by scolary on 2/6/2016.
@@ -29,12 +28,12 @@ public class User extends Model {
 
     @NotNull(message = "Email is required")
     @Column
-    @Pattern(regexp="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message = "Not a valid email")
+    @Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message = "Not a valid email")
     String email;
 
     @Column
     @NotNull(message = "Password is required")
-    @Size(min= 5, message = "Password length min = 5")
+    @Size(min = 5, message = "Password length min = 5")
     String password;
     @Column
     Date date_created;
@@ -43,7 +42,10 @@ public class User extends Model {
     @Column(unique = true, notNull = true)
     long userId;
 
-    public User(){
+    @Column
+    String profilurl;
+
+    public User() {
 
     }
 
@@ -52,9 +54,18 @@ public class User extends Model {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.date_created = new Date();
+        this.last_modified = date_created;
         userId = new Random().nextInt(30000);
     }
 
+    public String getProfilurl() {
+        return profilurl;
+    }
+
+    public void setProfilurl(String profilurl) {
+        this.profilurl = profilurl;
+    }
 
     public String getUsername() {
         return username;

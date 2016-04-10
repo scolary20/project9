@@ -27,4 +27,5 @@ public class Global {
     public static int notificationsCount = 0;
     public static ShowAdapter showAdapter;
     public static String email;
+    public static ChatSettings chatSettings;
 }

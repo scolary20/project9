@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +28,8 @@ import android.widget.TextView;
 
 import com.andexert.library.RippleView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -34,21 +39,24 @@ import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
+import scolabs.com.tenine.utils.ChatSettings;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    private final int SELECT_PHOTO = 1;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private ImageView profile_pic;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -131,6 +139,15 @@ public class MainActivity extends ActionBarActivity
         // Header Layout
         TextView header_date = (TextView)findViewById(R.id.header_date);
         TextView username = (TextView)findViewById(R.id.header_username);
+        profile_pic = (ImageView) findViewById(R.id.profile_picture);
+        profile_pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+            }
+        });
 
 
         // Footer Layout
@@ -157,10 +174,24 @@ public class MainActivity extends ActionBarActivity
         EventBus.getDefault().register(this);
 
         User aUser = GlobalSettings.getLoginUser();
-        if(aUser != null)
+        if(aUser != null) {
             username.setText(aUser.getUsername());
+            if (aUser.getProfilurl() != null) {
+                try {
+                    final Uri imageUri = Uri.parse(aUser.getProfilurl());
+                    final InputStream imageStream = this.getContentResolver().openInputStream(imageUri);
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    profile_pic.setImageBitmap(selectedImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
+        Global.chatSettings = new ChatSettings();
+        Global.chatSettings.createConnection("jesscia", "jess", this);
     }
 
     @SuppressWarnings("deprecation")
@@ -278,6 +309,28 @@ public class MainActivity extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch (requestCode) {
+            case SELECT_PHOTO:
+                if (resultCode == RESULT_OK) {
+                    try {
+                        User aUser = GlobalSettings.getLoginUser();
+                        final Uri imageUri = imageReturnedIntent.getData();
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        profile_pic.setImageBitmap(selectedImage);
+                        aUser.setProfilurl(imageReturnedIntent.getDataString());
+                        aUser.save();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -317,5 +370,4 @@ public class MainActivity extends ActionBarActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
 }

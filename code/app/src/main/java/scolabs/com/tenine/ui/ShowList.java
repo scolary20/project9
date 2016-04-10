@@ -150,13 +150,13 @@ public class ShowList extends Fragment {
 
         // Convert string to date
         /*SimpleDateFormat dateformat2 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-        String strdate2 = "22-03-2016 03:10:00";
-        String strdate3 = "22-03-2016 09:08:00";
-        String strdate4 = "22-03-2016 05:44:00";
-        String strdate5 = "23-03-2016 04:00:00";
-        String strdate6 = "22-03-2016 14:57:00";
-        String strdate7 = "23-03-2016 20:45:00";
-        String strdate8 = "21-03-2016 11:40:00";
+        String strdate2 = "08-04-2016 05:56:00";
+        String strdate3 = "08-04-2016 04:45:00";
+        String strdate4 = "08-04-2016 05:13:00";
+        String strdate5 = "08-04-2016 05:00:00";
+        String strdate6 = "08-04-2016 05:57:00";
+        String strdate7 = "08-04-2016 05:45:00";
+        String strdate8 = "08-04-2016 23:40:00";
         Date newdate, newdate3, newdate4, newdate5, newdate7, newdate6, newdate8, nd;
         newdate3 = null;
         newdate = null;
@@ -276,7 +276,7 @@ public class ShowList extends Fragment {
 
         tr = new Show("Game of thrones", "s5E1", "Fox network");
         tr.setShow_length(9);
-        tr.setNum_comment(25450);
+        tr.setNum_comment(;);
         tr.setNum_watching(9289);
         tr.setAiring_date(newdate6);
         tr.setAiring_time(GlobalSettings.removeTime(newdate6));

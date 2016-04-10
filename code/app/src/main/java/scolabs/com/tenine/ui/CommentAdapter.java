@@ -5,7 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -30,6 +35,7 @@ import scolabs.com.tenine.R;
 import scolabs.com.tenine.WriteComment;
 import scolabs.com.tenine.databaseQueries.CommentQueries;
 import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
 
@@ -82,7 +88,6 @@ public class CommentAdapter extends ArrayAdapter {
         lbl.setTypeface(type);
         lbl.setText(c.getContent());
 
-        Log.e(" Boolean Value", "" + c.isMarked_down());
 
         lbl = (TextView) listItem.findViewById(R.id.up_mark);
         if (c.isMarked_up() == 1)
@@ -110,6 +115,8 @@ public class CommentAdapter extends ArrayAdapter {
         lbl.setText(dateFormat.format(c.getDate()));
         TextView commentatorName = (TextView) listItem.findViewById(R.id.commentator_name);
         commentatorName.setText(c.getCommentator());
+        ImageView pro_pic = (ImageView) listItem.findViewById(R.id.commet_pp);
+        setProfilePic(mContext, pro_pic, c);
 
         return listItem;
     }
@@ -316,5 +323,19 @@ public class CommentAdapter extends ArrayAdapter {
             }
         });
         dialog.show();
+    }
+
+    public void setProfilePic(Context mContext, ImageView profile_pic, Comment c) {
+        User aUser = GlobalSettings.getLoginUser();
+        if (c.getCommentator().equalsIgnoreCase(aUser.getUsername())) {
+            try {
+                final Uri imageUri = Uri.parse(aUser.getProfilurl());
+                final InputStream imageStream = mContext.getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                profile_pic.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

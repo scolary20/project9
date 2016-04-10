@@ -99,6 +99,7 @@ public class CommentActivity extends ActionBarActivity {
                         Global.txt.setVisibility(View.GONE);
                         input.setText("");
                         input.clearFocus();
+                        Global.chatSettings.sendMessage("empire", cment);
                         GlobalSettings.hideKeyboard(CommentActivity.this);
                     }
                 }
