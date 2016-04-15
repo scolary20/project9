@@ -3,6 +3,8 @@ package scolabs.com.tenine.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -122,4 +124,15 @@ public class GlobalSettings {
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
     }
+
+    public boolean checkConnection(Context mContext) {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
+    }
+
 }

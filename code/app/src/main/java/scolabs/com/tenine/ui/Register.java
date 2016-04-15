@@ -1,9 +1,7 @@
 package scolabs.com.tenine.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -71,18 +69,15 @@ public class Register extends Activity {
                                     error_messages = "";
                                 }
                             });
-                        }
-                        else
-                        {
+                        } else {
                             User user_name = UserQueries.getDbUser(username, email, password, "username");
                             User user_email = UserQueries.getDbUser(username, email, password, "email");
-                            if(user_name != null)
+                            if (user_name != null)
                                 error_messages += "Username already taken \n";
-                            else if(user_email != null)
+                            else if (user_email != null)
                                 error_messages += "Email already exists\n";
 
-                            if(user_email==null && user_name == null )
-                            {
+                            if (user_email == null && user_name == null) {
                                 reg_status = register(username, email, password);
                                 Register.this.runOnUiThread(new Runnable() {
                                     @Override
@@ -93,19 +88,14 @@ public class Register extends Activity {
                                         Global.email = email;
                                     }
                                 });
-                                try
-                                {
+                                try {
                                     Thread.currentThread().sleep(4000);
-                                }
-                                catch(InterruptedException ex)
-                                {
+                                } catch (InterruptedException ex) {
                                     ex.printStackTrace();
                                 }
                                 finish();
                                 Log.d("Message 3", "user registration success!!!");
-                            }
-                            else
-                            {
+                            } else {
                                 Register.this.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -134,7 +124,7 @@ public class Register extends Activity {
                 .ignoreXmlConfiguration()
                 .buildValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> constraintViolations = validator.validate(new User(username, email,password));
+        Set<ConstraintViolation<User>> constraintViolations = validator.validate(new User(username, email, password));
         int size = constraintViolations.size();
         Iterator itr = constraintViolations.iterator();
         ConstraintViolation<User> user = null;
