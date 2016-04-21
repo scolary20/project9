@@ -188,7 +188,7 @@ public class LocalService extends Service {
                 isDone.set(false);
                 for (Show show : myShows) {
                     long dt = new Date().getTime();
-                    long air = show.getAiring_date().getTime();
+                    long air = show.getAiring_date();
                     if (air >= (dt - 30000) && air < (air + 40000)) {
                         displayNotificationOne("10/9c Notification ", "" + show.getName() + " has started ", "show has started!", "empire");
                         sendBroadcas();

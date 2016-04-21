@@ -74,7 +74,6 @@ public class ChatSettings {
                 SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
                 mConnection = new XMPPTCPConnection(config.build());
 
-
                 try {
                     ConnectivityManager connMgr = (ConnectivityManager)
                             mContext.getSystemService(Context.CONNECTIVITY_SERVICE);

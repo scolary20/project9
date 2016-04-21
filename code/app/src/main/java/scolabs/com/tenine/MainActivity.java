@@ -176,9 +176,9 @@ public class MainActivity extends ActionBarActivity
         User aUser = GlobalSettings.getLoginUser();
         if(aUser != null) {
             username.setText(aUser.getUsername());
-            if (aUser.getProfilurl() != null) {
+            if (aUser.getProfile_url() != null) {
                 try {
-                    final Uri imageUri = Uri.parse(aUser.getProfilurl());
+                    final Uri imageUri = Uri.parse(aUser.getProfile_url());
                     final InputStream imageStream = this.getContentResolver().openInputStream(imageUri);
                     final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                     profile_pic.setImageBitmap(selectedImage);
@@ -191,7 +191,7 @@ public class MainActivity extends ActionBarActivity
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
         Global.chatSettings = new ChatSettings();
-        Global.chatSettings.createConnection("jesscia", "jess", this);
+        Global.chatSettings.createConnection(aUser.getUsername(), aUser.getPassword(), this);
     }
 
     @SuppressWarnings("deprecation")
@@ -322,7 +322,7 @@ public class MainActivity extends ActionBarActivity
                         final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                         final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                         profile_pic.setImageBitmap(selectedImage);
-                        aUser.setProfilurl(imageReturnedIntent.getDataString());
+                        aUser.setProfile_url(imageReturnedIntent.getDataString());
                         aUser.save();
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

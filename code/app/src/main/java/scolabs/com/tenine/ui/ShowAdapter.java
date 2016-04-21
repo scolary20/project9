@@ -103,7 +103,7 @@ public class ShowAdapter extends ArrayAdapter {
         if (time_array != null) {
             final Date d = new Date();
             Calendar cal = Calendar.getInstance();
-            cal.setTime(c.getAiring_date());
+            cal.setTime(new Date(c.getAiring_date()));
             //Calculating End Date
             long t = cal.getTimeInMillis();
             Date end_show = (Date) time_array[1];
@@ -125,8 +125,8 @@ public class ShowAdapter extends ArrayAdapter {
             cal.setTime(end_show);
             default_color = holder.chronometer.getDrawingCacheBackgroundColor();
 
-            if (today.before(c.getAiring_date())) {
-                cal.setTime(c.getAiring_date());
+            if (today.before(new Date(c.getAiring_date()))) {
+                cal.setTime(new Date(c.getAiring_date()));
                 int format = cal.get(Calendar.AM_PM);
                 String am_pm = format == 0 ? " am" : " pm";
                 holder.chronometer.setBackgroundColor(default_color);

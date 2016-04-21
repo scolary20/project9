@@ -14,9 +14,9 @@ import java.util.Random;
 @Table(name="Show")
 public class Show extends Model{
     @Column(index = true)
-    private Date airing_date;
+    private long airing_date;
     @Column
-    private Date airing_time;
+    private long airing_time;
     @Column
     private long num_watching;
     @Column
@@ -122,19 +122,19 @@ public class Show extends Model{
         this.episode = episode;
     }
 
-    public Date getAiring_date() {
+    public long getAiring_date() {
         return airing_date;
     }
 
-    public void setAiring_date(Date airing_date) {
+    public void setAiring_date(long airing_date) {
         this.airing_date = airing_date;
     }
 
-    public Date getAiring_time() {
+    public long getAiring_time() {
         return airing_time;
     }
 
-    public void setAiring_time(Date airing_time) {
+    public void setAiring_time(long airing_time) {
         this.airing_time = airing_time;
     }
 
@@ -188,11 +188,11 @@ public class Show extends Model{
         this.num_watching = num_watching;
     }
 
-    public List<Comment> comments() {
+    public List<Comment> showComments() {
         return getMany(Comment.class, "Comment");
     }
 
-    public List<User> usersWatching() {
+    public List<User> watchingUsers() {
         return getMany(User.class, "User");
     }
 }

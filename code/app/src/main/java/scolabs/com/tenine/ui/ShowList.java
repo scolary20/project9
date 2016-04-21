@@ -39,6 +39,7 @@ import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.GlobalSettings;
+import scolabs.com.tenine.utils.PullShowData;
 
 /**
  * Created by scolary on 1/29/2016.
@@ -287,7 +288,9 @@ public class ShowList extends Fragment {
         tr.save();
         showList.add(tr);*/
 
+        new PullShowData().getMyShows(42);
         showList = ShowQueries.getShows();
+
         Log.e("Show list size ",String.valueOf(showList.size()));
     }
 }

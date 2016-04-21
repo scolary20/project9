@@ -38,7 +38,7 @@ public class ShowQueries {
                 .and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .orderBy("airing_date ASC")
                 .execute();*/
-        Date today = GlobalSettings.removeTime(new Date());
+        Date today = new Date(GlobalSettings.removeTime(new Date()));
         return (ArrayList) new Select()
                 .from(Show.class)
                 .where("airing_date <= " + new Date().getTime())
@@ -50,7 +50,7 @@ public class ShowQueries {
 
     public static int getTodayShowsCount()//Today's airing shows count
     {
-        Date today = GlobalSettings.removeTime(new Date());
+        Date today = new Date(GlobalSettings.removeTime(new Date()));
         int sh = new Select()
                 .from(Show.class)
                 .where("airing_date <= " + new Date().getTime())

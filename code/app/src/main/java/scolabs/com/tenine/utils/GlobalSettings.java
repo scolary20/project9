@@ -59,7 +59,7 @@ public class GlobalSettings {
     }
 
     public static Object[] showTimeHandler(Show c) {
-        if (c.getAiring_date() != null) {
+        if (new Date(c.getAiring_date()) != null) {
             final Date d = new Date();
 
             //Calculating End Date
@@ -67,17 +67,17 @@ public class GlobalSettings {
             int GRACE_PERIOD = 5;
 
             Calendar cal = Calendar.getInstance();
-            cal.setTime(c.getAiring_date());
+            cal.setTime(new Date(c.getAiring_date()));
             long t = cal.getTimeInMillis();
             Date end_show = new Date(t + (c.getShow_length() * ONE_MINUTE_IN_MILLIS));
             Date today = new Date();
             int show_day = cal.get(Calendar.DAY_OF_WEEK);
             cal.setTime(today);
             int today_day = cal.get(Calendar.DAY_OF_WEEK);
-            long min_progress = today.getTime() - c.getAiring_date().getTime();
+            long min_progress = today.getTime() - c.getAiring_date();
             long show_actual_stat = SystemClock.elapsedRealtime() - (min_progress);
             Boolean check_date = show_day == today_day;
-            Boolean ch = (today.after(c.getAiring_date()) && today.before(end_show));
+            Boolean ch = (today.after(new Date(c.getAiring_date())) && today.before(end_show));
             Object[] values = new Object[8];
             values[0] = today; // today date (Date)
             values[1] = end_show; // end_show date (Date)
@@ -115,17 +115,17 @@ public class GlobalSettings {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static Date removeTime(Date date) {
+    public static long removeTime(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
+        return cal.getTime().getTime();
     }
 
-    public boolean checkConnection(Context mContext) {
+    public static boolean checkConnection(Context mContext) {
         ConnectivityManager connMgr = (ConnectivityManager)
                 mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

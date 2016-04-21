@@ -1,26 +1,12 @@
 package scolabs.com.tenine.utils;
 
+
+import android.net.http.AndroidHttpClient;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
-
-import java.util.ArrayList;
-
-import scolabs.com.tenine.model.User;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -32,35 +18,55 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
-import org.json.JSONObject;
 import org.json.JSONArray;
-import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import scolabs.com.tenine.model.User;
 
 /**
  * Created by scolary on 4/15/2016.
  */
 public class RemoteServerConnection {
 
+    protected static String base_url = "http://10.0.2.2:8080/project9/resources/";
     private static boolean isConnected;
+    protected String serverCredentials = "admin:Grillzmania1";
     /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
     private InputStream is = null;
-    private DefaultHttpClient httpClient;
+    private AndroidHttpClient httpClient;
+    private String authorization;
 
     // constructor
     public RemoteServerConnection() {
-        httpClient = new DefaultHttpClient();
+        httpClient = AndroidHttpClient.newInstance("Android");
+        try {
+
+            byte[] result = serverCredentials.getBytes("UTF-8");
+            String base64encodedString = Base64.encodeToString(result, Base64.DEFAULT);
+            authorization = "Basic " + base64encodedString;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public JSONObject getJSONFromUrlPost(String url, List<NameValuePair> params) {
         // Making HTTP request
         try {
-            HttpPost httpPost = new HttpPost(url);
+            HttpPost httpPost = new HttpPost(base_url.concat(url));
             httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-
+            //httpPost.setHeader("Authorization", authorization);
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
@@ -81,21 +87,27 @@ public class RemoteServerConnection {
 
     public JSONArray getJSONFromUrlGet(String url, List<NameValuePair> params) {
         try {
-            HttpGet httpGet = new HttpGet(url);
-            //httpGet.setParams((HttpParams) params);
+            HttpGet httpGet = new HttpGet(base_url.concat(url));
+            if (params != null && params.size() > 0)
+                httpGet.setParams((HttpParams) params);
 
             HttpResponse httpResponse = httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
+            httpGet.setHeader("Authorization", authorization);
             is = httpEntity.getContent();
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            httpClient.close();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
+            httpClient.close();
         } catch (IOException e) {
             e.printStackTrace();
+            httpClient.close();
         } catch (Exception e) {
             e.printStackTrace();
+            httpClient.close();
         }
 
         return processResponseArray();
@@ -126,10 +138,11 @@ public class RemoteServerConnection {
 
         } catch (Exception ex) {
             //Log.e("JSON Parser", "Error parsing data " + e.toString());
-            System.err.println("Error passind data" + ex.toString());
+            System.err.println("Error passing data" + ex.toString());
             jObj = null;
         }
 
+        httpClient.close();
         // return JSON String
         return jObj;
     }
@@ -155,25 +168,14 @@ public class RemoteServerConnection {
         try {
             jArray = new JSONArray(json);
             System.out.println(jArray.toString());
-            GsonBuilder gbuilder = new GsonBuilder();
-            Gson gson = gbuilder.create();
-
-            ArrayList<User> p = new ArrayList<>();
-            for (int i = 0; i < jArray.length(); i++) {
-                User user = gson.fromJson(jArray.getString(i), User.class);
-                p.add(user);
-            }
-
-            for (User u : p) {
-                System.out.println(u.toString());
-            }
-
             //ArrayList<User> p = gson.fromJson(json,User.class);
         } catch (Exception ex) {
             //Log.e("JSON Parser", "Error parsing data " + e.toString());
-            System.err.println("Error passind data" + ex.toString());
+            System.err.println("Error parsing data" + ex.toString());
             jArray = null;
         }
+
+        httpClient.close();
         // return JSON Array
         return jArray;
     }

@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -329,7 +327,7 @@ public class CommentAdapter extends ArrayAdapter {
         User aUser = GlobalSettings.getLoginUser();
         if (c.getCommentator().equalsIgnoreCase(aUser.getUsername())) {
             try {
-                final Uri imageUri = Uri.parse(aUser.getProfilurl());
+                final Uri imageUri = Uri.parse(aUser.getProfile_url());
                 final InputStream imageStream = mContext.getContentResolver().openInputStream(imageUri);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 profile_pic.setImageBitmap(selectedImage);

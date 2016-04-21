@@ -1,7 +1,5 @@
 package scolabs.com.tenine.model;
 
-import android.graphics.Bitmap;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -43,7 +41,7 @@ public class User extends Model {
     long userId;
 
     @Column
-    String profilurl;
+    String profile_url;
 
     public User() {
 
@@ -57,14 +55,15 @@ public class User extends Model {
         this.date_created = new Date();
         this.last_modified = date_created;
         userId = new Random().nextInt(30000);
+        this.profile_url = null;
     }
 
-    public String getProfilurl() {
-        return profilurl;
+    public String getProfile_url() {
+        return profile_url;
     }
 
-    public void setProfilurl(String profilurl) {
-        this.profilurl = profilurl;
+    public void setProfile_url(String profile_url) {
+        this.profile_url = profile_url;
     }
 
     public String getUsername() {
