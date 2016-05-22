@@ -1,6 +1,8 @@
-package scolabs.com.tenine.utils;
+package scolabs.com.tenine.remoteOperations;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.util.Base64;
 import android.util.Log;
@@ -26,6 +28,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,20 +42,23 @@ import scolabs.com.tenine.model.User;
 public class RemoteServerConnection {
 
     protected static String base_url = "http://10.0.2.2:8080/project9/resources/";
+    protected static String img_url = "http://10.0.2.2/site/images/";
+    //protected static String base_url = "http://scolabs.com:8080/project9/resources/";
     private static boolean isConnected;
     protected String serverCredentials = "admin:Grillzmania1";
+    //protected static String img_url = "http://larytech.com/img_repository/";
     /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
     private InputStream is = null;
-    private AndroidHttpClient httpClient;
+    private DefaultHttpClient httpClient;
     private String authorization;
 
     // constructor
     public RemoteServerConnection() {
-        httpClient = AndroidHttpClient.newInstance("Android");
+        httpClient = new DefaultHttpClient();//.newInstance("Android");
         try {
 
             byte[] result = serverCredentials.getBytes("UTF-8");
@@ -59,6 +67,48 @@ public class RemoteServerConnection {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static InputStream OpenHttpConnection(String urlString)
+            throws IOException {
+        InputStream in = null;
+        int response = -1;
+
+        URL url = new URL(urlString);
+        URLConnection conn = url.openConnection();
+
+        if (!(conn instanceof HttpURLConnection))
+            throw new IOException("Not an HTTP connection");
+
+        try {
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+
+            response = httpConn.getResponseCode();
+            if (response == HttpURLConnection.HTTP_OK) {
+                in = httpConn.getInputStream();
+            }
+        } catch (Exception ex) {
+            throw new IOException("Error connecting");
+        }
+        return in;
+    }
+
+    public static Bitmap downloadImage(String url) {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(img_url.concat(url));
+            bitmap = BitmapFactory.decodeStream(in);
+            in.close();
+        } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        return bitmap;
     }
 
     public JSONObject getJSONFromUrlPost(String url, List<NameValuePair> params) {
@@ -85,32 +135,38 @@ public class RemoteServerConnection {
         return processResponseObject();
     }
 
-    public JSONArray getJSONFromUrlGet(String url, List<NameValuePair> params) {
+    public Object getJSONFromUrlGet(String url, List<NameValuePair> params, String type) {
         try {
             HttpGet httpGet = new HttpGet(base_url.concat(url));
             if (params != null && params.size() > 0)
                 httpGet.setParams((HttpParams) params);
 
+            //httpGet.setHeader("Authorization", authorization);
             HttpResponse httpResponse = httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
-            httpGet.setHeader("Authorization", authorization);
+
+
             is = httpEntity.getContent();
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            httpClient.close();
+            //httpClient.close();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
-            httpClient.close();
+            //httpClient.close();
         } catch (IOException e) {
             e.printStackTrace();
-            httpClient.close();
+            //httpClient.close();
         } catch (Exception e) {
             e.printStackTrace();
-            httpClient.close();
+            //httpClient.close();
         }
 
-        return processResponseArray();
+
+        if (type.equals("array"))
+            return processResponseArray();
+        else
+            return processResponseObject();
     }
 
     public JSONObject processResponseObject() {
@@ -142,7 +198,7 @@ public class RemoteServerConnection {
             jObj = null;
         }
 
-        httpClient.close();
+        //httpClient.close();
         // return JSON String
         return jObj;
     }
@@ -175,7 +231,7 @@ public class RemoteServerConnection {
             jArray = null;
         }
 
-        httpClient.close();
+        //httpClient.close();
         // return JSON Array
         return jArray;
     }

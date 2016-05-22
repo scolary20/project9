@@ -39,7 +39,7 @@ import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.ui.ShowList;
-import scolabs.com.tenine.utils.ChatSettings;
+import scolabs.com.tenine.remoteOperations.ChatSettings;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
 
@@ -192,6 +192,7 @@ public class MainActivity extends ActionBarActivity
         header_date.setText(df.format(new Date()));
         Global.chatSettings = new ChatSettings();
         Global.chatSettings.createConnection(aUser.getUsername(), aUser.getPassword(), this);
+
     }
 
     @SuppressWarnings("deprecation")

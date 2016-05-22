@@ -92,7 +92,6 @@ public class CommentActivity extends ActionBarActivity {
                         String name = GlobalSettings.getLoginUser().getUsername();
                         Comment c = new Comment(cment, name, new Date(), showId);
                         Global.cmAdapter.add(c);
-                        c.save();
                         Global.cmAdapter.notifyDataSetChanged();
                         ListView list = Global.lsView;
                         list.smoothScrollToPosition(Global.cmAdapter.getCount());
@@ -100,6 +99,7 @@ public class CommentActivity extends ActionBarActivity {
                         input.setText("");
                         input.clearFocus();
                         Global.chatSettings.sendMessage("empire", cment);
+                        c.save();
                         GlobalSettings.hideKeyboard(CommentActivity.this);
                     }
                 }
@@ -137,6 +137,7 @@ public class CommentActivity extends ActionBarActivity {
             myVideoView.setMediaController(mediaControls);
 
             if (PATH != null)
+
                 myVideoView.setVideoPath(PATH);
                 //myVideoView.setVideoURI(Uri.parse("http://larytech.com/site/empire_trailer.mp4"));
             else

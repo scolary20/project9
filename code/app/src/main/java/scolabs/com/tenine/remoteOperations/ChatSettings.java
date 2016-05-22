@@ -1,4 +1,4 @@
-package scolabs.com.tenine.utils;
+package scolabs.com.tenine.remoteOperations;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -34,6 +34,7 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jivesoftware.smackx.muc.Occupant;
 import org.jivesoftware.smackx.xdata.Form;
 import org.jivesoftware.smackx.xdata.FormField;
 
@@ -41,16 +42,22 @@ import org.jivesoftware.smackx.xdata.FormField;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.utils.Global;
+import scolabs.com.tenine.utils.GlobalSettings;
+
 /**
  * Created by scolary on 4/7/2016.
  */
 public class ChatSettings {
-    static final String DOMAIN = "scolabs.com";
+    //static final String DOMAIN = "scolabs.com";
+    static final String DOMAIN = "10.0.2.2";
     static final int PORT = 5222;
     static final String SERVICE = "xmpp";
     static XMPPTCPConnection mConnection;
@@ -73,6 +80,7 @@ public class ChatSettings {
                 SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
                 SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
                 mConnection = new XMPPTCPConnection(config.build());
+
 
                 try {
                     ConnectivityManager connMgr = (ConnectivityManager)
@@ -106,7 +114,7 @@ public class ChatSettings {
 
         try {
             groupChat(msg);
-            //mConnection.sendPacket(msg);
+            mConnection.sendPacket(msg);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -115,14 +123,15 @@ public class ChatSettings {
     public void groupChat(Message msg) throws Exception {
         manager = MultiUserChatManager.getInstanceFor(mConnection);
         muc2 = manager.getMultiUserChat("empire@conference.server1");
-        muc2.join("jess");
+        muc2.join(GlobalSettings.getLoginUser().getUsername());
         muc2.addMessageListener(new MessageListener() {
             @Override
             public void processMessage(Message message) {
+                new Comment(message.getBody(), muc2.getNickname(), new Date(), Global.showId).save();
                 Log.e("Roster", message != null ? message.getBody() + " From : " + message : null);
-
             }
         });
+
 
         //muc2.sendMessage(msg);
     }
@@ -143,7 +152,5 @@ public class ChatSettings {
                 }
             });
         }
-
     }
-
 }

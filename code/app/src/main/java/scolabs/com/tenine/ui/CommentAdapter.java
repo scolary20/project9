@@ -277,7 +277,7 @@ public class CommentAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 listItem.setVisibility(listItem.GONE);
                 data.remove(data.get(position));
-                cmd.notifyDataSetChanged();
+                //cmd.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });

@@ -2,6 +2,9 @@ package scolabs.com.tenine.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import scolabs.com.tenine.DrawerItemCustomAdapter;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.GlobalSettings;
@@ -73,16 +77,19 @@ public class ShowAdapter extends ArrayAdapter {
         holder.img.setBounds(0, 0, 62, 62);
         InputStream ims = null;
         try {
-            ims = mContext.getAssets().open(c.getShow_img_location());
+            new GlobalSettings(mContext);
+            String img_name = c.getShow_img_location();
+            Bitmap map = BitmapFactory.decodeFile(GlobalSettings.SHOWS_IMG_DIR + "/" + img_name);
+            if (map != null) {
+                holder.sImage = new BitmapDrawable(mContext.getResources(), map);
+                holder.show_image.setImageDrawable(holder.sImage);
+            } else {
+                holder.show_image.setImageDrawable(holder.show_default_img);
+            }
         } catch (Exception ex) {
+            holder.show_image.setImageDrawable(holder.show_default_img);
             ex.printStackTrace();
         }
-
-        if (ims != null) {
-            holder.sImage = Drawable.createFromStream(ims, null);
-            holder.show_image.setImageDrawable(holder.sImage);
-        } else
-            holder.show_image.setImageDrawable(holder.show_default_img);
 
         if (c.getRating_arrow() == 1)
             holder.rating_arrow.setCompoundDrawablesWithIntrinsicBounds(holder.img, null, null, null);
@@ -135,8 +142,7 @@ public class ShowAdapter extends ArrayAdapter {
                         cal.get(Calendar.HOUR) : cal.get(Calendar.HOUR)) + ":"
                         + (cal.get(Calendar.MINUTE) < 10 ? "0" + cal.get(Calendar.MINUTE) : cal.get(Calendar.MINUTE)) + am_pm);
             }
-        } else
-        {
+        } else {
             holder.chronometer.setBackgroundColor(default_color);
             holder.chronometer.stop();
             holder.chronometer.setText("off-air");

@@ -5,7 +5,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,26 +86,26 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
             holder.progressBar = null;
             holder.progressBar = (ProgressBar) listItem.findViewById(R.id.progressBar);
             holder.progressBar.setTag(show.getId());
+            holder.show_default_img = getContext().getResources().getDrawable(R.drawable.show_image_default);
         } else
             holder = (ViewHolder) listItem.getTag();
         holder.length.setText("" + show.getShow_length() + " min");
         holder.textViewName.setTypeface(holder.font);
         holder.textViewName.setText(show.getName());
 
-
-        InputStream ims = null;
         try {
-            ims = mContext.getAssets().open(show.getShow_img_location());
+            new GlobalSettings(mContext);
+            String img_name = show.getShow_img_location();
+            Bitmap map = BitmapFactory.decodeFile(GlobalSettings.SHOWS_IMG_DIR + "/" + img_name);
+            if (map != null) {
+                holder.sImage = new BitmapDrawable(mContext.getResources(), map);
+                holder.imageViewIcon.setImageDrawable(holder.sImage);
+            } else {
+                holder.imageViewIcon.setImageDrawable(holder.show_default_img);
+            }
         } catch (Exception ex) {
+            holder.imageViewIcon.setImageDrawable(holder.show_default_img);
             ex.printStackTrace();
-        }
-
-        if (ims != null) {
-            d = Drawable.createFromStream(ims, null);
-            holder.imageViewIcon.setImageDrawable(d);
-        } else {
-            d = getContext().getResources().getDrawable(R.drawable.show_image_default);
-            holder.imageViewIcon.setImageDrawable(d);
         }
 
         final int show_length = (int) (show.getShow_length() * ONE_MINUTE_IN_MILLIS);
@@ -198,6 +201,8 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
         ProgressBar progressBar;
         ImageView imageViewIcon;
         TextView textViewName;
+        Drawable show_default_img;
+        Drawable sImage;
         TextView length;
         Typeface font;
         Typeface type;

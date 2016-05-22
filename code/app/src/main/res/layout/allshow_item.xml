@@ -19,6 +19,16 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#000"/>
 
+    <TextView
+        android:id="@+id/latest_airing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="2"
+        android:gravity="left"
+        android:text="Next Airing Episode: "
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/button_material_light"/>
+
     <RelativeLayout
         android:id="@+id/cadre"
         android:layout_width="match_parent"
@@ -38,7 +48,7 @@
             android:gravity="left"
             android:padding="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/empire"/>
+            android:src="@drawable/show_image_default"/>
 
         <LinearLayout
             android:id="@+id/linearLayout"

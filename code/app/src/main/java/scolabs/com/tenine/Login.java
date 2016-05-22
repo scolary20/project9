@@ -36,7 +36,7 @@ import scolabs.com.tenine.services.LocalService;
 import scolabs.com.tenine.ui.Register;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
-import scolabs.com.tenine.utils.RemoteServerConnection;
+import scolabs.com.tenine.remoteOperations.RemoteServerConnection;
 
 /**
  * Created by scolary on 2/8/2016.
@@ -62,6 +62,7 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
 
+        Global.applicationName = getApplicationContext().getPackageName();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Login.this);
         isUserLogin = sp.getBoolean(LOGIN_PREF, false);
         created_db = sp.getBoolean(AA_MODELS, false);
@@ -140,6 +141,8 @@ public class Login extends Activity {
                                             check_code = obj2.getInt("code");
                                         }
 
+                                    } catch (NullPointerException ex) {
+                                        ex.printStackTrace();
                                     } catch (JSONException ex) {
                                         System.err.println("Error passing response server json in Login");
                                     }//End Server Code

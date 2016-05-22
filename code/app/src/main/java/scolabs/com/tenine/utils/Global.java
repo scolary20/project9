@@ -8,6 +8,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.remoteOperations.ChatSettings;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.ShowAdapter;
 
@@ -28,4 +29,6 @@ public class Global {
     public static ShowAdapter showAdapter;
     public static String email;
     public static ChatSettings chatSettings;
+    public static String applicationName;
+    public static ShowAdapter showAdapterCheckFore;
 }

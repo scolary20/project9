@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -32,6 +36,7 @@ import de.greenrobot.event.EventBus;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.UserShow;
+import scolabs.com.tenine.remoteOperations.ShowMgt;
 import scolabs.com.tenine.utils.GlobalSettings;
 
 
@@ -39,6 +44,7 @@ import scolabs.com.tenine.utils.GlobalSettings;
  * Created by scolary on 3/1/2016.
  */
 public class AllShowFragment extends Activity {
+    InputStream ims = null;
     private ArrayList<Show> showList;
     private ArrayList<Show> allShows;
     private ArrayList<Show> myShowList;
@@ -103,6 +109,7 @@ public class AllShowFragment extends Activity {
             final ImageButton add_show = (ImageButton) listItem.findViewById(R.id.unlock_btn);
             final ImageButton remove_show = (ImageButton) listItem.findViewById(R.id.remove_btn);
             final ImageView showImg = (ImageView) listItem.findViewById(R.id.show_image);
+            final TextView latest_airing_view = (TextView) listItem.findViewById(R.id.latest_airing);
             final Drawable d;
 
             Typeface type = Typeface.createFromAsset(AllShowFragment.this.getAssets(), "bariol.ttf");
@@ -110,22 +117,36 @@ public class AllShowFragment extends Activity {
             TextView showName = (TextView) listItem.findViewById(R.id.show_name);
             showName.setTypeface(type_bold);
             showName.setText(show.getName());
+            d = getContext().getResources().getDrawable(R.drawable.show_image_default);
+            Date show_date = new Date(show.getAiring_date());
+            DateFormat df = DateFormat.getDateTimeInstance();
 
-            InputStream ims = null;
-            try {
-                ims = mContext.getAssets().open(show.getShow_img_location());
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            if (ims != null) {
-                d = Drawable.createFromStream(ims, null);
-                showImg.setImageDrawable(d);
+            //Setting Color for the View: Airing view
+            if (show_date.before(new Date())) {
+                //latest_airing_view.setTextColor(getResources().getColor(R.color.button_material_light));
+                latest_airing_view.setTextColor(Color.parseColor("#808080"));
+                latest_airing_view.setText("Latest Episode Airing Date: \n" + df.format(show_date));
             } else {
-                d = getContext().getResources().getDrawable(R.drawable.show_image_default);
-                showImg.setImageDrawable(d);
+                latest_airing_view.setTextColor(Color.parseColor("#258b87"));
+                latest_airing_view.setText("Next Episode Airing Date: \n" + df.format(show_date));
             }
 
+            try {
+                //ims = mContext.getAssets().open(show.getShow_img_location());
+                new GlobalSettings(mContext);
+                String img_name = show.getShow_img_location();
+                Bitmap map = BitmapFactory.decodeFile(GlobalSettings.SHOWS_IMG_DIR + "/" + img_name);
+                if (map != null) {
+                    //d = Drawable.createFromStream(ims, null);
+                    //showImg.setImageDrawable(d);
+                    showImg.setImageBitmap(map);
+                } else {
+                    showImg.setImageDrawable(d);
+                }
+            } catch (Exception ex) {
+                showImg.setImageDrawable(d);
+                Log.i("No image found", "No image found for this show");
+            }
 
             view_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,7 +155,7 @@ public class AllShowFragment extends Activity {
 
                         desc_view.setVisibility(View.VISIBLE);
                         Typeface type = Typeface.createFromAsset(AllShowFragment.this.getAssets(), "bariol.ttf");
-                        desc_view.setText(R.string.login_top_message);
+                        desc_view.setText(show.getComment_content());
                         desc_view.setTypeface(type);
                         desc_view.setAnimation(bounce);
                         desc_clicked = true;
@@ -150,18 +171,30 @@ public class AllShowFragment extends Activity {
                 public void onClick(View v) {
 
                     long id = GlobalSettings.getLoginUser().getUserId();
-                    new UserShow(id, show.getShowId()).save();
-                    myShowList.add(show);
-                    Show[] arrShow = {show};
-                    EventBus.getDefault().post(arrShow);
-                    Toast.makeText(mContext, "Show successfully added!!!", Toast.LENGTH_SHORT).show();
+                    int attempts = 3;
+                    boolean success = false;
+                    if (GlobalSettings.checkConnection(getBaseContext())) {
+                        while (!success && attempts > 0) {
+                            success = new ShowMgt().followShow(id, show.getShowId()); // Response from Server
+                            attempts--; // Decrement attempts if failure
+                        }
+                        if (success) {
+                            new UserShow(id, show.getShowId()).save(); // cache the information
+                            myShowList.add(show);
+                            Show[] arrShow = {show};
+                            EventBus.getDefault().post(arrShow);
+                            Toast.makeText(mContext, "Show successfully added!!!", Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(mContext, "Error Occured, Try Later!!!", Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(mContext, "No Internet:\nCheck Your Internet Connection", Toast.LENGTH_LONG).show();
                 }
             });
 
             remove_show.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    long id = GlobalSettings.getLoginUser().getUserId();
+                    final long id = GlobalSettings.getLoginUser().getUserId();
                     final UserShow sw = ShowQueries.getUserShowById(id, show.getShowId());
                     if (sw != null) {
 
@@ -170,10 +203,18 @@ public class AllShowFragment extends Activity {
                                 .setMessage("You are about to remove the show: \n" + show.getName())
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        sw.delete(); //delete show
-                                        myShowList.remove(show);
-                                        allShowAdapter.notifyDataSetChanged();
-                                        Toast.makeText(mContext, "Show successfully removed!!!", Toast.LENGTH_SHORT).show();
+                                        if (GlobalSettings.checkConnection(getBaseContext())) {
+                                            boolean success = new ShowMgt().unfollowShow(id, show.getShowId());
+                                            if (success) {
+                                                sw.delete(); //delete show
+                                                myShowList.remove(show);
+                                                allShowAdapter.notifyDataSetChanged();
+                                                Toast.makeText(mContext, "Show successfully removed!!!", Toast.LENGTH_SHORT).show();
+                                            } else
+                                                Toast.makeText(mContext, "Error Occured While trying to Unfollow Show, " +
+                                                        "Try later !!!", Toast.LENGTH_SHORT).show();
+                                        } else
+                                            Toast.makeText(mContext, "No Internet:\nCheck Your Internet Connection", Toast.LENGTH_LONG).show();
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {

@@ -26,20 +26,26 @@ import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.GlobalSettings;
+import scolabs.com.tenine.remoteOperations.PullShowData;
 
 /**
  * Created by scolary on 3/8/2016.
  */
 public class LocalService extends Service {
     public static final String BROADCAST = "com.scolabs.tenine.android.action.broadcast";
+    private final long CHECK_SHOW_START = 30000; //check show after every 30 seconds
+    private final int CHECK_SHOW_CASHING = 4; //4 times a day
     ArrayList<Show> myShows = new ArrayList<>();
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
     private NotificationManager myNotificationManager;
     private int notificationId = 112;
     private int numMessages;
-    private AtomicBoolean isDone = new AtomicBoolean((true));
+    private AtomicBoolean isDone = new AtomicBoolean(true);
     private long OP_VALUE = Long.MAX_VALUE;
+    private int count_seconds = 0;
+    private AtomicBoolean hasAlreadyCheck = new AtomicBoolean(false);
+    private long userId = 42;
 
     @Override
     public void onCreate() {
@@ -147,7 +153,7 @@ public class LocalService extends Service {
 
         if (ims != null) {
             //Bitmap Image = ((BitmapDrawable)Drawable.createFromStream(ims, null)).getBitmap();
-            sImage = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.empire);
+            sImage = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.app_logo);
             return sImage;
         }
         return null;
@@ -170,7 +176,15 @@ public class LocalService extends Service {
                     // Restore interrupt status.
                     Thread.currentThread().interrupt();
                 }
-                new LoadShows().execute();
+                new LoadShows().execute(); // Check shows after every 30 secs
+                count_seconds++;
+                if (count_seconds == 1)//Load shows from server after 30 secs
+                    new PullShowData(getApplicationContext()).getMyShows(userId, 1); //Loading all Shows
+                else if ((count_seconds > 719 && count_seconds < 726) && !hasAlreadyCheck.get()) {
+                    new PullShowData(getApplicationContext()).getMyShows(userId, 1); //Loading all Shows
+                    hasAlreadyCheck.getAndSet(true);
+
+                }
                 OP_VALUE--;
             }
             // Stop the service using the startId, so that we don't stop
@@ -202,6 +216,7 @@ public class LocalService extends Service {
 
         @Override
         protected String doInBackground(String... params) {
+
             myShows = ShowQueries.getMyAiringShows();
             return "";
         }

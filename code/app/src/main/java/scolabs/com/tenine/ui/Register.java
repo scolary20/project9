@@ -33,7 +33,7 @@ import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
-import scolabs.com.tenine.utils.RemoteServerConnection;
+import scolabs.com.tenine.remoteOperations.RemoteServerConnection;
 
 public class Register extends Activity {
     private String username;

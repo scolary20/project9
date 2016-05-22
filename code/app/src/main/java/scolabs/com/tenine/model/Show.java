@@ -52,6 +52,8 @@ public class Show extends Model{
         this.network = network;
         this.showId = new Random().nextInt();   //1 + (int) (Math.random() * 100);
         rating_arrow = 2;
+        airing_date = -999;
+        airing_time = -999;
     }
 
     public Show() {
