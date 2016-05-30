@@ -4,19 +4,25 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.Global;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 4/25/2016.
  */
 public class ShowMgt {
 
+    private List<NameValuePair> params;
     public boolean followShow(long userId, long showId) {
         String subUrl = "userResource/followShow/".concat(userId + "/" + showId);
         try {
@@ -39,6 +45,23 @@ public class ShowMgt {
         return rValue;
     }
 
+    public boolean joinShowRoom(String roomname) {
+        String suburl = "showResource/joinroom/";
+        params = new ArrayList<>();
+        params.add(new BasicNameValuePair("roomname", roomname));
+        params.add(new BasicNameValuePair("name", GlobalSettings.getLoginUser().getUsername()));
+        params.add(new BasicNameValuePair("roles", "members"));
+        boolean rValue = false;
+        try {
+            rValue = new ShowMgtTread().execute(suburl, "joinroom").get();
+        } catch (Exception ex) {
+            Log.e("ShowMgt", ex.getMessage());
+            rValue = false;
+        }
+
+        return rValue;
+    }
+
     class ShowMgtTread extends AsyncTask<String, Void, Boolean> {
         private JSONObject response;
 
@@ -49,10 +72,13 @@ public class ShowMgt {
                     response = (JSONObject) new RemoteServerConnection().getJSONFromUrlGet(url, null, "object");
                 else if (urls[1].equals("unfollow")) //Unfollow Operation
                     response = (JSONObject) new RemoteServerConnection().getJSONFromUrlGet(url, null, "object");
+                else if (urls[1].equals("joinroom")) {
+                    response = new RemoteServerConnection().getJSONFromUrlPost(url, params);
+                }
 
                 if (response != null) {
                     int code = response.getInt("code");
-                    if (code == 1)
+                    if (code != -999)
                         return true;
                     else
                         return false;

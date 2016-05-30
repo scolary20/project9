@@ -5,6 +5,7 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by scolary on 1/30/2016.
@@ -38,6 +39,9 @@ public class Comment extends Model
     @Column(index = true, notNull = true, unique = true)
     private long cmtId;
 
+    @Column(index = true, unique = true)
+    private String stanzaId;
+
     public Comment()
     {
 
@@ -49,7 +53,15 @@ public class Comment extends Model
         this.date = date;
         this.showId = showId;
         ups_mark = 452342L;
-        this.cmtId = 1 + (int) (Math.random() * 100);
+        this.cmtId = new Date().getTime();
+    }
+
+    public String getStanzaId() {
+        return stanzaId;
+    }
+
+    public void setStanzaId(String stanzaId) {
+        this.stanzaId = stanzaId;
     }
 
     public int isMarked_down() {

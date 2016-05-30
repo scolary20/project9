@@ -290,7 +290,8 @@ public class ShowList extends Fragment {
         tr.save();
         //showList.add(tr);*/
 
-        showList = ShowQueries.getShows();
+        //showList = ShowQueries.getShows(); ----------- to comment out
+        showList = ShowQueries.getAllShows();
         //new PullShowData(getActivity()).getMyShows(GlobalSettings.getLoginUser().getUserId(),1);
         Log.e("Show list size ",String.valueOf(showList.size()));
     }

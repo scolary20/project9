@@ -41,8 +41,8 @@ import scolabs.com.tenine.model.User;
  */
 public class RemoteServerConnection {
 
-    protected static String base_url = "http://10.0.2.2:8080/project9/resources/";
-    protected static String img_url = "http://10.0.2.2/site/images/";
+    protected static String base_url = "http://192.168.43.174:8080/project9/resources/";
+    protected static String img_url = "http://192.168.43.174/site/images/";
     //protected static String base_url = "http://scolabs.com:8080/project9/resources/";
     private static boolean isConnected;
     protected String serverCredentials = "admin:Grillzmania1";

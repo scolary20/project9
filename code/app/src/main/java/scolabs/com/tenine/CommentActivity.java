@@ -35,6 +35,7 @@ import java.util.Date;
 
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.CommentList;
@@ -91,16 +92,20 @@ public class CommentActivity extends ActionBarActivity {
                         String cment = input.getText().toString().trim();
                         String name = GlobalSettings.getLoginUser().getUsername();
                         Comment c = new Comment(cment, name, new Date(), showId);
-                        Global.cmAdapter.add(c);
+                        GlobalSettings.hideKeyboard(CommentActivity.this);
                         Global.cmAdapter.notifyDataSetChanged();
+                        //Global.cmAdapter.add(c);
                         ListView list = Global.lsView;
+                        list.setFastScrollEnabled(true);
+                        list.setFastScrollAlwaysVisible(true);
                         list.smoothScrollToPosition(Global.cmAdapter.getCount());
                         Global.txt.setVisibility(View.GONE);
                         input.setText("");
                         input.clearFocus();
-                        Global.chatSettings.sendMessage("empire", cment);
-                        c.save();
-                        GlobalSettings.hideKeyboard(CommentActivity.this);
+                        Show show = ShowQueries.getShowById(showId);
+                        Global.chatSettings.sendMessage(show.getName(), cment);
+                        //c.save();
+
                     }
                 }
             });

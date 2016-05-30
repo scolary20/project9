@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Date;
 
+import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
@@ -58,18 +59,21 @@ public class PullShowData {
                     for (int i = 0; i < shows.length(); i++) {
                         Show show = gson.fromJson(shows.getString(i).toString(), Show.class);
                         show.setAiring_time(GlobalSettings.removeTime(new Date(show.getAiring_date())));
-                        Bitmap bitmap = RemoteServerConnection.downloadImage(
-                                show.getShow_img_location());
+                       /* Bitmap bitmap = RemoteServerConnection.downloadImage(
+                                show.getShow_img_location());*/
                         //Process image name, remove extension
                    /* int index = show.getShow_img_location().lastIndexOf(".");
                     String img = show.getShow_img_location().substring(0,index);*/
 
-                        new GlobalSettings(mContext).storeImage(bitmap, 1, show.getShow_img_location());
+                        //new GlobalSettings(mContext).storeImage(bitmap, 1, show.getShow_img_location());*/
                         try {
-                            show.save();
+                            int show_count = ShowQueries.getShowCount(show.getShowId());
+                            if (show_count == 0 || show_count == -1)
+                                show.save();
                         } catch (SQLiteConstraintException exception) {
                             Log.e("Constraint exception", exception.getMessage());
                         }
+
                     }
                 return p;
             } catch (Exception e) {

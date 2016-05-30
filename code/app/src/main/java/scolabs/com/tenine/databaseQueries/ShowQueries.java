@@ -61,6 +61,13 @@ public class ShowQueries {
         return sh;
     }
 
+    public static int getShowCount(long showId) {
+        return new Select()
+                .from(Show.class)
+                .where("showId = ?", showId)
+                .count();
+    }
+
     public static ArrayList<Show> getAllShows() {
         return (ArrayList) new Select()
                 .from(Show.class)
@@ -94,7 +101,7 @@ public class ShowQueries {
         ArrayList<Show> myShows = (ArrayList) new Select()
                 .from(Show.class)
                 .innerJoin(UserShow.class)
-                .on("Show.showId=UserShow.showId")
+                .on("Show.showId = UserShow.showId")
                 .where("airing_date <= " + new Date().getTime())
                 .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
                         //.where("airing_date < ?", tmr_midnight.getTime().getTime())
@@ -126,6 +133,13 @@ public class ShowQueries {
                 .from(UserShow.class)
                 .where("showId = ?", showId)
                 .and("userId = ?", userId)
+                .executeSingle();
+    }
+
+    public static Show getShowById(long showId) {
+        return new Select()
+                .from(Show.class)
+                .where("showId = ?", showId)
                 .executeSingle();
     }
 }

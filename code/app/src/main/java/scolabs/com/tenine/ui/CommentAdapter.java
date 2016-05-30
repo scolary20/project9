@@ -325,7 +325,7 @@ public class CommentAdapter extends ArrayAdapter {
 
     public void setProfilePic(Context mContext, ImageView profile_pic, Comment c) {
         User aUser = GlobalSettings.getLoginUser();
-        if (c.getCommentator().equalsIgnoreCase(aUser.getUsername())) {
+        if (c != null && c.getCommentator().equalsIgnoreCase(aUser.getUsername())) {
             try {
                 final Uri imageUri = Uri.parse(aUser.getProfile_url());
                 final InputStream imageStream = mContext.getContentResolver().openInputStream(imageUri);

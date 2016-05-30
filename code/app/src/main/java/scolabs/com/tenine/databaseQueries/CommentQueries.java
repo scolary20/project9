@@ -29,6 +29,13 @@ public class CommentQueries {
                 .executeSingle();
     }
 
+    public static int getStanzaIdCount(String stanzaId) {
+        return new Select()
+                .from(Comment.class)
+                .where("stanzaId = ?", stanzaId)
+                .count();
+    }
+
     public static void updateComment(final long cmtId, final String message) {
         new Thread(new Runnable() {
             @Override

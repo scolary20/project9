@@ -173,12 +173,15 @@ public class AllShowFragment extends Activity {
                     long id = GlobalSettings.getLoginUser().getUserId();
                     int attempts = 3;
                     boolean success = false;
+                    boolean join_success = false;
                     if (GlobalSettings.checkConnection(getBaseContext())) {
                         while (!success && attempts > 0) {
+
                             success = new ShowMgt().followShow(id, show.getShowId()); // Response from Server
+                            join_success = new ShowMgt().joinShowRoom(show.getName());
                             attempts--; // Decrement attempts if failure
                         }
-                        if (success) {
+                        if (success && join_success) {
                             new UserShow(id, show.getShowId()).save(); // cache the information
                             myShowList.add(show);
                             Show[] arrShow = {show};
