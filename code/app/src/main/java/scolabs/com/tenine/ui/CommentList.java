@@ -49,6 +49,7 @@ public class CommentList extends Activity
             Global.cmAdapter = commentAdapter;
             Global.commentListContext = CommentList.this;
             Global.progressBar.setVisibility(View.GONE);
+            Global.lsView.setSelection(commentAdapter.getCount() - 1);
 
             if(commentList.size()>0)
             {

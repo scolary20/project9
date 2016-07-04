@@ -19,30 +19,11 @@ public class ShowQueries {
 
     public static ArrayList<Show> getShows() //Today's airing shows...
     {
-       /* Calendar tmr_midnight = Calendar.getInstance();
-        Calendar tday_midnight = Calendar.getInstance();
-
-        //Upper
-        tmr_midnight.set(Calendar.HOUR_OF_DAY, 23); // same for minutes and seconds
-        tmr_midnight.set(Calendar.MINUTE,59);
-        tmr_midnight.set(Calendar.SECOND,60);
-
-        //Lower
-        tday_midnight.set(Calendar.HOUR_OF_DAY, 0); // same for minutes and seconds
-        tday_midnight.set(Calendar.MINUTE, 0);
-        tday_midnight.set(Calendar.SECOND, 0);
-
-        return (ArrayList)new Select()
-                .from(Show.class)
-                .where("airing_date < ?", tmr_midnight.getTime().getTime())
-                .and("airing_date >= ?", tday_midnight.getTime().getTime())
-                .orderBy("airing_date ASC")
-                .execute();*/
         Date today = new Date(GlobalSettings.removeTime(new Date()));
         return (ArrayList) new Select()
                 .from(Show.class)
-                .where("airing_date <= " + new Date().getTime())
-                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .where("airing_date <= ?", new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= ?", new Date().getTime())
                 .or("airing_time = ?", today.getTime())
                 .orderBy("airing_date ASC")
                 .execute();
@@ -51,14 +32,14 @@ public class ShowQueries {
     public static int getTodayShowsCount()//Today's airing shows count
     {
         Date today = new Date(GlobalSettings.removeTime(new Date()));
-        int sh = new Select()
+        int count = new Select()
                 .from(Show.class)
-                .where("airing_date <= " + new Date().getTime())
-                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .where("airing_date <= ?", new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= ?", new Date().getTime())
                 .or("airing_time = ?", today.getTime())
                 .count();
-        Log.e("Shows Count", " " + sh);
-        return sh;
+        Log.e("Shows Count", " " + count);
+        return count;
     }
 
     public static int getShowCount(long showId) {
@@ -79,24 +60,11 @@ public class ShowQueries {
         return (ArrayList) new Select()
                 .from(Show.class)
                 .innerJoin(UserShow.class)
-                .on("Show.showId=UserShow.showId")
+                .on("Show.showId = UserShow.showId")
                 .execute();
     }
 
     public static ArrayList<Show> getMyAiringShows() {
-
-        Calendar tmr_midnight = Calendar.getInstance();
-        Calendar tday_midnight = Calendar.getInstance();
-
-        //Upper
-        tmr_midnight.set(Calendar.HOUR_OF_DAY, 23); // same for minutes and seconds
-        tmr_midnight.set(Calendar.MINUTE, 59);
-        tmr_midnight.set(Calendar.SECOND, 60);
-
-        //Lower
-        tday_midnight.set(Calendar.HOUR_OF_DAY, 0); // same for minutes and seconds
-        tday_midnight.set(Calendar.MINUTE, 0);
-        tday_midnight.set(Calendar.SECOND, 0);
 
         ArrayList<Show> myShows = (ArrayList) new Select()
                 .from(Show.class)
@@ -107,14 +75,6 @@ public class ShowQueries {
                         //.where("airing_date < ?", tmr_midnight.getTime().getTime())
                         //.and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .execute();
-
-       /* ArrayList<Show> showToRemove = new ArrayList<>();
-        for (Show show : myShows) {
-            if (!(boolean) GlobalSettings.showTimeHandler(show)[7]) {
-                showToRemove.add(show);
-            }
-        }*/
-        // myShows.removeAll(showToRemove);
         return myShows;
     }
 

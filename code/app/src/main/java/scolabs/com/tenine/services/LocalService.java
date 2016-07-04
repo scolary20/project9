@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
@@ -34,8 +35,9 @@ import scolabs.com.tenine.remoteOperations.PullShowData;
 public class LocalService extends Service {
     public static final String BROADCAST = "com.scolabs.tenine.android.action.broadcast";
     private final long CHECK_SHOW_START = 30000; //check show after every 30 seconds
-    private final int CHECK_SHOW_CASHING = 4; //4 times a day
+    private final int CASHING_COUNT = 4; //4 times a day
     ArrayList<Show> myShows = new ArrayList<>();
+    private AtomicInteger checkCount = new AtomicInteger(0);
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
     private NotificationManager myNotificationManager;
@@ -159,6 +161,12 @@ public class LocalService extends Service {
         return null;
     }
 
+    public void sendBroadcas(String event) {
+        Intent intent = new Intent(BROADCAST);
+        intent.setAction(event);
+        sendBroadcast(intent);
+    }
+
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper) {
@@ -177,13 +185,14 @@ public class LocalService extends Service {
                     Thread.currentThread().interrupt();
                 }
                 new LoadShows().execute(); // Check shows after every 30 secs
-                count_seconds++;
-                if (count_seconds == 1)//Load shows from server after 30 secs
-                    new PullShowData(getApplicationContext()).getMyShows(userId, 1); //Loading all Shows
-                else if ((count_seconds > 719 && count_seconds < 726) && !hasAlreadyCheck.get()) {
-                    new PullShowData(getApplicationContext()).getMyShows(userId, 1); //Loading all Shows
-                    hasAlreadyCheck.getAndSet(true);
 
+                if (checkCount.get() == CASHING_COUNT)
+                    count_seconds = 0; // re-initialise seconds count
+                count_seconds++;
+                if ((count_seconds > 719 && count_seconds < 726) && !hasAlreadyCheck.get()) {
+                    new PullShowData(getApplicationContext()).getMyShows(userId, 1); //Loading all Shows
+                    checkCount.getAndAdd(1);
+                    hasAlreadyCheck.getAndSet(true);
                 }
                 OP_VALUE--;
             }
@@ -205,7 +214,7 @@ public class LocalService extends Service {
                     long air = show.getAiring_date();
                     if (air >= (dt - 30000) && air < (air + 40000)) {
                         displayNotificationOne("10/9c Notification ", "" + show.getName() + " has started ", "show has started!", "empire");
-                        sendBroadcas();
+                        sendBroadcas("show_started");
                         Log.i("Notifiation", "" + show.getName() + " " + show.getAiring_date());
                     }
                 }
@@ -219,12 +228,6 @@ public class LocalService extends Service {
 
             myShows = ShowQueries.getMyAiringShows();
             return "";
-        }
-
-        public void sendBroadcas() {
-            Intent intent = new Intent(BROADCAST);
-            intent.setAction("show_started");
-            sendBroadcast(intent);
         }
     }
 }

@@ -149,7 +149,7 @@ public class GlobalSettings {
         if (networkInfo != null && networkInfo.isConnected())
             return true;
         else
-            return false;
+            return true;
     }
 
     private static File getOutputMediaFile(int imageType, String fileName) {
@@ -200,6 +200,12 @@ public class GlobalSettings {
             // return the notification you built here
         }
 
+    }
+
+    public static String getNickNameFromAddress(String addressWithName) {
+        int index = addressWithName.indexOf("/");
+        String nickName = addressWithName.substring(index + 1);
+        return nickName;
     }
 
     public void storeImage(Bitmap image, int imageType, String fileName) {

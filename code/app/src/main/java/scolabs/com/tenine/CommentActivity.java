@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -33,6 +35,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Show;
@@ -61,17 +65,15 @@ public class CommentActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_ui);
 
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setLogo(R.drawable.live_comment);
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Global.commentActivity = this;
+        actionBarSetup();
+        Global.linearList = (LinearLayout) findViewById(R.id.linearList);
+        TextView numOfComments = (TextView) findViewById(R.id.numOfComments);
 
         waitTimeList = new ArrayList<>();
         scrollSpeedCount = 0;
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        int screen_orientation = this.getResources().getConfiguration().orientation;
+
 
         Global.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Global.txt = (TextView)findViewById(R.id.cmt_feedback);
@@ -80,44 +82,24 @@ public class CommentActivity extends ActionBarActivity {
         DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
         date.setText(df.format(new Date()));
 
-        TextView numOfComments = (TextView) findViewById(R.id.numOfComments);
-        final EditText input = (EditText) findViewById(R.id.cment_inputText);
+        sendCommentButton();
+        dialogWhileVideoLoading();
+        initializeVideoView();
+        setVideoPath();
+        playVideo();
+        startCommentListIntent();
+    }
 
+    public void startCommentListIntent() {
+        int screen_orientation = this.getResources().getConfiguration().orientation;
         if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
-            send = (ImageButton) findViewById(R.id.sendButton);
-            send.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!input.getText().equals("")) {
-                        String cment = input.getText().toString().trim();
-                        String name = GlobalSettings.getLoginUser().getUsername();
-                        Comment c = new Comment(cment, name, new Date(), showId);
-                        GlobalSettings.hideKeyboard(CommentActivity.this);
-                        Global.cmAdapter.notifyDataSetChanged();
-                        //Global.cmAdapter.add(c);
-                        ListView list = Global.lsView;
-                        list.setFastScrollEnabled(true);
-                        list.setFastScrollAlwaysVisible(true);
-                        list.smoothScrollToPosition(Global.cmAdapter.getCount());
-                        Global.txt.setVisibility(View.GONE);
-                        input.setText("");
-                        input.clearFocus();
-                        Show show = ShowQueries.getShowById(showId);
-                        Global.chatSettings.sendMessage(show.getName(), cment);
-                        //c.save();
-
-                    }
-                }
-            });
+            Global.lsView = (ListView) findViewById(R.id.listView2);
+            Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
+            startActivity(myIntent);
         }
+    }
 
-
-        Global.commentActivity = this;
-
-        if (mediaControls == null) {
-            mediaControls = new MediaController(CommentActivity.this);
-        }
-
+    public void initializeVideoView() {
         //initialize the videoView
         myVideoView = (VideoView) findViewById(R.id.videoView);
         myVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -126,23 +108,15 @@ public class CommentActivity extends ActionBarActivity {
                 mp.setVolume(0f, 0f);
             }
         });
+    }
 
-        //create a progess bar while the video is loading
-        progressDialog = new ProgressDialog(CommentActivity.this);
-        //set a title for the progress bar
-        progressDialog.setTitle("Getting Content from server...");
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(true);
-        progressDialog.show();
-
-
+    public void setVideoPath() {
         try {
             int raw_id = getResources().getIdentifier(Global.show.getShow_trailer_location(), "raw", getPackageName());
             String PATH = "android.resource://" + getPackageName() + "/" + raw_id;
             myVideoView.setMediaController(mediaControls);
 
             if (PATH != null)
-
                 myVideoView.setVideoPath(PATH);
                 //myVideoView.setVideoURI(Uri.parse("http://larytech.com/site/empire_trailer.mp4"));
             else
@@ -153,6 +127,9 @@ public class CommentActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
+    }
+
+    public void playVideo() {
         myVideoView.requestFocus();
         myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -167,11 +144,48 @@ public class CommentActivity extends ActionBarActivity {
                 }
             }
         });
+    }
 
+    public void dialogWhileVideoLoading() {
+        //create a progess bar while the video is loading
+        progressDialog = new ProgressDialog(CommentActivity.this);
+        //set a title for the progress bar
+        progressDialog.setTitle("Getting Content from server...");
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+    }
+
+    public void actionBarSetup() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setLogo(R.drawable.live_comment);
+        actionBar.setDisplayUseLogoEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void sendCommentButton() {
+        int screen_orientation = this.getResources().getConfiguration().orientation;
         if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Global.lsView = (ListView) findViewById(R.id.listView2);
-            Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
-            startActivity(myIntent);
+            final EditText input = (EditText) findViewById(R.id.cment_inputText);
+            send = (ImageButton) findViewById(R.id.sendButton);
+            send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!input.getText().equals("")) {
+                        String cment = input.getText().toString().trim();
+                        String name = GlobalSettings.getLoginUser().getUsername();
+                        Comment c = new Comment(cment, name, new Date(), showId);
+                        GlobalSettings.hideKeyboard(CommentActivity.this);
+                        //Global.cmAdapter.add(c);
+                        Global.txt.setVisibility(View.GONE);
+                        input.setText("");
+                        input.clearFocus();
+                        Global.chatSettings.sendMessage(Global.show.getName(), cment, showId);
+                        //c.save();
+                    }
+                }
+            });
         }
     }
 
@@ -204,84 +218,90 @@ public class CommentActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        return actionBarActions(item);
+    }
+
+    public boolean actionBarActions(MenuItem item) {
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        if (id == R.id.expand) {
-            if (myVideoView.getVisibility() == View.GONE)
-                myVideoView.setVisibility(View.VISIBLE);
-            else
-                myVideoView.setVisibility(View.GONE);
-        }
-
-        if(id == android.R.id.home)
-        {
-            onBackPressed();
-        }
-
-        if(id == R.id.comment_bt){
-            Intent i = new Intent(this,WriteComment.class);
-            i.putExtra("showId", showId);
-            i.putExtra("type", 0);
-            startActivityForResult(i, 2);
-        }
-
-        if (id == R.id.unsubscribe) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Lock This Show")
-                    .setMessage("You won't be able to comment\n Are you sure?")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            long uId = GlobalSettings.getLoginUser().getUserId();
-                            ShowQueries.getUserShowById(uId, showId).delete();
-                            finish();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
-
-        if (id == R.id.auto_scroll) {
-            final ListView list = Global.lsView;
-            CommentAdapter commentAdapter = Global.cmAdapter;
-            list.setAdapter(commentAdapter);
-            list.setSmoothScrollbarEnabled(true);
-
-            if (isScrolling) {
-                thread = new ScrollThread();
-                list.post(thread);
-                scrollSpeedCount++;
-                if (scrollSpeedCount == 5)
-                    isScrolling = false;
-                Toast.makeText(this, "Scrolling Speed: " + scrollSpeedCount, Toast.LENGTH_SHORT).show();
-            } else {
-                --scrollSpeedCount;
-                try {
-                    waitTimeList.get(scrollSpeedCount).onFinish();
-                    waitTimeList.remove(scrollSpeedCount);
-                } catch (NullPointerException ex) {
-                    ex.printStackTrace();
-                } finally {
-                    Toast.makeText(this, "Scrolling Speed: " + scrollSpeedCount, Toast.LENGTH_SHORT).show();
-
-                    if (scrollSpeedCount == 0) {
-                        isScrolling = true;
-                        list.scrollTo(0, 0);
-                    }
-                    System.out.println("Index " + scrollSpeedCount);
-                }
-            }
+        switch (id) {
+            case R.id.auto_scroll:
+                autoScroll();
+                break;
+            case R.id.unsubscribe:
+                unsubscribe();
+                break;
+            case R.id.comment_bt:
+                Intent i = new Intent(this, WriteComment.class);
+                i.putExtra("showId", showId);
+                i.putExtra("type", 0);
+                startActivityForResult(i, 2);
+                break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.expand:
+                if (myVideoView.getVisibility() == View.GONE)
+                    myVideoView.setVisibility(View.VISIBLE);
+                else
+                    myVideoView.setVisibility(View.GONE);
+                break;
+            case R.id.action_settings:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void autoScroll() {
+        final ListView list = Global.lsView;
+        CommentAdapter commentAdapter = Global.cmAdapter;
+        list.setAdapter(commentAdapter);
+        list.setSmoothScrollbarEnabled(true);
+
+        if (isScrolling) {
+            thread = new ScrollThread();
+            list.post(thread);
+            scrollSpeedCount++;
+            if (scrollSpeedCount == 5)
+                isScrolling = false;
+            Toast.makeText(this, "Scrolling Speed: " + scrollSpeedCount, Toast.LENGTH_SHORT).show();
+        } else {
+            --scrollSpeedCount;
+            try {
+                waitTimeList.get(scrollSpeedCount).onFinish();
+                waitTimeList.remove(scrollSpeedCount);
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            } finally {
+                Toast.makeText(this, "Scrolling Speed: " + scrollSpeedCount, Toast.LENGTH_SHORT).show();
+
+                if (scrollSpeedCount == 0) {
+                    isScrolling = true;
+                    list.scrollTo(0, 0);
+                }
+                System.out.println("Index " + scrollSpeedCount);
+            }
+        }
+    }
+
+    public void unsubscribe() {
+        new AlertDialog.Builder(this)
+                .setTitle("Lock This Show")
+                .setMessage("You won't be able to comment\n Are you sure?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        long uId = GlobalSettings.getLoginUser().getUserId();
+                        ShowQueries.getUserShowById(uId, showId).delete();
+                        finish();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     class ScrollThread implements Runnable {

@@ -30,10 +30,11 @@ import scolabs.com.tenine.utils.GlobalSettings;
  * Created by scolary on 2/9/2016.
  */
 public class ShowAdapter extends ArrayAdapter {
-    Context mContext;
-    int layoutResourceId;
-    ArrayList<Show> data = null;
-    int default_color;
+    private Context mContext;
+    private int layoutResourceId;
+    private ArrayList<Show> data = null;
+    private int default_color;
+    private View convertView;
 
     public ShowAdapter(Context mContext, int layoutResourceId, ArrayList<Show> data) {
 
@@ -44,10 +45,11 @@ public class ShowAdapter extends ArrayAdapter {
     }
 
     @Override
-    public View getView(int pos, View convertView, ViewGroup parent) {
+    public View getView(int pos, View aConvertView, ViewGroup parent) {
 
         final ViewHolder holder;
         Show c = data.get(pos);
+        convertView = aConvertView;
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
             convertView = inflater.inflate(layoutResourceId, parent, false);
@@ -147,6 +149,11 @@ public class ShowAdapter extends ArrayAdapter {
             holder.chronometer.stop();
             holder.chronometer.setText("off-air");
         }
+    }
+
+    public void refreshAndAddShowList(ArrayList<Show> shows) {
+        this.addAll(shows);
+        this.notifyDataSetChanged();
     }
 
     static class ViewHolder {

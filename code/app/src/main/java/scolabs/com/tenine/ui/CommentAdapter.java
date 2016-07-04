@@ -114,7 +114,7 @@ public class CommentAdapter extends ArrayAdapter {
         TextView commentatorName = (TextView) listItem.findViewById(R.id.commentator_name);
         commentatorName.setText(c.getCommentator());
         ImageView pro_pic = (ImageView) listItem.findViewById(R.id.commet_pp);
-        setProfilePic(mContext, pro_pic, c);
+//        setProfilePic(mContext, pro_pic, c);
 
         return listItem;
     }
@@ -334,6 +334,12 @@ public class CommentAdapter extends ArrayAdapter {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+            }
         }
+
+    public void addCommentToList(Comment newComment) {
+        this.data.add(newComment);
+        this.notifyDataSetChanged();
     }
 }
+

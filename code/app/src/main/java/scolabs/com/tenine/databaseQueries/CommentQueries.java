@@ -18,7 +18,7 @@ public class CommentQueries {
         return (ArrayList)new Select()
                 .from(Comment.class)
                 .where("showId = ?", showId)
-                .orderBy("date DESC")
+                .orderBy("date ASC")
                 .execute();
     }
 

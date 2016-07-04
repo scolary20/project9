@@ -1,8 +1,10 @@
 package scolabs.com.tenine.utils;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,5 +32,7 @@ public class Global {
     public static String email;
     public static ChatSettings chatSettings;
     public static String applicationName;
+    public static LinearLayout linearList;
     public static ShowAdapter showAdapterCheckFore;
+    public static ListView showListView;
 }
