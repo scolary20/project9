@@ -19,11 +19,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
+import scolabs.com.tenine.services.AppNotificationManager;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.GlobalSettings;
@@ -42,7 +42,7 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals("show_started")) {
+            if (action.equals("show_started") || action.equals("show_finished")) {
                 Log.e("Receiver ", "drawerItem received!!!");
                 adapter.notifyDataSetChanged();
                 adapter.notifyDataSetInvalidated();
@@ -64,6 +64,7 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
         filter.addAction("show_started");
         mContext.registerReceiver(receiver, filter);
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -167,6 +168,8 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
                                     //adapter.remove(show);
                                     EventBus.getDefault().post(show);
                                     adapter.notifyDataSetChanged();
+                                    new AppNotificationManager(show).displayNotificationOne("" + show.getName() + " has started ",
+                                            "show has finished!", NotificationType.showEnd.name(), mContext);
                                     Log.e("Event finished", show.getName());
                                 }
                             });

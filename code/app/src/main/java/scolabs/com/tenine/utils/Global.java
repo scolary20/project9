@@ -27,7 +27,10 @@ public class Global {
     static public TextView txt;
     static public CommentAdapter cmAdapter;
     public static ArrayList<Thread> drawerShowThreads = new ArrayList<>();
-    public static int notificationsCount = 0;
+    public static int showStart_notifiCount = 0;
+    public static int showEnd_notifCount = 0;
+    public static int cmt_notifCount = 0;
+    public static int cmtMarked_notifCount = 0;
     public static ShowAdapter showAdapter;
     public static String email;
     public static ChatSettings chatSettings;

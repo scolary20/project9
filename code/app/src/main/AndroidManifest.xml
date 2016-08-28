@@ -76,7 +76,7 @@
         </service>
 
         <activity
-            android:name=".services.NotificationView"
+            android:name=".services.AppNotificationManager"
             android:label="@string/title_activity_notification_view">
         </activity>
         <activity

@@ -2,6 +2,7 @@ package scolabs.com.tenine;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -190,10 +191,12 @@ public class MainActivity extends ActionBarActivity
 
         DateFormat df = DateFormat.getDateInstance(DateFormat.FULL);
         header_date.setText(df.format(new Date()));
-        Global.chatSettings = new ChatSettings();
-        Global.chatSettings.createConnection(aUser.getUsername(), aUser.getPassword(), this);
+
+        //Initialise Chat settings
+        GlobalSettings.setupChatSettings(aUser, this);
 
     }
+
 
     @SuppressWarnings("deprecation")
     public void setBoxAndProBackground(LinearLayout box, ImageView pro_pic) {
@@ -258,7 +261,14 @@ public class MainActivity extends ActionBarActivity
         switch (number) {
             case 1:
                 mTitle = "Today Airing shows";
+
+                //Used only with Notification Intent
+                long showId = getIntent().getLongExtra("showId", -999);
+                Bundle bundle = new Bundle();
+                bundle.putLong("showId", showId);
+
                 Fragment f = new ShowList();
+                f.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, f).addToBackStack("Show List")
                         .commit();
@@ -303,7 +313,7 @@ public class MainActivity extends ActionBarActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this,Register.class);
+            Intent intent = new Intent(this, Settings.class);
             startActivity(intent);
             return true;
         }

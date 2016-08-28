@@ -1,19 +1,12 @@
 package scolabs.com.tenine.services;
 
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.*;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.io.InputStream;
@@ -24,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
-import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.utils.GlobalSettings;
 import scolabs.com.tenine.remoteOperations.PullShowData;
@@ -36,7 +28,7 @@ public class LocalService extends Service {
     public static final String BROADCAST = "com.scolabs.tenine.android.action.broadcast";
     private final long CHECK_SHOW_START = 30000; //check show after every 30 seconds
     private final int CASHING_COUNT = 4; //4 times a day
-    ArrayList<Show> myShows = new ArrayList<>();
+    private ArrayList<Show> myShows = new ArrayList<>();
     private AtomicInteger checkCount = new AtomicInteger(0);
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
@@ -89,61 +81,6 @@ public class LocalService extends Service {
         Log.e("Service", " Service stopped !!!");
     }
 
-    protected void displayNotificationOne(String title, String text, String sticker, String imgLocation) {
-
-        // Invoking the default notification service
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
-        Bitmap draw;
-        Uri sound = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.notif_sound);
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        mBuilder.setContentTitle(title);
-        if (Global.notificationsCount > 1) {
-            mBuilder.setContentText("" + Global.notificationsCount + " shows have just started airing!");
-            mBuilder.setTicker("new notification");
-        } else {
-            mBuilder.setContentText(text);
-            mBuilder.setTicker(sticker);
-        }
-
-        if (sound != null)
-            mBuilder.setSound(sound);//This sets the sound to play
-        else
-            mBuilder.setSound(soundUri);
-        mBuilder.setLights(0xff00ff00, 300, 100);
-        mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
-        mBuilder.setSmallIcon(R.drawable.notif_icon);
-        mBuilder.setColor(Color.parseColor("#516666"));
-
-        // Increase notification number every time a new notification arrives
-        mBuilder.setNumber(++Global.notificationsCount);
-
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, NotificationView.class);
-        resultIntent.putExtra("notificationId", notificationId);
-
-        //This ensures that navigating backward from the Activity leads out of the app to Home page
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
-        // Adds the back stack for the Intent
-        stackBuilder.addParentStack(NotificationView.class);
-
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_ONE_SHOT //can only be used once
-                );
-        // start the activity when the user clicks the notification text
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        myNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // pass the Notification object to the system
-        myNotificationManager.notify(notificationId, mBuilder.build());
-    }
-
     public Bitmap notifImage(Context mContext, String location) {
         InputStream ims = null;
         Bitmap sImage = null;
@@ -166,6 +103,7 @@ public class LocalService extends Service {
         intent.setAction(event);
         sendBroadcast(intent);
     }
+
 
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
@@ -213,7 +151,8 @@ public class LocalService extends Service {
                     long dt = new Date().getTime();
                     long air = show.getAiring_date();
                     if (air >= (dt - 30000) && air < (air + 40000)) {
-                        displayNotificationOne("10/9c Notification ", "" + show.getName() + " has started ", "show has started!", "empire");
+                        new AppNotificationManager(show).displayNotificationOne("" + show.getName() + " has started ",
+                                "show has started!", "showStart", getApplicationContext());
                         sendBroadcas("show_started");
                         Log.i("Notifiation", "" + show.getName() + " " + show.getAiring_date());
                     }

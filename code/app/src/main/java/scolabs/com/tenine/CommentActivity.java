@@ -5,11 +5,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.internal.widget.ActionBarContextView;
@@ -38,8 +40,10 @@ import java.util.Date;
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
+import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.ui.CommentAdapter;
 import scolabs.com.tenine.ui.CommentList;
@@ -52,12 +56,14 @@ public class CommentActivity extends ActionBarActivity {
     private int position = 0;
     private ProgressDialog progressDialog;
     private MediaController mediaControls;
-    private long showId = Global.show.getShowId();
+    private long showId;
+    private Show clickedShow;
     private boolean isScrolling = true;
     private ScrollThread thread;
     private ArrayList<CountDownTimer> waitTimeList;
     private int scrollSpeedCount;
     private ImageButton send;
+    private User loginUser;
 
 
     @Override
@@ -65,10 +71,23 @@ public class CommentActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comment_ui);
 
+        //DB initialisation
+        GlobalSettings.setup_db(this, "", false);
+
+        //Handling the user, redirect if no user
+        if (!getLoginUser())
+            new Intent(this, MainActivity.class);
+
         Global.commentActivity = this;
+
+        //Getting the Show
+        showId = getIntent().getLongExtra("showId", -999);
+        clickedShow = ShowQueries.getShowById(showId);
+
         actionBarSetup();
         Global.linearList = (LinearLayout) findViewById(R.id.linearList);
         TextView numOfComments = (TextView) findViewById(R.id.numOfComments);
+
 
         waitTimeList = new ArrayList<>();
         scrollSpeedCount = 0;
@@ -90,11 +109,27 @@ public class CommentActivity extends ActionBarActivity {
         startCommentListIntent();
     }
 
+    public boolean getLoginUser() {
+        loginUser = GlobalSettings.getLoginUser();
+        if (loginUser == null) {
+            SharedPreferences sp = GlobalSettings.getSharedPreference(this);
+            String username = sp.getString("username", "");
+            loginUser = UserQueries.getDbUser(username, "", "", "");
+            GlobalSettings.setLoginUser(loginUser);
+            GlobalSettings.setupChatSettings(loginUser, this);
+        }
+        if (loginUser != null)
+            return true;
+        else
+            return false;
+    }
+
     public void startCommentListIntent() {
         int screen_orientation = this.getResources().getConfiguration().orientation;
         if (screen_orientation == Configuration.ORIENTATION_PORTRAIT) {
             Global.lsView = (ListView) findViewById(R.id.listView2);
             Intent myIntent = new Intent(CommentActivity.this, CommentList.class);
+            myIntent.putExtra("showId", showId);
             startActivity(myIntent);
         }
     }
@@ -112,7 +147,7 @@ public class CommentActivity extends ActionBarActivity {
 
     public void setVideoPath() {
         try {
-            int raw_id = getResources().getIdentifier(Global.show.getShow_trailer_location(), "raw", getPackageName());
+            int raw_id = getResources().getIdentifier(clickedShow.getShow_trailer_location(), "raw", getPackageName());
             String PATH = "android.resource://" + getPackageName() + "/" + raw_id;
             myVideoView.setMediaController(mediaControls);
 
@@ -174,14 +209,14 @@ public class CommentActivity extends ActionBarActivity {
                 public void onClick(View v) {
                     if (!input.getText().equals("")) {
                         String cment = input.getText().toString().trim();
-                        String name = GlobalSettings.getLoginUser().getUsername();
+                        String name = loginUser.getUsername();
                         Comment c = new Comment(cment, name, new Date(), showId);
                         GlobalSettings.hideKeyboard(CommentActivity.this);
                         //Global.cmAdapter.add(c);
                         Global.txt.setVisibility(View.GONE);
                         input.setText("");
                         input.clearFocus();
-                        Global.chatSettings.sendMessage(Global.show.getName(), cment, showId);
+                        Global.chatSettings.sendMessage(clickedShow.getName(), cment, showId);
                         //c.save();
                     }
                 }
@@ -290,7 +325,7 @@ public class CommentActivity extends ActionBarActivity {
                 .setMessage("You won't be able to comment\n Are you sure?")
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        long uId = GlobalSettings.getLoginUser().getUserId();
+                        long uId = loginUser.getUserId();
                         ShowQueries.getUserShowById(uId, showId).delete();
                         finish();
                     }

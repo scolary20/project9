@@ -3,11 +3,13 @@ package scolabs.com.tenine.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
 import com.facebook.stetho.Stetho;
+import com.facebook.stetho.dumpapp.plugins.SharedPreferencesDumperPlugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,10 +29,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.Comment;
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.model.User;
 import scolabs.com.tenine.model.UserShow;
+import scolabs.com.tenine.remoteOperations.ChatSettings;
 
 /**
  * Created by scolary on 2/11/2016.
@@ -208,6 +213,27 @@ public class GlobalSettings {
         return nickName;
     }
 
+    public static SharedPreferences getSharedPreference(Context ctx) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return sp;
+    }
+
+    public static void setupChatSettings(User aUser, Context ctx) {
+        Global.chatSettings = new ChatSettings();
+        if (aUser == null)
+            aUser = pullLoginUser(ctx);
+        Global.chatSettings.createConnection(aUser.getUsername(), aUser.getPassword(), ctx);
+    }
+
+    public static User pullLoginUser(Context ctx) {
+        SharedPreferences sp = getSharedPreference(ctx);
+        String username = sp.getString("username", "no_user");
+        setup_db(ctx, "", false);
+        User loginUser = UserQueries.getDbUser(username, "", "", "username");
+        setLoginUser(loginUser);
+        return loginUser;
+    }
+
     public void storeImage(Bitmap image, int imageType, String fileName) {
         File pictureFile = getOutputMediaFile(imageType, fileName);
         if (pictureFile == null) {
@@ -225,6 +251,8 @@ public class GlobalSettings {
             Log.d("storeImage", "Error accessing file: " + e.getMessage());
         }
     }
+
+
 }
 
 

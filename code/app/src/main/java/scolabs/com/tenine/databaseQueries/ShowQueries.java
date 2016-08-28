@@ -22,9 +22,9 @@ public class ShowQueries {
         Date today = new Date(GlobalSettings.removeTime(new Date()));
         return (ArrayList) new Select()
                 .from(Show.class)
-                .where("airing_date <= ?", new Date().getTime())
-                .and("airing_date + (show_length * 60000) >= ?", new Date().getTime())
-                .or("airing_time = ?", today.getTime())
+                .where("airing_date <= " + new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .or("airing_time = " + today.getTime())
                 .orderBy("airing_date ASC")
                 .execute();
     }
@@ -34,9 +34,9 @@ public class ShowQueries {
         Date today = new Date(GlobalSettings.removeTime(new Date()));
         int count = new Select()
                 .from(Show.class)
-                .where("airing_date <= ?", new Date().getTime())
-                .and("airing_date + (show_length * 60000) >= ?", new Date().getTime())
-                .or("airing_time = ?", today.getTime())
+                .where("airing_date <= " + new Date().getTime())
+                .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
+                .or("airing_time = " + today.getTime())
                 .count();
         Log.e("Shows Count", " " + count);
         return count;
@@ -72,8 +72,6 @@ public class ShowQueries {
                 .on("Show.showId = UserShow.showId")
                 .where("airing_date <= " + new Date().getTime())
                 .and("airing_date + (show_length * 60000) >= " + new Date().getTime())
-                        //.where("airing_date < ?", tmr_midnight.getTime().getTime())
-                        //.and("airing_date >= ?", tday_midnight.getTime().getTime())
                 .execute();
         return myShows;
     }

@@ -11,7 +11,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import scolabs.com.tenine.services.NotificationView;
+import scolabs.com.tenine.services.AppNotificationManager;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
@@ -100,6 +100,7 @@ public class NotificationsService extends IntentService {
 
     }
 
+
     protected void displayNotificationOne() {
 
         // Invoking the default notification service
@@ -114,14 +115,14 @@ public class NotificationsService extends IntentService {
         mBuilder.setNumber(++numMessages);
 
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, NotificationView.class);
+        Intent resultIntent = new Intent(this, AppNotificationManager.class);
         resultIntent.putExtra("notificationId", notificationId);
 
         //This ensures that navigating backward from the Activity leads out of the app to Home page
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
 
         // Adds the back stack for the Intent
-        stackBuilder.addParentStack(NotificationView.class);
+        stackBuilder.addParentStack(AppNotificationManager.class);
 
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);

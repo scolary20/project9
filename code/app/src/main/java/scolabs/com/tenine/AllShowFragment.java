@@ -55,6 +55,7 @@ public class AllShowFragment extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.allshow_layout);
+        Context ctx = this;
         new LoadShows().execute("");
     }
 
@@ -242,6 +243,21 @@ public class AllShowFragment extends Activity {
         private ProgressBar progressBar;
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar = (ProgressBar) findViewById(R.id.progressBar);
+            feedback = (TextView) findViewById(R.id.allshow_feedback);
+            progressBar.setVisibility(View.VISIBLE);
+            feedback.setText("Loading Shows...");
+            feedback.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
         protected String doInBackground(String... params) {
             allShows = ShowQueries.getAllShows();
             myShowList = ShowQueries.getMyShows();
@@ -261,7 +277,6 @@ public class AllShowFragment extends Activity {
             desc_clicked = false;
 
             ListView list = (ListView) findViewById(R.id.allshow_list);
-            list.setAdapter(allShowAdapter);
             allShowAdapter = new AllShowAdapter(AllShowFragment.this, R.layout.allshow_item, showList);
             list.setAdapter(allShowAdapter);
             allShowAdapter.setNotifyOnChange(true);
@@ -298,7 +313,6 @@ public class AllShowFragment extends Activity {
                         feedback.setVisibility(View.VISIBLE);
                         feedback.setText("No Shows...");
                     }
-
                 }
             });
 
@@ -322,22 +336,6 @@ public class AllShowFragment extends Activity {
 
             progressBar.setVisibility(View.GONE);
             feedback.setVisibility(View.GONE);
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressBar = (ProgressBar) findViewById(R.id.progressBar);
-            feedback = (TextView) findViewById(R.id.cmt_feedback);
-            progressBar.setVisibility(View.VISIBLE);
-            feedback.setText("Loading Shows...");
-            feedback.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
         }
     }
 

@@ -27,7 +27,10 @@ import java.io.IOException;
 import java.util.Date;
 
 import scolabs.com.tenine.databaseQueries.CommentQueries;
+import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Comment;
+import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.services.AppNotificationManager;
 import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
 
@@ -43,8 +46,9 @@ public class ChatSettings {
     protected static XMPPTCPConnection mConnection;
     protected static MultiUserChat muc2;
     protected MultiUserChatManager manager;
+    protected Context mContext;
 
-    public void createConnection(final String USER_ID, final String key, final Context mContext) {
+    public void createConnection(final String USER_ID, final String key, final Context cxt) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -60,6 +64,7 @@ public class ChatSettings {
                 SASLAuthentication.unBlacklistSASLMechanism("PLAIN");
                 SASLAuthentication.blacklistSASLMechanism("DIGEST-MD5");
                 mConnection = new XMPPTCPConnection(config.build());
+                mContext = cxt;
 
                 try {
                     ConnectivityManager connMgr = (ConnectivityManager)
@@ -93,6 +98,7 @@ public class ChatSettings {
         String conf = to.concat("@conference.msi");
         Message msg = new Message(conf, Message.Type.groupchat);
         msg.setBody(comment);
+        msg.setSubject("" + new Date().getTime());
         try {
             manager = MultiUserChatManager.getInstanceFor(mConnection);
             muc2 = manager.getMultiUserChat(conf);
@@ -111,20 +117,34 @@ public class ChatSettings {
         muc2.addMessageListener(new MessageListener() {
             @Override
             public void processMessage(Message message) {
-                Date date = null;
+                Date date_sent = new Date(Long.parseLong(message.getSubject()));
                 String nickName = GlobalSettings.getNickNameFromAddress(message.getFrom());
                 try {
-                    final Comment cmt = new Comment(message.getBody(), nickName, new Date(), showId);
+                    final Comment cmt = new Comment(message.getBody(), nickName, date_sent, showId);
                     cmt.setStanzaId(message.getStanzaId());
                     int cmt_count = CommentQueries.getStanzaIdCount(message.getStanzaId());
                     if (cmt_count == 0 || cmt_count == -1) {
                         cmt.save();
+                        notifyNewComment(cmt, showId);
                         handleScrollingList(cmt);
                         Log.e("Roster", message != null ? message.getBody() + " From : " + message : null);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+            }
+        });
+    }
+
+    public void notifyNewComment(final Comment cmt, long showId) {
+        final Show show_commented = ShowQueries.getShowById(showId);
+        final String show_name = show_commented.getName();
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                String title_msg = show_name.concat(": new comment");
+                String user_comment = cmt.getCommentator() + ": \n" + cmt.getContent();
+                new AppNotificationManager(show_commented).displayNotificationOne(user_comment, title_msg, "newComment", mContext);
             }
         });
     }

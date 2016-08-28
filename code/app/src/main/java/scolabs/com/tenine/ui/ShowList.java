@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,8 +51,8 @@ public class ShowList extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals("show_started")) {
-                Log.e("Receiver ", "Working !!!");
+            if (action.equals("show_started") || action.equals("show_finished")) {
+                Log.i("Receiver in ShowList", "show started!!!");
                 showAdapter.notifyDataSetChanged();
                 listView.refreshDrawableState();
             }
@@ -66,11 +67,13 @@ public class ShowList extends Fragment {
     private ArrayList<Show> showList = new ArrayList<>();
     private LinearLayout view;
     private View show_UI;
+    private long showId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         show_UI = inflater.inflate(R.layout.shows_ui, container, false);
         EventBus.getDefault().register(this);
         IntentFilter filter = new IntentFilter();
@@ -79,9 +82,25 @@ public class ShowList extends Fragment {
         setHasOptionsMenu(true);
         listView = (ListView) show_UI.findViewById(R.id.listView);
         showNoShowMessage();
+
+        //Load Show Data from Database
         new PullShows().execute();
-        Global.showAdapterCheckFore = showAdapter; //Enable automatic update of show list
+
+        //Enable automatic update of show list
+        Global.showAdapterCheckFore = showAdapter;
+
         return show_UI;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //Get Show Id
+        Bundle bundle = this.getArguments();
+        if (bundle != null)
+            showId = bundle.getLong("showId", -999);
+        else
+            showId = -999;
     }
 
     @Override
@@ -99,11 +118,10 @@ public class ShowList extends Fragment {
             Global.drawerShowThreads.removeAll(Global.drawerShowThreads);
             Intent i = new Intent(getActivity(), Login.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Toast.makeText(getActivity().getApplicationContext(), "refreshed!", Toast.LENGTH_SHORT).show();
             startActivity(i);
-            Toast.makeText(getActivity().getApplicationContext(), "refreshed!", Toast.LENGTH_SHORT);
+
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -157,20 +175,37 @@ public class ShowList extends Fragment {
             showAdapter = new ShowAdapter(getActivity(), R.layout.show_list_item, shows);
             listView.setAlwaysDrawnWithCacheEnabled(true);
             listView.setAdapter(showAdapter);
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
                                         long arg3) {
                     Intent myIntent = new Intent(getActivity(), CommentActivity.class);
-                    Global.showId = showList.get(pos).getShowId();
-                    Global.show = showList.get(pos);
+                    myIntent.putExtra("showId", showList.get(pos).getShowId());
                     startActivityForResult(myIntent, 1);
                 }
             });
-            Log.d("Today's show size feed", "" + showList.size());
+
+            Log.e("Show Id in ShowList", "" + showId);
+            if (showId != -999)
+                listView.setSelection(getShowPosition(shows));
+
             showAdapter.notifyDataSetChanged();
             showNoShowMessage();
             Global.showListView = listView;
+        }
+
+        protected int getShowPosition(ArrayList<Show> shows) {
+            Show showOnList = null;
+            for (Show sh : shows) {
+                if (sh.getShowId() == showId) {
+                    showOnList = sh;
+                    break;
+                }
+            }
+            int pos = showAdapter.getPosition(showOnList);
+            Toast.makeText(getActivity(), "" + showOnList.getShowId() + " " + pos, Toast.LENGTH_LONG).show();
+            return pos;
         }
     }
 }

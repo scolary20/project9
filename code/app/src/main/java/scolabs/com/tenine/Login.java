@@ -55,6 +55,7 @@ public class Login extends Activity {
     private boolean isUserLogin;
     private boolean created_db;
     private String MyPREFERENCES;
+    private User loginUser;
 
 
     @Override
@@ -63,19 +64,19 @@ public class Login extends Activity {
         setContentView(R.layout.login_layout);
 
         Global.applicationName = getApplicationContext().getPackageName();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Login.this);
+        SharedPreferences sp = GlobalSettings.getSharedPreference(this);
         isUserLogin = sp.getBoolean(LOGIN_PREF, false);
         created_db = sp.getBoolean(AA_MODELS, false);
         GlobalSettings.setup_db(Login.this, AA_MODELS, created_db); //DB_Models
-        String current_user = sp.getString(LOGIN_USER, "");
+        loginUser = GlobalSettings.pullLoginUser(this);
+
 
         if (isUserLogin) {
 
-            GlobalSettings.setLoginUser(UserQueries.getDbUser(current_user, "", "", "username"));
             Log.d("Message 1 ", "Login Successfully");
             Intent main_activity = new Intent(Login.this, MainActivity.class);
 
-            Global.notificationsCount = 0;
+            Global.showStart_notifiCount = 0;
             if (Global.showAdapter != null)
                 Global.showAdapter.notifyDataSetChanged();
 
@@ -84,6 +85,7 @@ public class Login extends Activity {
             startActivityForResult(main_activity, 5);
         } else {
             viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
+
 
             final Button sign_in = (Button) findViewById(R.id.sign_btn);
             final Button register = (Button) findViewById(R.id.register_btn);
@@ -248,10 +250,11 @@ public class Login extends Activity {
     public void onDestroy() {
         super.onDestroy();
         finish();
-        System.exit(0);
+        //System.exit(0);
     }
 
     // Using the following method, we will handle all screen swaps.
+    @Override
     public boolean onTouchEvent(MotionEvent touchevent) {
         switch (touchevent.getAction()) {
 

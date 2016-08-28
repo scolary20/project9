@@ -36,6 +36,7 @@ import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
 import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.GlobalSettings;
 
 
 /**
@@ -69,7 +70,7 @@ public class NavigationDrawerFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals("show_started")) {
+            if (action.equals("show_started") || action.equals("show_finished")) {
                 Log.e("Receiver ", "refresh views !!!");
                 mDrawerListView.refreshDrawableState();
                 mDrawerLayout.invalidate();
@@ -286,11 +287,6 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -331,7 +327,7 @@ public class NavigationDrawerFragment extends Fragment {
 
             TextView watchingCount = (TextView) header.findViewById(R.id.watchingCount);
             if (myShows != null) {
-                watchingCount.setText("currently watching " + myShows.size() + " " + (myShows.size() > 0 ? "shows" : "show"));
+                watchingCount.setText("currently watching " + myShows.size() + " " + (myShows.size() > 1 ? "shows" : "show"));
             }
             DrawerItemCustomAdapter adapter;
             adapter = new DrawerItemCustomAdapter(getActivity(), R.layout.list_item_row, myShows);
@@ -342,6 +338,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         @Override
         protected String doInBackground(String... params) {
+            GlobalSettings.setup_db(getActivity().getApplicationContext(), "", false);
             myShows = ShowQueries.getMyAiringShows();
             Log.e("My airing show size", "" + myShows.size());
             return "";

@@ -110,22 +110,16 @@ public class ShowAdapter extends ArrayAdapter {
 
         Object[] time_array = GlobalSettings.showTimeHandler(c);
         if (time_array != null) {
-            final Date d = new Date();
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date(c.getAiring_date()));
             //Calculating End Date
-            long t = cal.getTimeInMillis();
             Date end_show = (Date) time_array[1];
             Date today = (Date) time_array[0];
             holder.chronometer.setBase((long) time_array[5]);
-
-            Boolean check_date = (boolean) time_array[6];
-            Boolean ch = ((boolean) time_array[7]);
+            Boolean isShowAiring = ((boolean) time_array[7]);
             Log.e("end show", end_show.toString());
-            if (check_date && ch) {
-
+            if (isShowAiring) {
                 holder.chronometer.start();
-
             } else {
                 holder.chronometer.stop();
                 holder.chronometer.setText("off-air");

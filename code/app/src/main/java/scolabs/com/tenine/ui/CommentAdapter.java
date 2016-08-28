@@ -29,6 +29,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import scolabs.com.tenine.Login;
 import scolabs.com.tenine.R;
 import scolabs.com.tenine.WriteComment;
 import scolabs.com.tenine.databaseQueries.CommentQueries;
@@ -60,6 +61,7 @@ public class CommentAdapter extends ArrayAdapter {
         dateFormat = new SimpleDateFormat("hh:mm a");
         nfm = NumberFormat.getInstance();
     }
+
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {

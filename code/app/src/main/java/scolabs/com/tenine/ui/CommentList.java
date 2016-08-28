@@ -20,13 +20,14 @@ import scolabs.com.tenine.utils.Global;
 public class CommentList extends Activity
 {
     CommentAdapter commentAdapter;
-    long showId = Global.showId;
+    long showId;
     ListView list;
     private ArrayList<Comment> commentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showId = getIntent().getLongExtra("showId", -999);
         finish();
         new LoadComments().execute("");
     }
