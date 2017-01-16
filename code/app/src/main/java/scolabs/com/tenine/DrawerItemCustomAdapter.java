@@ -66,6 +66,7 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
     }
 
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -168,8 +169,11 @@ public class DrawerItemCustomAdapter extends ArrayAdapter<Show> {
                                     //adapter.remove(show);
                                     EventBus.getDefault().post(show);
                                     adapter.notifyDataSetChanged();
-                                    new AppNotificationManager(show).displayNotificationOne("" + show.getName() + " has started ",
-                                            "show has finished!", NotificationType.showEnd.name(), mContext);
+                                    if(GlobalSettings.getBoolValue(mContext,"show_end"))
+                                    {
+                                        new AppNotificationManager(show).displayNotificationOne("" + show.getName() + " has ended ",
+                                                "show has finished!", NotificationType.showEnd.name(), mContext);
+                                    }
                                     Log.e("Event finished", show.getName());
                                 }
                             });

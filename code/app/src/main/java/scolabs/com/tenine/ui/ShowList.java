@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,27 +48,33 @@ import scolabs.com.tenine.utils.GlobalSettings;
 public class ShowList extends Fragment {
     private ShowAdapter showAdapter;
     private ListView listView;
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals("show_started") || action.equals("show_finished")) {
-                Log.i("Receiver in ShowList", "show started!!!");
-                showAdapter.notifyDataSetChanged();
-                listView.refreshDrawableState();
-            }
-            if (action.equals("loading_finished")) {
-                showAdapter.refreshAndAddShowList(ShowQueries.getShows());
-                showAdapter.notifyDataSetChanged();
-                listView.refreshDrawableState();
-            }
-        }
-    };
     private ImageView mImageViewFilling;
     private ArrayList<Show> showList = new ArrayList<>();
     private LinearLayout view;
     private View show_UI;
     private long showId;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action) {
+                case "show_started":
+                case "show_finished":
+                case "new_comment":
+                    showAdapter.notifyDataSetChanged();
+                    listView.invalidate();
+                    listView.refreshDrawableState();
+
+                    break;
+                case "loading_finished":
+                    showAdapter.refreshAndAddShowList(ShowQueries.getShows());
+                    showAdapter.notifyDataSetChanged();
+                    listView.refreshDrawableState();
+                    break;
+            }
+        }
+    };
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,6 +167,13 @@ public class ShowList extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        showAdapter.getContext().
+        unregisterReceiver(showAdapter.getBroadcastReceiver());
+    }
+
     class PullShows extends AsyncTask<String, Void, ArrayList<Show>> {
         @Override
         protected ArrayList<Show> doInBackground(String... urls) {
@@ -182,6 +196,7 @@ public class ShowList extends Fragment {
                                         long arg3) {
                     Intent myIntent = new Intent(getActivity(), CommentActivity.class);
                     myIntent.putExtra("showId", showList.get(pos).getShowId());
+                    listView.setSelection(pos);
                     startActivityForResult(myIntent, 1);
                 }
             });
@@ -203,9 +218,7 @@ public class ShowList extends Fragment {
                     break;
                 }
             }
-            int pos = showAdapter.getPosition(showOnList);
-            Toast.makeText(getActivity(), "" + showOnList.getShowId() + " " + pos, Toast.LENGTH_LONG).show();
-            return pos;
+            return showAdapter.getPosition(showOnList);
         }
     }
 }

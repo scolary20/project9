@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -27,6 +28,10 @@ import android.widget.ViewFlipper;
 import com.andexert.library.RippleView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.greenrobot.event.EventBus;
@@ -44,6 +49,7 @@ public class Settings extends ActionBarActivity {
     private Switch mark;
     private Switch cache_shows;
     private Switch load_shows;
+    private SharedPreferences sharedprefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,32 +62,24 @@ public class Settings extends ActionBarActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        final SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_APPEND);
-        editor = sharedpreferences.edit();
+        sharedprefs = GlobalSettings.settingsPreference(this);
+        editor = sharedprefs.edit();
 
         //Logout
         logoutDialog();
 
         //Notification
-        notifications();
+        generalNotifSettings();
 
-        //Show Settings
-        final Spinner media_type_spinner = (Spinner) findViewById(R.id.media_type_spinner);
-        media_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String type = media_type_spinner.getSelectedItem().toString();
-                editor.putString("media_type", type);
-                editor.commit();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        //Media-Type
+        mediaTypeSetting();
 
         //Delete Account
+        deleteAccount();
+    }
+
+    public void deleteAccount()
+    {
         final RippleView deleteButton = (RippleView) findViewById(R.id.delete_acc);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +90,34 @@ public class Settings extends ActionBarActivity {
                 if (aUser != null) {
                     deleteAccount(aUser, deletePrefFile);
                 }
+            }
+        });
+    }
+
+    public void mediaTypeSetting()
+    {
+        //Show Settings
+        List<String> optionsList = Arrays.asList(getResources().getStringArray(R.array.media_type));
+        String previousSelection = (String)sharedprefs.getString("media_type","video");
+        final Spinner media_type_spinner = (Spinner) findViewById(R.id.media_type_spinner);
+
+        ArrayAdapter<String> adp = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, optionsList);
+        adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        int item_pos = adp.getPosition(previousSelection);
+        media_type_spinner.setAdapter(adp);
+        media_type_spinner.setSelection(item_pos);
+
+        media_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String type = media_type_spinner.getSelectedItem().toString();
+                editor.putString("media_type", type);
+                editor.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
@@ -141,13 +167,24 @@ public class Settings extends ActionBarActivity {
         return true;
     }
 
-    public void notifications() {
+    public void generalNotifSettings() {
         show_start = (Switch) findViewById(R.id.start_show_switch);
+        show_start.setChecked(sharedprefs.getBoolean("show_start",true));
+
         show_end = (Switch) findViewById(R.id.end_show_switch);
+        show_end.setChecked(sharedprefs.getBoolean("show_end",true));
+
         new_comment = (Switch) findViewById(R.id.new_comment_switch);
+        new_comment.setChecked(sharedprefs.getBoolean("new_comment",true));
+
         mark = (Switch) findViewById(R.id.mark_switch);
+        mark.setChecked(sharedprefs.getBoolean("mark",true));
+
         cache_shows = (Switch) findViewById(R.id.cache_shows);
+        cache_shows.setChecked(sharedprefs.getBoolean("cache_shows",true));
+
         load_shows = (Switch) findViewById(R.id.load_shows);
+        load_shows.setChecked(sharedprefs.getBoolean("load",true));
 
         show_start.setTag("show_start");
         show_end.setTag("show_end");
@@ -164,6 +201,7 @@ public class Settings extends ActionBarActivity {
         load_shows.setOnCheckedChangeListener(new OnCheckedChangeListner());
 
     }
+
 
     // Method which Handle Account Dis-activation
     public boolean deleteAccount(final User loginUser, final File deletePrefFile) {
@@ -251,7 +289,7 @@ public class Settings extends ActionBarActivity {
                     editor.apply();
                     break;
             }
-            Log.e(tag, " " + isChecked);
+            Log.i(tag, " " + isChecked);
         }
     }
 }

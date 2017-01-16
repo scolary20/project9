@@ -41,9 +41,11 @@ import scolabs.com.tenine.model.User;
  */
 public class RemoteServerConnection {
 
-    protected static String base_url = "http://192.168.43.174:8080/project9/resources/";
-    protected static String img_url = "http://192.168.43.174/site/images/";
+    //protected static String base_url = "http://192.168.43.174:8080/project9/resources/";
+    //protected static String img_url = "http://192.168.43.174:8080/project9/show_images/";
     //protected static String base_url = "http://scolabs.com:8080/project9/resources/";
+    protected static String base_url = "http://10.0.2.2:8080/project9/resources/";
+    protected static String img_url = "http://10.0.2.2:8080/project9/resources/show_images";
     private static boolean isConnected;
     protected String serverCredentials = "admin:Grillzmania1";
     //protected static String img_url = "http://larytech.com/img_repository/";
@@ -101,6 +103,7 @@ public class RemoteServerConnection {
         Bitmap bitmap = null;
         InputStream in = null;
         try {
+            String imgx = img_url.concat(url);
             in = OpenHttpConnection(img_url.concat(url));
             bitmap = BitmapFactory.decodeStream(in);
             in.close();
@@ -145,12 +148,11 @@ public class RemoteServerConnection {
             HttpResponse httpResponse = httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
 
-
             is = httpEntity.getContent();
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            //httpClient.close();
+            //httpResponse.close();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
             //httpClient.close();
@@ -198,8 +200,6 @@ public class RemoteServerConnection {
             jObj = null;
         }
 
-        //httpClient.close();
-        // return JSON String
         return jObj;
     }
 
@@ -223,16 +223,12 @@ public class RemoteServerConnection {
         // try parse the string to a JSON object
         try {
             jArray = new JSONArray(json);
-            System.out.println(jArray.toString());
-            //ArrayList<User> p = gson.fromJson(json,User.class);
+            Log.w("JSon Object Data", jArray.toString());
         } catch (Exception ex) {
-            //Log.e("JSON Parser", "Error parsing data " + e.toString());
             System.err.println("Error parsing data" + ex.toString());
             jArray = null;
         }
 
-        //httpClient.close();
-        // return JSON Array
         return jArray;
     }
 }

@@ -151,8 +151,11 @@ public class LocalService extends Service {
                     long dt = new Date().getTime();
                     long air = show.getAiring_date();
                     if (air >= (dt - 30000) && air < (air + 40000)) {
-                        new AppNotificationManager(show).displayNotificationOne("" + show.getName() + " has started ",
-                                "show has started!", "showStart", getApplicationContext());
+                        if(GlobalSettings.getBoolValue(getApplicationContext(),"show_start"))
+                        {
+                            new AppNotificationManager(show).displayNotificationOne("" + show.getName() + " has started ",
+                                    "show has started!", "showStart", getApplicationContext());
+                        }
                         sendBroadcas("show_started");
                         Log.i("Notifiation", "" + show.getName() + " " + show.getAiring_date());
                     }
@@ -164,7 +167,6 @@ public class LocalService extends Service {
 
         @Override
         protected String doInBackground(String... params) {
-
             myShows = ShowQueries.getMyAiringShows();
             return "";
         }

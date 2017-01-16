@@ -84,9 +84,7 @@ public class AppNotificationManager extends Activity {
                 newCommentNotifyIntent();
                 break;
             case "showEnd":
-                Global.showEnd_notifCount = 0;
-                Intent showEndIntent = new Intent(AppNotificationManager.this, Login.class);
-                startActivity(showEndIntent);
+                showEndNotifyIntent();
                 break;
             case "cmtMarked":
                 Global.cmtMarked_notifCount = 0;
@@ -98,8 +96,15 @@ public class AppNotificationManager extends Activity {
         Global.showStart_notifiCount = 0;
         Intent i = new Intent(AppNotificationManager.this, MainActivity.class);
         i.putExtra("showId", showId);
-        Log.e("ShowId in Notification", "" + showId);
         startActivity(i);
+    }
+
+    public void showEndNotifyIntent()
+    {
+        Global.showEnd_notifCount = 0;
+        Intent showEndIntent = new Intent(AppNotificationManager.this, MainActivity.class);
+        showEndIntent.putExtra("showId",showId);
+        startActivity(showEndIntent);
     }
 
     public void newCommentNotifyIntent() {
@@ -146,8 +151,9 @@ public class AppNotificationManager extends Activity {
         }
 
         if (type.equals(NotificationType.showEnd)) {
-            broadcastEndShow();
+            broadcastEvent("show_finished");
         }
+
 
         buildNotif(mBuilder, context, type);
         /*if (Global.showStart_notifiCount > 10) {
@@ -160,14 +166,17 @@ public class AppNotificationManager extends Activity {
 
     public void notifBuilderConfig(NotificationCompat.Builder mBuilder) {
         // Invoking the default notification service
-        notificationId = new Random().nextInt(9000 - 1000) + 1000;
+        notificationId = (int)showId;//new Random().nextInt(9000 - 1000) + 1000;
         mBuilder.setContentTitle(NOTIF_TITLE);
         mBuilder.setAutoCancel(true);
+        sound = Uri.parse("android.resource://" + "com.scolabs.tenine" + "/" + R.raw.notif_sound);
+        soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         if (sound != null)
             mBuilder.setSound(sound);//This sets the sound to play
         else
             mBuilder.setSound(soundUri);
-        mBuilder.setLights(0xff00ff00, 300, 100);
+        mBuilder.setLights(0xff00ff00, 2000, 2000);
         mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
         mBuilder.setSmallIcon(R.drawable.notif_icon);
         mBuilder.setColor(Color.parseColor("#516666"));
@@ -217,11 +226,12 @@ public class AppNotificationManager extends Activity {
         return resultIntent;
     }
 
-    public void broadcastEndShow() {
+    public void broadcastEvent(String type) {
         Intent intent = new Intent(BROADCAST);
-        intent.setAction("show_finished");
+        intent.setAction(type);
         sendBroadcast(intent);
     }
+
 
     public void incrementNotifCount(String type, NotificationCompat.Builder mBuilder) {
         switch (type) {

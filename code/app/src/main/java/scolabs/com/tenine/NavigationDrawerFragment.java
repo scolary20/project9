@@ -254,6 +254,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        getActivity().unregisterReceiver(receiver);
         mCallbacks = null;
     }
 

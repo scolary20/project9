@@ -211,7 +211,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawSelectorOnTop="true"
-                    android:entries="@array/media_type"/>
+                    android:entries="@array/media_type"
+                    android:spinnerMode="dialog"/>
             </LinearLayout>
 
 

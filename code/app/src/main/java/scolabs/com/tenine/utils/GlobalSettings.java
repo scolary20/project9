@@ -17,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.dumpapp.plugins.SharedPreferencesDumperPlugin;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import scolabs.com.tenine.databaseQueries.UserQueries;
 import scolabs.com.tenine.model.Comment;
@@ -154,7 +152,7 @@ public class GlobalSettings {
         if (networkInfo != null && networkInfo.isConnected())
             return true;
         else
-            return true;
+            return false;
     }
 
     private static File getOutputMediaFile(int imageType, String fileName) {
@@ -218,6 +216,20 @@ public class GlobalSettings {
         return sp;
     }
 
+    public static SharedPreferences settingsPreference(Context ctx) {
+        User aUser = GlobalSettings.getLoginUser();
+        if (aUser == null)
+            aUser = pullLoginUser(ctx);
+
+        String prefName = aUser.getEmail() + "_settings_prefs";
+        SharedPreferences sp = ctx.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+        return sp;
+    }
+
+    public static boolean getBoolValue(Context ctx, String notifSettingType) {
+        return settingsPreference(ctx).getBoolean(notifSettingType, true);
+    }
+
     public static void setupChatSettings(User aUser, Context ctx) {
         Global.chatSettings = new ChatSettings();
         if (aUser == null)
@@ -251,7 +263,6 @@ public class GlobalSettings {
             Log.d("storeImage", "Error accessing file: " + e.getMessage());
         }
     }
-
 
 }
 

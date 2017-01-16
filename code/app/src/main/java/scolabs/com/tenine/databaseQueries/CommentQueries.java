@@ -14,12 +14,18 @@ public class CommentQueries {
 
     public static ArrayList<Comment> getComments(long showId)
     {
-
         return (ArrayList)new Select()
                 .from(Comment.class)
                 .where("showId = ?", showId)
                 .orderBy("date ASC")
                 .execute();
+    }
+
+    public static long getCommentCount(long showId) {
+        return new Select()
+                .from(Comment.class)
+                .where("showId = ?", showId)
+                .count();
     }
 
     public static Comment getCommentById(long cmtId) {
@@ -29,7 +35,7 @@ public class CommentQueries {
                 .executeSingle();
     }
 
-    public static int getStanzaIdCount(String stanzaId) {
+    synchronized public static int getStanzaIdCount(String stanzaId) {
         return new Select()
                 .from(Comment.class)
                 .where("stanzaId = ?", stanzaId)
@@ -51,14 +57,18 @@ public class CommentQueries {
             public void run() {
                 if (type.equals("up")) {
                     if (val == 1)
-                        SQLiteUtils.execSql("UPDATE Comment SET marked_up = " + val + ", ups_mark = ups_mark+1 WHERE cmtId = " + cmtId);
+                        SQLiteUtils.execSql("UPDATE Comment SET marked_up = " +
+                                "" + val + ", ups_mark = ups_mark+1 WHERE cmtId = " + cmtId);
                     else
-                        SQLiteUtils.execSql("UPDATE Comment SET marked_up = " + val + ", ups_mark = ups_mark-1 WHERE cmtId = " + cmtId);
+                        SQLiteUtils.execSql("UPDATE Comment SET marked_up = "
+                                + val + ", ups_mark = ups_mark-1 WHERE cmtId = " + cmtId);
                 } else if (type.equals("down")) {
                     if (val == 1)
-                        SQLiteUtils.execSql("UPDATE Comment SET marked_down = " + val + ", down_mark = down_mark+1 WHERE cmtId = " + cmtId);
+                        SQLiteUtils.execSql("UPDATE Comment SET marked_down = "
+                                + val + ", down_mark = down_mark+1 WHERE cmtId = " + cmtId);
                     else
-                        SQLiteUtils.execSql("UPDATE Comment SET marked_down = " + val + ", down_mark = down_mark-1 WHERE cmtId = " + cmtId);
+                        SQLiteUtils.execSql("UPDATE Comment SET marked_down = "
+                                + val + ", down_mark = down_mark-1 WHERE cmtId = " + cmtId);
                 }
             }
         }).start();

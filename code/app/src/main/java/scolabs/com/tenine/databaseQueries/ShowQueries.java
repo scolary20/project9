@@ -3,6 +3,7 @@ package scolabs.com.tenine.databaseQueries;
 import android.util.Log;
 
 import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -99,5 +100,14 @@ public class ShowQueries {
                 .from(Show.class)
                 .where("showId = ?", showId)
                 .executeSingle();
+    }
+
+    public static void updateShowComment(final long showId, final long number) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SQLiteUtils.execSql("UPDATE Show SET num_comment = " + number + " WHERE showId = " + showId);
+            }
+        }).start();
     }
 }

@@ -1,15 +1,21 @@
 package scolabs.com.tenine.ui;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Chronometer;
 import android.widget.ImageView;
@@ -23,18 +29,34 @@ import java.util.Date;
 
 import scolabs.com.tenine.DrawerItemCustomAdapter;
 import scolabs.com.tenine.R;
+import scolabs.com.tenine.databaseQueries.CommentQueries;
+import scolabs.com.tenine.databaseQueries.ShowQueries;
 import scolabs.com.tenine.model.Show;
+import scolabs.com.tenine.utils.Global;
 import scolabs.com.tenine.utils.GlobalSettings;
 
 /**
  * Created by scolary on 2/9/2016.
  */
 public class ShowAdapter extends ArrayAdapter {
+    public static final String BROADCAST = "com.scolabs.tenine.android.action.broadcast";
     private Context mContext;
     private int layoutResourceId;
     private ArrayList<Show> data = null;
     private int default_color;
-    private View convertView;
+    private View convertView = null;
+    private ArrayList<Object> showAndViewList;
+    private ViewHolder holder;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Long showId = intent.getLongExtra("showId",-999);
+            if (action.equals("increment_comment")) {
+                new UpdateCommentsNumb().execute(showId);
+            }
+        }
+    };
 
     public ShowAdapter(Context mContext, int layoutResourceId, ArrayList<Show> data) {
 
@@ -42,13 +64,17 @@ public class ShowAdapter extends ArrayAdapter {
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
         this.data = data;
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("increment_comment");
+        getContext().registerReceiver(receiver,filter);
+
     }
 
     @Override
     public View getView(int pos, View aConvertView, ViewGroup parent) {
 
-        final ViewHolder holder;
-        Show c = data.get(pos);
+        showAndViewList = new ArrayList<>();
+        final Show c = data.get(pos);
         convertView = aConvertView;
         if (convertView == null) {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
@@ -66,11 +92,12 @@ public class ShowAdapter extends ArrayAdapter {
             holder.show_default_img = getContext().getResources().getDrawable(R.drawable.show_image_default);
             holder.rating_arrow = (TextView) convertView.findViewById(R.id.rating_arrow);
             holder.d_img = getContext().getResources().getDrawable(R.drawable.down_rating);
+            Global.showViews.put(c.getShowId(),holder);
             convertView.setTag(holder);
         } else
             holder = (ViewHolder) convertView.getTag();
-        NumberFormat fmt = NumberFormat.getInstance();
 
+        NumberFormat fmt = NumberFormat.getInstance();
         holder.show_name.setText(c.getName());
         holder.show_name.append(" " + c.getSeason());
         holder.network_name.setText(c.getNetwork());
@@ -100,8 +127,48 @@ public class ShowAdapter extends ArrayAdapter {
         holder.rating_arrow.refreshDrawableState();
         time_show_handler(holder, c); //Handling starting show time
 
+        showAndViewList.add(0,c);
+        showAndViewList.add(1,convertView);
 
         return convertView;
+    }
+
+
+    class UpdateCommentsNumb extends AsyncTask<Long, Void, Long> {
+        private long numComments;
+        @Override
+        protected Long doInBackground(Long... params) {
+            long showId = params[0];
+            long showNumComments = CommentQueries.getCommentCount(showId);
+            ShowQueries.updateShowComment(showId,showNumComments);
+            numComments = showNumComments;
+            Log.i("ShowNumComments "," "+showNumComments);
+
+            return showId;
+        }
+
+        @Override
+        protected void onPostExecute(Long showId) {
+            super.onPostExecute(showId);
+            ViewHolder hold = Global.showViews.get(showId);
+
+                hold.num_comments.setAnimation(AnimationUtils.loadAnimation(mContext, R.anim.bounce_marks));
+                hold.num_comments.setText(String.valueOf(numComments));
+
+            broadcastEvent("new_comment");
+        }
+
+    }
+
+    public void broadcastEvent(String type) {
+        Intent intent = new Intent(BROADCAST);
+        intent.setAction(type);
+        mContext.sendBroadcast(intent);
+    }
+
+    public BroadcastReceiver getBroadcastReceiver()
+    {
+        return receiver;
     }
 
 
@@ -150,7 +217,13 @@ public class ShowAdapter extends ArrayAdapter {
         this.notifyDataSetChanged();
     }
 
-    static class ViewHolder {
+    public ViewHolder getViewHolder()
+    {
+        return holder;
+    }
+
+
+    public static class ViewHolder {
         TextView show_name;
         Chronometer chronometer;
         TextView num_watching;

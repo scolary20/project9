@@ -8,6 +8,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 import scolabs.com.tenine.model.Show;
 import scolabs.com.tenine.remoteOperations.ChatSettings;
@@ -38,4 +42,5 @@ public class Global {
     public static LinearLayout linearList;
     public static ShowAdapter showAdapterCheckFore;
     public static ListView showListView;
+    public static HashMap<Long,ShowAdapter.ViewHolder> showViews = new HashMap<>();
 }
